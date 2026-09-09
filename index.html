@@ -223,7 +223,7 @@
 
 <section id="title-slide" data-background-color="#1d5c4a" class="quarto-title-block center">
   <h1 class="title">Trial Simulations in R</h1>
-  <p class="subtitle">A Framework for Informing Modern Clinical Development<br> <span style="font-size:0.5em">Slides © 2026 Mitch Thomann &amp; Saumil Shah — <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></span></p>
+  <p class="subtitle">A Framework for Informing Modern Clinical Development</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -240,13 +240,18 @@ Saumil Shah
 
   <p class="date">2026-09-16</p>
 </section>
-<section id="setup" class="slide level2">
-<h2>Setup</h2>
+<section>
+<section id="setup" class="title-slide slide level1 center" data-background-color="#1d5c4a">
+<h1>Setup <span class="emoji" data-emoji="hammer_and_wrench">🛠️</span></h1>
+
+</section>
+<section id="get-set-up" class="slide level2">
+<h2>Get set up</h2>
 <p>This page gets you from <em>no R installed</em> to <em>the first course example running</em>. Four steps, about 15–20 minutes, most of it downloading. Do this <strong>before</strong> the workshop; the course itself does not wait for installation.</p>
 <p><strong>Stuck on a work laptop with no admin rights or a blocked proxy?</strong> Skip to the <a href="#/hosted-fallback">hosted fallback</a> — nothing to install.</p>
 <p><strong>Already have R 4.4 or newer and RStudio?</strong> Skip to <a href="#/get-the-course-project">Get the course project</a>.</p>
 </section>
-<section id="install-r-and-rstudio" class="slide level2 smaller">
+<section id="install-r-and-rstudio" class="slide level2 small">
 <h2>1. Install R and RStudio <span class="emoji" data-emoji="arrow_double_down">⏬</span></h2>
 <p>Go to the Posit download page: <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a></p>
 <p>It links the matching <strong>R installer</strong> for your platform and the <strong>RStudio installer</strong>. Install R first, then RStudio, accepting the defaults.</p>
@@ -268,24 +273,35 @@ Saumil Shah
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">getRversion</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Any version <strong>4.4 or newer</strong> is fine. The course was built with R 4.5.</p>
 </section>
-<section id="get-the-course-project" class="slide level2 smaller">
+<section id="get-the-course-project" class="slide level2 small">
 <h2>2. Get the course project <span class="emoji" data-emoji="inbox_tray">📥</span></h2>
-<p>Everything for the course ships as one project folder. Two ways to get it — pick one:</p>
-<ul>
-<li class="fragment"><strong>Git users:</strong> <code>git clone https://github.com/saumil-sh/SC09-RISW26</code></li>
-<li class="fragment"><strong>Everyone else:</strong> download <code>https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip</code> in your browser and extract it somewhere normal — Desktop or your home folder. (Double-click the ZIP on Windows/macOS; <code>unzip</code> on Linux.) <strong>Not</strong> a temporary folder: your edits must survive the day. No Git or GitHub account needed. The ZIP extracts to a folder named <strong><code>SC09-RISW26-main</code></strong> — open that folder, not its parent.</li>
-</ul>
-<p>Either way: open the folder and double-click <strong><code>SC09-RISW26.Rproj</code></strong>. RStudio opens the project, sets the working directory, and activates the package environment automatically.</p>
-<p>If a folder from an earlier attempt already exists, open it and continue — do not delete it; your work is inside.</p>
-<p><em>Console alternative:</em></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"usethis"</span>)</span>
-<span id="cb2-2"><a href=""></a>usethis<span class="sc">::</span><span class="fu">use_course</span>(<span class="st">"https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Everything for the course ships as one project folder. Clone it from your editor — or download the ZIP, no Git needed:</p>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">RStudio</a></li><li><a href="#tabset-2-2">Positron</a></li><li><a href="#tabset-2-3">VS Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<p><strong>File → New Project → Version Control → Git.</strong> Paste <code>https://github.com/saumil-sh/SC09-RISW26</code> as the <strong>Repository URL</strong>, choose a normal folder as the parent, click <strong>Create Project</strong>. RStudio clones and opens the project in one go.</p>
+</div>
+<div id="tabset-2-2">
+<p>Open the Command Palette (<code>Ctrl/Cmd+Shift+P</code>) → <strong>Git: Clone</strong> → paste <code>https://github.com/saumil-sh/SC09-RISW26</code> → pick a parent folder → <strong>Open</strong> when prompted.</p>
+</div>
+<div id="tabset-2-3">
+<p>Command Palette (<code>Ctrl/Cmd+Shift+P</code>) → <strong>Git: Clone</strong> → paste <code>https://github.com/saumil-sh/SC09-RISW26</code> → pick a parent folder → <strong>Open</strong>. You also need the R extension (REditorSupport) to run the scripts.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Terminal instead:</strong> <code>git clone https://github.com/saumil-sh/SC09-RISW26</code>. <strong>No Git at all:</strong> download the <a href="https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip">project ZIP</a> and extract it somewhere normal — Desktop or your home folder, <strong>not</strong> a temporary folder (your edits must survive the day). It extracts to <strong><code>SC09-RISW26-main</code></strong> — open that folder, not its parent.</p>
+</div>
+<div class="fragment">
+<p><strong>RStudio users</strong> who took the ZIP or terminal route: open the folder and double-click <strong><code>SC09-RISW26.Rproj</code></strong> — RStudio sets the working directory and activates the package environment. If a folder from an earlier attempt already exists, open it and continue — do not delete it; your work is inside.</p>
+</div>
 </section>
-<section id="restore-the-packages" class="slide level2 smaller">
+<section id="restore-the-packages" class="slide level2 small">
 <h2>3. Restore the packages <span class="emoji" data-emoji="package">📦</span></h2>
 <p>The course pins exact package versions so your results match the slides. Still in the project’s <strong>Console</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
-<span id="cb3-2"><a href=""></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
+<span id="cb2-2"><a href=""></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>First run downloads and installs the packages (a few minutes). If it asks whether to proceed, answer <code>y</code>.</p>
 <p>Notes:</p>
 <ul>
@@ -294,18 +310,18 @@ Saumil Shah
 <li class="fragment">If a package must be compiled from source: install <a href="https://cran.r-project.org/bin/windows/Rtools/rtools45/rtools.html">Rtools45</a> on Windows; Xcode Command Line Tools (<code>xcode-select --install</code>) on macOS; standard build tools on Linux. Then rerun <code>renv::restore()</code>.</li>
 </ul>
 </section>
-<section id="confirm-the-example-runs" class="slide level2">
+<section id="confirm-the-example-runs" class="slide level2 medium">
 <h2>4. Confirm the example runs <span class="emoji" data-emoji="white_check_mark">✅</span></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">packageVersion</span>(<span class="st">"rxsim"</span>)     <span class="co"># expect 0.3.0</span></span>
-<span id="cb4-2"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/1-one-arm.R"</span>)</span>
-<span id="cb4-3"><a href=""></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">packageVersion</span>(<span class="st">"rxsim"</span>)     <span class="co"># expect 0.3.0</span></span>
+<span id="cb3-2"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/1-one-arm.R"</span>)</span>
+<span id="cb3-3"><a href=""></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You should see <strong>one row</strong> of results — 100 patients, <code>mean_y</code> near 0.44, <code>sd_y</code> near 1. If so, you are ready for the workshop.</p>
 </section>
-<section id="coming-back-later" class="slide level2">
+<section id="coming-back-later" class="slide level2 medium">
 <h2>Coming back later <span class="emoji" data-emoji="back">🔙</span></h2>
 <p>Reopen <code>SC09-RISW26.Rproj</code> and run whichever script you like. Downloading and <code>renv::restore()</code> are one-time setup.</p>
 </section>
-<section id="hosted-fallback" class="slide level2 smaller">
+<section id="hosted-fallback" class="slide level2 small">
 <h2>Hosted fallback <span class="emoji" data-emoji="cloud">☁️</span></h2>
 <p>If your machine cannot install software or reach CRAN, run the course on <a href="https://posit.cloud/">Posit Cloud</a> — RStudio in your browser, nothing to install. The free tier is enough for the workshop day.</p>
 <ol type="1">
@@ -313,14 +329,18 @@ Saumil Shah
 <li class="fragment">Click <strong>New Project → New Project from a Git Repository</strong> and paste <code>https://github.com/saumil-sh/SC09-RISW26</code>.</li>
 <li class="fragment">Wait for the project to open, then run the same two lines as everyone else in the Console:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
-<span id="cb5-2"><a href=""></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span>
-<span id="cb5-3"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/1-one-arm.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
+<span id="cb4-2"><a href=""></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span>
+<span id="cb4-3"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/1-one-arm.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>renv::restore()</code> installs the pinned packages into the cloud project (a few minutes, first time only). One row of results and you are ready.</p>
-<p><em>No Git?</em> In step 2, choose <strong>New Project → Empty Project</strong> instead. In the <strong>Files</strong> pane (bottom-right), click <strong>Upload</strong>, upload the course ZIP from <code>https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip</code>, and tick the option to expand it. Then continue with step 3.</p>
+</div>
+<div class="fragment">
+<p><em>No Git?</em> In step 2, choose <strong>New Project → Empty Project</strong> instead. In the <strong>Files</strong> pane (bottom-right), click <strong>Upload</strong>, upload the <a href="https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip">project ZIP</a>, and tick the option to expand it. Then continue with step 3.</p>
 <p>Your cloud project persists — you can come back to it after the workshop.</p>
+</div>
 </section>
-<section id="troubleshooting" class="slide level2 smaller">
+<section id="troubleshooting" class="slide level2 small">
 <h2>Troubleshooting <span class="emoji" data-emoji="wrench">🔧</span></h2>
 <ul>
 <li class="fragment"><strong>Console vs.&nbsp;terminal.</strong> Commands shown in <code>r</code> blocks go in the RStudio <strong>Console</strong>. You never need the system terminal on the happy path.</li>
@@ -329,32 +349,22 @@ Saumil Shah
 <li class="fragment"><strong>Corporate proxy / no admin rights.</strong> Not fixable in the room — use the <a href="#/hosted-fallback">hosted fallback</a> and talk to your IT later.</li>
 <li class="fragment"><strong>Quarto is optional.</strong> Participants only need R to run the scripts and a browser to view the slides. RStudio 2022.07.1 and later bundles Quarto for anyone who wants to re-render the slides.</li>
 </ul>
-</section>
+</section></section>
 <section>
 <section id="welcome" class="title-slide slide level1 center" data-background-color="#1d5c4a">
 <h1>Welcome <span class="emoji" data-emoji="wave">👋</span></h1>
 
 </section>
-<section id="get-set-up" class="slide level2 smaller">
+<section id="get-set-up-1" class="slide level2 small">
 <h2>Get set up <span class="emoji" data-emoji="hammer_and_wrench">🛠️</span></h2>
 <div class="fragment keybox">
 <p><strong>Start this now.</strong> Downloading and installing takes a few minutes, so kick it off while we do introductions.</p>
 </div>
 <div class="fragment">
-<p>Two ways to get the course project — pick one:</p>
-</div>
-<ul>
-<li class="fragment"><strong>Git users:</strong> <code>git clone https://github.com/saumil-sh/SC09-RISW26</code></li>
-<li class="fragment"><strong>Everyone else:</strong> download and extract the ZIP from <code>https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip</code></li>
-</ul>
-<div class="fragment">
-<p>Then open <code>SC09-RISW26.Rproj</code> in RStudio, run <code>install.packages("renv")</code> then <code>renv::restore()</code> in the Console. It worked if <code>source("R/part-2/1-one-arm.R")</code> prints one row of results.</p>
-</div>
-<div class="fragment">
 <p>Parts 2 and 3 are hands-on. You will get far more out of them with R open and the project already downloaded. The full walkthrough — including a no-install hosted fallback — is in <a href="#/setup">Setup</a>.</p>
 </div>
 </section>
-<section id="your-instructors" class="slide level2 smaller">
+<section id="your-instructors" class="slide level2 medium">
 <h2>Your instructors <span class="emoji" data-emoji="busts_in_silhouette">👥</span></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -382,14 +392,14 @@ Saumil Shah
 <section id="housekeeping" class="slide level2">
 <h2>Housekeeping <span class="emoji" data-emoji="house">🏠</span></h2>
 <ul>
-<li class="fragment"><strong>Three hours, three parts</strong>, <strong>1:30 PM – 5:00 PM (placeholder, per RISW 2026)</strong>, with <strong>two 10-minute breaks</strong></li>
+<li class="fragment"><strong>Three hours, three parts</strong>, <strong>1:30 PM – 5:00 PM (placeholder, per RISW 2026)</strong>, with <strong>two 15-minute breaks</strong></li>
 <li class="fragment"><strong>Parts 1 and 2 are the backbone</strong> — the framework, and how to write it in R</li>
 <li class="fragment"><strong>Part 3 is deliberately flexible.</strong> It is hands-on and interactive, and how far we take it depends on the room</li>
 <li class="fragment">Part 2 and Part 3 both go better with R open</li>
 <li class="fragment">Questions welcome throughout — this is a small enough room for it</li>
 </ul>
 </section>
-<section id="agenda" class="slide level2 smaller">
+<section id="agenda" class="slide level2 small">
 <h2>Agenda <span class="emoji" data-emoji="spiral_calendar">🗓️</span></h2>
 <table class="caption-top">
 <colgroup>
@@ -418,28 +428,28 @@ Saumil Shah
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>2:30 – 2:40 PM</td>
-<td>10 minute break</td>
+<td>2:30 – 2:45 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>2</strong></td>
-<td>2:40 – 3:40 PM</td>
+<td>2:45 – 3:45 PM</td>
 <td><strong>Programming Key Elements in R</strong><br><em>Saumil · 60 min</em></td>
 <td>Objectives · scenarios · data generation<br>Complex designs · evaluation · parallelization</td>
 <td><em>after the break</em></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>3:40 – 3:50 PM</td>
-<td>10 minute break</td>
+<td>3:45 – 4:00 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>3</strong></td>
-<td>3:50 – 5:00 PM</td>
+<td>4:00 – 5:00 PM</td>
 <td><strong>Hands-on Exercise</strong><br><em>Mitch · flexible</em></td>
 <td>Build one design end to end<br>Compare designs across the full study</td>
 <td><em>after the break</em></td>
@@ -447,7 +457,7 @@ Saumil Shah
 </tbody>
 </table>
 </section>
-<section id="what-we-expect-from-today" class="slide level2 smaller">
+<section id="what-we-expect-from-today" class="slide level2 small">
 <h2>What we expect from today <span class="emoji" data-emoji="dart">🎯</span></h2>
 <div class="columns">
 <div class="column" style="width:52%;">
@@ -558,7 +568,7 @@ flowchart LR
 <p>The goal is not “an R script that answers this question.” It is R code that is <strong>simple, adaptable and flexible</strong> enough to answer the <em>next</em> question — because there is always a next question.</p>
 </div>
 </section>
-<section id="why-now" class="slide level2">
+<section id="why-now" class="slide level2 medium">
 <h2>Why now? <span class="emoji" data-emoji="hourglass_flowing_sand">⏳</span></h2>
 <ul>
 <li class="fragment"><strong>Design complexity has outrun closed-form methods</strong>
@@ -600,7 +610,7 @@ flowchart LR
 <li class="fragment">A substitute for judgment — it prices your assumptions, it does not choose them</li>
 </ul>
 </section>
-<section id="why-patient-level-simulation" class="slide level2 smaller">
+<section id="why-patient-level-simulation" class="slide level2 small">
 <h2>Why patient-level simulation? <span class="emoji" data-emoji="microscope">🔬</span></h2>
 <div class="fragment keybox">
 <p>Simulation lets you inspect <strong>individual patient-level replicates</strong>, not just averaged operating characteristics.</p>
@@ -622,7 +632,7 @@ flowchart LR
 <h1>Regulatory guidance <span class="emoji" data-emoji="scroll">📜</span></h1>
 
 </section>
-<section id="simulation-as-expected-practice" class="slide level2 smaller">
+<section id="simulation-as-expected-practice" class="slide level2 small">
 <h2>Simulation as expected practice <span class="emoji" data-emoji="ledger">📒</span></h2>
 <ul>
 <li class="fragment"><strong>FDA</strong> design simulations thoroughly described in <em>Adaptive Design Guidance</em> <span class="citation" data-cites="fda2019adaptive">(<a href="#/references" role="doc-biblioref" onclick="">U.S. Food and Drug Administration 2019</a>)</span> and additional guidance in <em>Complex and Innovative Trial Designs Guidance</em> <span class="citation" data-cites="fda2020cid">(<a href="#/references" role="doc-biblioref" onclick="">U.S. Food and Drug Administration 2020</a>)</span> and <em>Bayesian Methodology Guidance</em> <span class="citation" data-cites="fda2026bayesian">(<a href="#/references" role="doc-biblioref" onclick="">U.S. Food and Drug Administration 2026</a>)</span></li>
@@ -647,7 +657,7 @@ flowchart LR
 <h1>A running example <span class="emoji" data-emoji="pill">💊</span></h1>
 
 </section>
-<section id="our-design-problem-example" class="slide level2 smaller">
+<section id="our-design-problem-example" class="slide level2 small">
 <h2>Our design problem <span class="emoji" data-emoji="chart_with_downwards_trend">📉</span> <span class="example-tag">Example</span></h2>
 <div class="fragment">
 <p><strong>Planning a fixed Phase 2 randomized dose-finding study in weight loss.</strong></p>
@@ -704,7 +714,7 @@ flowchart LR
 <h1>Five essential components <span class="emoji" data-emoji="jigsaw">🧩</span></h1>
 
 </section>
-<section id="anatomy-of-a-trial-simulation" class="slide level2 smaller">
+<section id="anatomy-of-a-trial-simulation" class="slide level2 small">
 <h2>Anatomy of a trial simulation <span class="emoji" data-emoji="anatomical_heart">🫀</span></h2>
 <div class="fragment">
 <div class="cell" data-reveal="true" data-fig-width="12" data-layout-align="center">
@@ -741,7 +751,7 @@ flowchart LR
 <p>Let’s go through them.</p>
 </div>
 </section>
-<section id="objectives" class="slide level2 smaller">
+<section id="objectives" class="slide level2 small">
 <h2>1. Objectives <span class="emoji" data-emoji="goal_net">🥅</span></h2>
 <div class="fragment">
 <p>Turning a clinical question into something a computer can count.</p>
@@ -756,7 +766,7 @@ flowchart LR
 <p>If you cannot write the objective as <code>mean(indicator_over_replicates) &gt;= threshold</code>, it is likely not yet an objective.</p>
 </div>
 </section>
-<section id="objectives-example" class="slide level2 smaller">
+<section id="objectives-example" class="slide level2 small">
 <h2>1. Objectives <span class="example-tag">Example</span> <span class="emoji" data-emoji="dart">🎯</span></h2>
 <div class="fragment">
 <p>For our weight-loss dose-finding study:</p>
@@ -772,7 +782,7 @@ flowchart LR
 <p>Under the negative truth <em>no</em> dose reaches 15%, so the second line is a <strong>false-positive decision</strong> — the probability of claiming a viable dose exists when none does.</p>
 </div>
 </section>
-<section id="scenarios-the-world-vs.-our-choices" class="slide level2 smaller">
+<section id="scenarios-the-world-vs.-our-choices" class="slide level2 small">
 <h2>2. Scenarios: the world vs.&nbsp;our choices <span class="emoji" data-emoji="earth_africa">🌍</span></h2>
 <div class="fragment">
 <p><strong>Scenario</strong> = an input parameter combination we iterate across. Two types:</p>
@@ -806,7 +816,7 @@ flowchart LR
 <p><strong>Simulation asks:</strong> <em>across the truths we consider plausible, which of our choices performs best on the metrics we care about?</em></p>
 </div>
 </section>
-<section id="design-scenarios-example" class="slide level2 smaller">
+<section id="design-scenarios-example" class="slide level2 small">
 <h2>2. Design scenarios <span class="example-tag">Example</span> <span class="emoji" data-emoji="triangular_ruler">📐</span></h2>
 <div class="fragment">
 <table class="caption-top">
@@ -847,7 +857,7 @@ flowchart LR
 <p>Note that sample size is <em>fixed</em> here only for teaching. In practice it is often the first thing that would be varied</p>
 </div>
 </section>
-<section id="truth-scenarios-example" class="slide level2 smaller">
+<section id="truth-scenarios-example" class="slide level2 small">
 <h2>2. Truth scenarios <span class="example-tag">Example</span> <span class="emoji" data-emoji="crystal_ball">🔮</span></h2>
 <div class="fragment">
 <p>Assume placebo mean response = 0 and dose response follows a (sigmoid) Emax model:</p>
@@ -1000,7 +1010,7 @@ flowchart LR
 <p>Note how little this model contains — and note that it is still a <em>complete, runnable specification</em>. Every elaboration you would want (dropout, a Week 12 interim readout, a correlated safety endpoint) is an addition to the code - not switching tools/modules</p>
 </div>
 </section>
-<section id="trial-design" class="slide level2 smaller">
+<section id="trial-design" class="slide level2 small">
 <h2>4. Trial design <span class="emoji" data-emoji="building_construction">🏗️</span></h2>
 <div class="fragment">
 <p>Everything that happens between “patients exist” and “we have a decision.”</p>
@@ -1035,7 +1045,7 @@ flowchart LR
 <p>The decision rule is the part teams most often leave vague, and the part simulation is least able to guess.</p>
 </div>
 </section>
-<section id="trial-design-example-significance-testing" class="slide level2 smaller">
+<section id="trial-design-example-significance-testing" class="slide level2 small">
 <h2>4. Trial design <span class="example-tag">Example</span>: significance testing <span class="emoji" data-emoji="test_tube">🧪</span></h2>
 <div class="fragment">
 <p>Single final analysis at Week 24. Two analysis models, both at <strong>α = 0.10</strong> (one-sided):</p>
@@ -1090,15 +1100,10 @@ flowchart LR
 <p><em>Candidate labels (C1–C4) are deliberately distinct from the truth-scenario names (Emax1–Emax3): these are the shapes we <strong>fit</strong>, not the shapes the world takes.</em></p>
 </div>
 <div class="fragment">
-<p><strong>Dunnett’s Test</strong> — all active doses vs.&nbsp;placebo, step-down.</p>
+<p><strong>Dunnett’s Test</strong> — all active doses vs.&nbsp;placebo.</p>
 </div>
-<!-- Note for Saumil (from Mitch), resolving the open items that used to sit here:
-     - Exponential candidate: delta = 25 is correct. No change needed.
-     - Dunnett: just call it "Dunnett's test" on the slides — people will get it,
-       no need to spell out the multiplicity mechanics. For our own reference,
-       it is step-down. -->
 </section>
-<section id="trial-design-example-candidate-models" class="slide level2 smaller">
+<section id="trial-design-example-candidate-models" class="slide level2 small">
 <h2>4. Trial design <span class="example-tag">Example</span>: candidate models <span class="emoji" data-emoji="ocean">🌊</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -1115,7 +1120,7 @@ flowchart LR
 <p>Candidates are <strong>shapes</strong>, not truths. They span the plausible dose-response space so some candidate is close to whatever the world does. The dotted line is the 15% target; the grey verticals are the candidate doses.</p>
 </div>
 </section>
-<section id="mcp-mod-vs.-dunnetts-test" class="slide level2 smaller">
+<section id="mcp-mod-vs.-dunnetts-test" class="slide level2 small">
 <h2>MCP-Mod vs.&nbsp;Dunnett’s test <span class="emoji" data-emoji="boxing_glove">🥊</span></h2>
 <div class="fragment">
 <p>Two potential answers to “is there a dose-response signal?”</p>
@@ -1167,7 +1172,7 @@ flowchart LR
 <p>MCP-Mod is well established in this setting - dose-response modelling improves estimation of dose-response curves and can be advantageous for decision-making with more doses.</p>
 </div>
 </section>
-<section id="trial-design-example-dose-selection" class="slide level2 smaller">
+<section id="trial-design-example-dose-selection" class="slide level2 small">
 <h2>4. Trial design <span class="example-tag">Example</span>: dose selection <span class="emoji" data-emoji="round_pushpin">📍</span></h2>
 <div class="fragment keybox">
 <p><strong>MED</strong> (minimally efficacious dose) = the lowest dose estimated to have a placebo-adjusted effect <strong>&gt; 15%</strong>.</p>
@@ -1217,7 +1222,7 @@ flowchart LR
 <p>Neither is in the objectives, but they explain <em>why</em> two designs differ — and dose-response estimation matters beyond the go/no-go decision, since real dose selection weighs factors other than efficacy.</p>
 </div>
 </section>
-<section id="the-components-example" class="slide level2 smaller">
+<section id="the-components-example" class="slide level2 small">
 <h2>The components <span class="example-tag">Example</span> <span class="emoji" data-emoji="clipboard">📋</span></h2>
 <div class="fragment">
 <table class="caption-top">
@@ -1264,7 +1269,7 @@ flowchart LR
 <h1>The R-based computational framework <span class="emoji" data-emoji="computer">💻</span></h1>
 
 </section>
-<section id="why-r-and-why-we-are-being-opinionated" class="slide level2 smaller">
+<section id="why-r-and-why-we-are-being-opinionated" class="slide level2 small">
 <h2>Why R and why we are being opinionated <span class="emoji" data-emoji="rocket">🚀</span></h2>
 <ul>
 <li class="fragment"><strong>The statistical models already live there.</strong> <code>DoseFinding</code>, <code>rpact</code>, <code>brms</code>, <code>mmrm</code>, survival tooling, copula tooling — the analysis models you want to simulate are R packages, and calling them beats reimplementing them.</li>
@@ -1290,9 +1295,6 @@ flowchart LR
 <div class="fragment">
 <p>Part 1 gave you the five components and a fully specified study. Part 2 writes them.</p>
 </div>
-</section>
-<section id="part-2" class="slide level2">
-<h2>Part 2</h2>
 </section></section>
 <section>
 <section id="welcome-1" class="title-slide slide level1 center" data-background-color="#1d5c4a">
@@ -1309,7 +1311,7 @@ flowchart LR
 </ol>
 </div>
 </section>
-<section id="where-we-are" class="slide level2 smaller">
+<section id="where-we-are" class="slide level2 small">
 <h2>Where we are <span class="emoji" data-emoji="round_pushpin">📍</span></h2>
 <table class="caption-top">
 <colgroup>
@@ -1338,28 +1340,28 @@ flowchart LR
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>2:30 – 2:40 PM</td>
-<td>10 minute break</td>
+<td>2:30 – 2:45 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>2</strong></td>
-<td>2:40 – 3:40 PM</td>
+<td>2:45 – 3:45 PM</td>
 <td><strong>Programming Key Elements in R</strong><br><em>Saumil · 60 min</em></td>
 <td>Objectives · scenarios · data generation<br>Complex designs · evaluation · parallelization</td>
 <td><strong>← you are here</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>3:40 – 3:50 PM</td>
-<td>10 minute break</td>
+<td>3:45 – 4:00 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>3</strong></td>
-<td>3:50 – 5:00 PM</td>
+<td>4:00 – 5:00 PM</td>
 <td><strong>Hands-on Exercise</strong><br><em>Mitch · flexible</em></td>
 <td>Build one design end to end<br>Compare designs across the full study</td>
 <td><em>after the break</em></td>
@@ -1436,7 +1438,7 @@ flowchart LR
 </ol>
 </div>
 </section>
-<section id="rxsim-build" class="slide level2 smaller">
+<section id="rxsim-build" class="slide level2 small">
 <h2>Explore a new question without starting over</h2>
 <div class="fragment">
 <p><strong>Start with one arm</strong> — analyse at the end.</p>
@@ -1475,7 +1477,7 @@ flowchart LR
 </svg>
 </div>
 <p>Keep the parts you trust, and change what the next question needs.</p>
-<div class="smaller">
+<div class="small">
 <p><a href="https://boehringer-ingelheim.github.io/rxsim/">Explore rxsim</a> · <a href="https://boehringer-ingelheim.github.io/rxsim-gallery/">Browse the gallery</a></p>
 </div>
 </section></section>
@@ -1489,10 +1491,10 @@ flowchart LR
 <div class="hidden-numbers">
 <ol type="1">
 <li class="fragment">One treatment arm, one look at the end. No comparison, no test yet: just generate 100 patients, then describe them.</li>
-<li class="fragment">We build <code>R/work-one-arm.R</code> together, one block per slide.</li>
+<li class="fragment">We build <code>R/work-1-one-arm.R</code> together, one block per slide.</li>
 </ol>
 </div>
-<div class="popup smaller">
+<div class="popup small">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1502,7 +1504,7 @@ flowchart LR
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>R/work-one-arm.R</code></td>
+<td><code>R/work-1-one-arm.R</code></td>
 <td><code>R/part-2/1-one-arm.R</code></td>
 </tr>
 </tbody>
@@ -1518,10 +1520,10 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>n_total <span class="ot">&lt;-</span> <span class="dv">100</span>        <span class="co"># patients across all arms (one arm here)</span></span>
-<span id="cb6-2"><a href=""></a>mu      <span class="ot">&lt;-</span> <span class="fl">0.5</span>        <span class="co"># assumed true mean response</span></span>
-<span id="cb6-3"><a href=""></a>sigma   <span class="ot">&lt;-</span> <span class="dv">1</span>          <span class="co"># between-patient SD</span></span>
-<span id="cb6-4"><a href=""></a>n_sim   <span class="ot">&lt;-</span> <span class="dv">1</span>          <span class="co"># whole-trial reruns; we keep this at 1 for now</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>n_total <span class="ot">&lt;-</span> <span class="dv">100</span>        <span class="co"># patients across all arms (one arm here)</span></span>
+<span id="cb5-2"><a href=""></a>mu      <span class="ot">&lt;-</span> <span class="fl">0.5</span>        <span class="co"># assumed true mean response</span></span>
+<span id="cb5-3"><a href=""></a>sigma   <span class="ot">&lt;-</span> <span class="dv">1</span>          <span class="co"># between-patient SD</span></span>
+<span id="cb5-4"><a href=""></a>n_sim   <span class="ot">&lt;-</span> <span class="dv">1</span>          <span class="co"># whole-trial reruns; we keep this at 1 for now</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -1540,15 +1542,15 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># One row per patient. rxsim calls this once per replicate, so each replicate</span></span>
-<span id="cb7-2"><a href=""></a><span class="co"># gets fresh patients. Required columns: id, readout_time, plus your endpoint.</span></span>
-<span id="cb7-3"><a href=""></a>gen_trt <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb7-4"><a href=""></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb7-5"><a href=""></a>    <span class="at">id           =</span> <span class="fu">seq_len</span>(n),</span>
-<span id="cb7-6"><a href=""></a>    <span class="at">y            =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma),</span>
-<span id="cb7-7"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
-<span id="cb7-8"><a href=""></a>  )</span>
-<span id="cb7-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># One row per patient. rxsim calls this once per replicate, so each replicate</span></span>
+<span id="cb6-2"><a href=""></a><span class="co"># gets fresh patients. Required columns: id, readout_time, plus your endpoint.</span></span>
+<span id="cb6-3"><a href=""></a>gen_trt <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb6-4"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb6-5"><a href=""></a>    <span class="at">id           =</span> <span class="fu">seq_len</span>(n),</span>
+<span id="cb6-6"><a href=""></a>    <span class="at">y            =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma),</span>
+<span id="cb6-7"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
+<span id="cb6-8"><a href=""></a>  )</span>
+<span id="cb6-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1561,10 +1563,10 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># Look at five generated patients before building any trial. This preview owns</span></span>
-<span id="cb8-2"><a href=""></a><span class="co"># its own seed and is separate from the trial below.</span></span>
-<span id="cb8-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
-<span id="cb8-4"><a href=""></a><span class="fu">gen_trt</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Look at five generated patients before building any trial. This preview owns</span></span>
+<span id="cb7-2"><a href=""></a><span class="co"># its own seed and is separate from the trial below.</span></span>
+<span id="cb7-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
+<span id="cb7-4"><a href=""></a><span class="fu">gen_trt</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  id          y readout_time
 1  1  0.5175190            0
@@ -1585,15 +1587,15 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># rxsim calls analyze(df, current_time) at each look. df is the snapshot of the</span></span>
-<span id="cb10-2"><a href=""></a><span class="co"># trial at that moment. Return one row; it becomes a row of your results.</span></span>
-<span id="cb10-3"><a href=""></a>analyze <span class="ot">&lt;-</span> <span class="cf">function</span>(df, current_time) {</span>
-<span id="cb10-4"><a href=""></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb10-5"><a href=""></a>    <span class="at">n      =</span> <span class="fu">nrow</span>(df),</span>
-<span id="cb10-6"><a href=""></a>    <span class="at">mean_y =</span> <span class="fu">mean</span>(df<span class="sc">$</span>y),</span>
-<span id="cb10-7"><a href=""></a>    <span class="at">sd_y   =</span> <span class="fu">sd</span>(df<span class="sc">$</span>y)</span>
-<span id="cb10-8"><a href=""></a>  )</span>
-<span id="cb10-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># rxsim calls analyze(df, current_time) at each look. df is the snapshot of the</span></span>
+<span id="cb9-2"><a href=""></a><span class="co"># trial at that moment. Return one row; it becomes a row of your results.</span></span>
+<span id="cb9-3"><a href=""></a>analyze <span class="ot">&lt;-</span> <span class="cf">function</span>(df, current_time) {</span>
+<span id="cb9-4"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb9-5"><a href=""></a>    <span class="at">n      =</span> <span class="fu">nrow</span>(df),</span>
+<span id="cb9-6"><a href=""></a>    <span class="at">mean_y =</span> <span class="fu">mean</span>(df<span class="sc">$</span>y),</span>
+<span id="cb9-7"><a href=""></a>    <span class="at">sd_y   =</span> <span class="fu">sd</span>(df<span class="sc">$</span>y)</span>
+<span id="cb9-8"><a href=""></a>  )</span>
+<span id="cb9-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1606,17 +1608,17 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># One look, when 100% of patients have enrolled. Verified in this repo on</span></span>
-<span id="cb11-2"><a href=""></a><span class="co"># 2026-09-08: enroll_trigger() hands analyze() only enrolled patients.</span></span>
-<span id="cb11-3"><a href=""></a>analysis_generators <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb11-4"><a href=""></a>  <span class="at">final =</span> <span class="fu">list</span>(</span>
-<span id="cb11-5"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
-<span id="cb11-6"><a href=""></a>      <span class="at">fraction =</span> <span class="dv">1</span>,</span>
-<span id="cb11-7"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
-<span id="cb11-8"><a href=""></a>    ),</span>
-<span id="cb11-9"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
-<span id="cb11-10"><a href=""></a>  )</span>
-<span id="cb11-11"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># One look, when 100% of patients have enrolled. Verified in this repo on</span></span>
+<span id="cb10-2"><a href=""></a><span class="co"># 2026-09-08: enroll_trigger() hands analyze() only enrolled patients.</span></span>
+<span id="cb10-3"><a href=""></a>analysis_generators <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb10-4"><a href=""></a>  <span class="at">final =</span> <span class="fu">list</span>(</span>
+<span id="cb10-5"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
+<span id="cb10-6"><a href=""></a>      <span class="at">fraction =</span> <span class="dv">1</span>,</span>
+<span id="cb10-7"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
+<span id="cb10-8"><a href=""></a>    ),</span>
+<span id="cb10-9"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
+<span id="cb10-10"><a href=""></a>  )</span>
+<span id="cb10-11"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1629,19 +1631,19 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Build the replicate trial(s). No dropout, one patient per time unit.</span></span>
-<span id="cb12-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
-<span id="cb12-3"><a href=""></a>trials <span class="ot">&lt;-</span> <span class="fu">replicate_trial</span>(</span>
-<span id="cb12-4"><a href=""></a>  <span class="at">trial_name =</span> <span class="st">"one_arm"</span>,</span>
-<span id="cb12-5"><a href=""></a>  <span class="at">sample_size =</span> n_total,</span>
-<span id="cb12-6"><a href=""></a>  <span class="at">arms =</span> <span class="st">"trt"</span>,</span>
-<span id="cb12-7"><a href=""></a>  <span class="at">allocation =</span> <span class="dv">1</span>,</span>
-<span id="cb12-8"><a href=""></a>  <span class="at">enrollment =</span> <span class="cf">function</span>(n) <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">times =</span> n),</span>
-<span id="cb12-9"><a href=""></a>  <span class="at">dropout =</span> <span class="cn">NULL</span>,</span>
-<span id="cb12-10"><a href=""></a>  <span class="at">analysis_generators =</span> analysis_generators,</span>
-<span id="cb12-11"><a href=""></a>  <span class="at">population_generators =</span> <span class="fu">list</span>(<span class="at">trt =</span> gen_trt),</span>
-<span id="cb12-12"><a href=""></a>  <span class="at">n =</span> n_sim</span>
-<span id="cb12-13"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># Build the replicate trial(s). No dropout, one patient per time unit.</span></span>
+<span id="cb11-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
+<span id="cb11-3"><a href=""></a>trials <span class="ot">&lt;-</span> <span class="fu">replicate_trial</span>(</span>
+<span id="cb11-4"><a href=""></a>  <span class="at">trial_name =</span> <span class="st">"one_arm"</span>,</span>
+<span id="cb11-5"><a href=""></a>  <span class="at">sample_size =</span> n_total,</span>
+<span id="cb11-6"><a href=""></a>  <span class="at">arms =</span> <span class="st">"trt"</span>,</span>
+<span id="cb11-7"><a href=""></a>  <span class="at">allocation =</span> <span class="dv">1</span>,</span>
+<span id="cb11-8"><a href=""></a>  <span class="at">enrollment =</span> <span class="cf">function</span>(n) <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">times =</span> n),</span>
+<span id="cb11-9"><a href=""></a>  <span class="at">dropout =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-10"><a href=""></a>  <span class="at">analysis_generators =</span> analysis_generators,</span>
+<span id="cb11-11"><a href=""></a>  <span class="at">population_generators =</span> <span class="fu">list</span>(<span class="at">trt =</span> gen_trt),</span>
+<span id="cb11-12"><a href=""></a>  <span class="at">n =</span> n_sim</span>
+<span id="cb11-13"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1649,11 +1651,11 @@ flowchart LR
 <h2>1. Run and read <span class="emoji" data-emoji="arrow_forward">▶️</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># run_trials() stores results inside each trial object, so we do not assign its</span></span>
-<span id="cb13-2"><a href=""></a><span class="co"># output. collect_results() gathers them into one table.</span></span>
-<span id="cb13-3"><a href=""></a><span class="fu">invisible</span>(<span class="fu">run_trials</span>(trials))</span>
-<span id="cb13-4"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
-<span id="cb13-5"><a href=""></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># run_trials() stores results inside each trial object, so we do not assign its</span></span>
+<span id="cb12-2"><a href=""></a><span class="co"># output. collect_results() gathers them into one table.</span></span>
+<span id="cb12-3"><a href=""></a><span class="fu">invisible</span>(<span class="fu">run_trials</span>(trials))</span>
+<span id="cb12-4"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
+<span id="cb12-5"><a href=""></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  replicate timepoint analysis   n    mean_y     sd_y
 1         1       100    final 100 0.6109637 1.023895</code></pre>
@@ -1679,7 +1681,7 @@ flowchart LR
 </section>
 <section id="copy-then-change-one-thing" class="slide level2">
 <h2>2. Copy, then change one thing <span class="emoji" data-emoji="page_facing_up">📄</span></h2>
-<div class="popup smaller">
+<div class="popup small">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1689,7 +1691,7 @@ flowchart LR
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>R/work-one-arm.R</code> → <code>R/work-two-arm.R</code></td>
+<td><code>R/work-1-one-arm.R</code> → <code>R/work-2-two-arm.R</code></td>
 <td><code>R/part-2/2-two-arm.R</code></td>
 </tr>
 </tbody>
@@ -1703,7 +1705,7 @@ flowchart LR
 </ol>
 </div>
 </section>
-<section id="two-arms-two-generators-2" class="slide level2 smaller">
+<section id="two-arms-two-generators-2" class="slide level2 small">
 <h2>2. Two arms, two generators <span class="emoji" data-emoji="two">2️⃣</span></h2>
 <div class="hidden-numbers">
 <ol type="1">
@@ -1712,8 +1714,8 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>arms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pbo"</span>, <span class="st">"trt"</span>)</span>
-<span id="cb15-2"><a href=""></a>allocation <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>arms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pbo"</span>, <span class="st">"trt"</span>)</span>
+<span id="cb14-2"><a href=""></a>allocation <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -1723,24 +1725,24 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>mu_pbo <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb16-2"><a href=""></a>mu_trt <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb16-3"><a href=""></a></span>
-<span id="cb16-4"><a href=""></a>gen_pbo <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb16-5"><a href=""></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb16-6"><a href=""></a>    <span class="at">id =</span> <span class="fu">seq_len</span>(n),</span>
-<span id="cb16-7"><a href=""></a>    <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu_pbo, <span class="at">sd =</span> sigma),</span>
-<span id="cb16-8"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
-<span id="cb16-9"><a href=""></a>  )</span>
-<span id="cb16-10"><a href=""></a>}</span>
-<span id="cb16-11"><a href=""></a></span>
-<span id="cb16-12"><a href=""></a>gen_trt <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb16-13"><a href=""></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb16-14"><a href=""></a>    <span class="at">id =</span> <span class="fu">seq_len</span>(n),</span>
-<span id="cb16-15"><a href=""></a>    <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu_trt, <span class="at">sd =</span> sigma),</span>
-<span id="cb16-16"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
-<span id="cb16-17"><a href=""></a>  )</span>
-<span id="cb16-18"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>mu_pbo <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb15-2"><a href=""></a>mu_trt <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a>gen_pbo <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb15-5"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb15-6"><a href=""></a>    <span class="at">id =</span> <span class="fu">seq_len</span>(n),</span>
+<span id="cb15-7"><a href=""></a>    <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu_pbo, <span class="at">sd =</span> sigma),</span>
+<span id="cb15-8"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
+<span id="cb15-9"><a href=""></a>  )</span>
+<span id="cb15-10"><a href=""></a>}</span>
+<span id="cb15-11"><a href=""></a></span>
+<span id="cb15-12"><a href=""></a>gen_trt <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb15-13"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb15-14"><a href=""></a>    <span class="at">id =</span> <span class="fu">seq_len</span>(n),</span>
+<span id="cb15-15"><a href=""></a>    <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu_trt, <span class="at">sd =</span> sigma),</span>
+<span id="cb15-16"><a href=""></a>    <span class="at">readout_time =</span> <span class="dv">0</span></span>
+<span id="cb15-17"><a href=""></a>  )</span>
+<span id="cb15-18"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1753,20 +1755,20 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Split the snapshot by its `arm` column and run a two-sided Welch t-test.</span></span>
-<span id="cb17-2"><a href=""></a><span class="co"># Name the two vectors explicitly so `effect` is always treatment minus control.</span></span>
-<span id="cb17-3"><a href=""></a>analyze <span class="ot">&lt;-</span> <span class="cf">function</span>(df, current_time) {</span>
-<span id="cb17-4"><a href=""></a>  y_trt <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"trt"</span>]</span>
-<span id="cb17-5"><a href=""></a>  y_pbo <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"pbo"</span>]</span>
-<span id="cb17-6"><a href=""></a>  tt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> y_trt, <span class="at">y =</span> y_pbo)</span>
-<span id="cb17-7"><a href=""></a></span>
-<span id="cb17-8"><a href=""></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb17-9"><a href=""></a>    <span class="at">n_trt =</span> <span class="fu">length</span>(y_trt),</span>
-<span id="cb17-10"><a href=""></a>    <span class="at">n_pbo =</span> <span class="fu">length</span>(y_pbo),</span>
-<span id="cb17-11"><a href=""></a>    <span class="at">effect =</span> <span class="fu">mean</span>(y_trt) <span class="sc">-</span> <span class="fu">mean</span>(y_pbo),</span>
-<span id="cb17-12"><a href=""></a>    <span class="at">p_value =</span> tt<span class="sc">$</span>p.value</span>
-<span id="cb17-13"><a href=""></a>  )</span>
-<span id="cb17-14"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Split the snapshot by its `arm` column and run a two-sided Welch t-test.</span></span>
+<span id="cb16-2"><a href=""></a><span class="co"># Name the two vectors explicitly so `effect` is always treatment minus control.</span></span>
+<span id="cb16-3"><a href=""></a>analyze <span class="ot">&lt;-</span> <span class="cf">function</span>(df, current_time) {</span>
+<span id="cb16-4"><a href=""></a>  y_trt <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"trt"</span>]</span>
+<span id="cb16-5"><a href=""></a>  y_pbo <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"pbo"</span>]</span>
+<span id="cb16-6"><a href=""></a>  tt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> y_trt, <span class="at">y =</span> y_pbo)</span>
+<span id="cb16-7"><a href=""></a></span>
+<span id="cb16-8"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb16-9"><a href=""></a>    <span class="at">n_trt =</span> <span class="fu">length</span>(y_trt),</span>
+<span id="cb16-10"><a href=""></a>    <span class="at">n_pbo =</span> <span class="fu">length</span>(y_pbo),</span>
+<span id="cb16-11"><a href=""></a>    <span class="at">effect =</span> <span class="fu">mean</span>(y_trt) <span class="sc">-</span> <span class="fu">mean</span>(y_pbo),</span>
+<span id="cb16-12"><a href=""></a>    <span class="at">p_value =</span> tt<span class="sc">$</span>p.value</span>
+<span id="cb16-13"><a href=""></a>  )</span>
+<span id="cb16-14"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1774,9 +1776,9 @@ flowchart LR
 <h2>2. Run it <span class="emoji" data-emoji="arrow_forward">▶️</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">invisible</span>(<span class="fu">run_trials</span>(trials))</span>
-<span id="cb18-2"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
-<span id="cb18-3"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(results, <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">invisible</span>(<span class="fu">run_trials</span>(trials))</span>
+<span id="cb17-2"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
+<span id="cb17-3"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(results, <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  replicate timepoint analysis n_trt n_pbo    effect p_value
 1         1       100    final    50    50 0.4587045   0.028</code></pre>
@@ -1795,10 +1797,14 @@ flowchart LR
 <h1>3. Adding another look 🕐</h1>
 
 </section>
-<section id="copy-then-add-one-look" class="slide level2 smaller">
+<section id="copy-then-add-one-look" class="slide level2 small">
 <h2>3. Copy, then add one look <span class="emoji" data-emoji="eyes">👀</span></h2>
-<div class="popup smaller">
+<div class="popup small">
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>💾 Save as</th>
@@ -1807,7 +1813,7 @@ flowchart LR
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>R/work-two-arm.R</code> → <code>R/work-two-look.R</code></td>
+<td><code>R/work-2-two-arm.R</code> → <code>R/work-3-two-look.R</code></td>
 <td><code>R/part-2/3-two-look.R</code></td>
 </tr>
 </tbody>
@@ -1820,29 +1826,29 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># Two looks instead of one. The same analyze() serves both. interim fires at</span></span>
-<span id="cb20-2"><a href=""></a><span class="co"># 50% enrolled, final at 100%. The final look includes the interim patients with</span></span>
-<span id="cb20-3"><a href=""></a><span class="co"># their original outcomes; rxsim snapshots one accumulating trial.</span></span>
-<span id="cb20-4"><a href=""></a>analysis_generators <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb20-5"><a href=""></a>  <span class="at">interim =</span> <span class="fu">list</span>(</span>
-<span id="cb20-6"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
-<span id="cb20-7"><a href=""></a>      <span class="at">fraction =</span> <span class="fl">0.5</span>,</span>
-<span id="cb20-8"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
-<span id="cb20-9"><a href=""></a>    ),</span>
-<span id="cb20-10"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
-<span id="cb20-11"><a href=""></a>  ),</span>
-<span id="cb20-12"><a href=""></a>  <span class="at">final =</span> <span class="fu">list</span>(</span>
-<span id="cb20-13"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
-<span id="cb20-14"><a href=""></a>      <span class="at">fraction =</span> <span class="dv">1</span>,</span>
-<span id="cb20-15"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
-<span id="cb20-16"><a href=""></a>    ),</span>
-<span id="cb20-17"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
-<span id="cb20-18"><a href=""></a>  )</span>
-<span id="cb20-19"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co"># Two looks instead of one. The same analyze() serves both. interim fires at</span></span>
+<span id="cb19-2"><a href=""></a><span class="co"># 50% enrolled, final at 100%. The final look includes the interim patients with</span></span>
+<span id="cb19-3"><a href=""></a><span class="co"># their original outcomes; rxsim snapshots one accumulating trial.</span></span>
+<span id="cb19-4"><a href=""></a>analysis_generators <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb19-5"><a href=""></a>  <span class="at">interim =</span> <span class="fu">list</span>(</span>
+<span id="cb19-6"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
+<span id="cb19-7"><a href=""></a>      <span class="at">fraction =</span> <span class="fl">0.5</span>,</span>
+<span id="cb19-8"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
+<span id="cb19-9"><a href=""></a>    ),</span>
+<span id="cb19-10"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
+<span id="cb19-11"><a href=""></a>  ),</span>
+<span id="cb19-12"><a href=""></a>  <span class="at">final =</span> <span class="fu">list</span>(</span>
+<span id="cb19-13"><a href=""></a>    <span class="at">trigger =</span> <span class="fu">enroll_trigger</span>(</span>
+<span id="cb19-14"><a href=""></a>      <span class="at">fraction =</span> <span class="dv">1</span>,</span>
+<span id="cb19-15"><a href=""></a>      <span class="at">sample_size =</span> n_total</span>
+<span id="cb19-16"><a href=""></a>    ),</span>
+<span id="cb19-17"><a href=""></a>    <span class="at">analysis =</span> analyze</span>
+<span id="cb19-18"><a href=""></a>  )</span>
+<span id="cb19-19"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
-<section id="two-rows-per-trial" class="slide level2 smaller">
+<section id="two-rows-per-trial" class="slide level2 small">
 <h2>3. Two rows per trial <span class="emoji" data-emoji="dancers">👯</span></h2>
 <div class="hidden-numbers">
 <ol type="1">
@@ -1851,11 +1857,11 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># The one edit: n_sim &lt;- 5. Expect 5 x 2 = 10 rows.</span></span>
-<span id="cb21-2"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(</span>
-<span id="cb21-3"><a href=""></a>  results[, <span class="fu">c</span>(<span class="st">"replicate"</span>, <span class="st">"analysis"</span>, <span class="st">"n_trt"</span>, <span class="st">"n_pbo"</span>, <span class="st">"effect"</span>, <span class="st">"p_value"</span>)],</span>
-<span id="cb21-4"><a href=""></a>  <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb21-5"><a href=""></a>), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># The one edit: n_sim &lt;- 5. Expect 5 x 2 = 10 rows.</span></span>
+<span id="cb20-2"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(</span>
+<span id="cb20-3"><a href=""></a>  results[, <span class="fu">c</span>(<span class="st">"replicate"</span>, <span class="st">"analysis"</span>, <span class="st">"n_trt"</span>, <span class="st">"n_pbo"</span>, <span class="st">"effect"</span>, <span class="st">"p_value"</span>)],</span>
+<span id="cb20-4"><a href=""></a>  <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb20-5"><a href=""></a>), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> replicate analysis n_trt n_pbo    effect p_value
          1  interim    21    29 0.6818565   0.016
@@ -1872,7 +1878,7 @@ flowchart LR
 </div>
 </div>
 </section>
-<section id="read-the-interim-carefully" class="slide level2 smaller">
+<section id="read-the-interim-carefully" class="slide level2 small">
 <h2>3. Read the interim carefully <span class="emoji" data-emoji="mag">🔍</span></h2>
 <div class="hidden-numbers">
 <ol type="1">
@@ -1888,9 +1894,9 @@ flowchart LR
 <h1>4. Many scenarios 🧮</h1>
 
 </section>
-<section id="turn-the-script-into-a-function" class="slide level2 smaller">
+<section id="turn-the-script-into-a-function" class="slide level2 small">
 <h2>4. Turn the script into a function <span class="emoji" data-emoji="package">📦</span></h2>
-<div class="popup smaller">
+<div class="popup small">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1900,7 +1906,7 @@ flowchart LR
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>R/work-two-look.R</code> → <code>R/work-grid.R</code></td>
+<td><code>R/work-3-two-look.R</code> → <code>R/work-4-grid.R</code></td>
 <td><code>R/part-2/4-grid.R</code></td>
 </tr>
 </tbody>
@@ -1912,11 +1918,11 @@ flowchart LR
 </ol>
 </div>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>simulate_scenario <span class="ot">&lt;-</span> <span class="cf">function</span>(n_total, delta, <span class="at">n_sim =</span> <span class="dv">5</span>) {</span>
-<span id="cb23-2"><a href=""></a>  <span class="co"># ... generators, analyses, trial build, run, collect ...</span></span>
-<span id="cb23-3"><a href=""></a>  res <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
-<span id="cb23-4"><a href=""></a>  <span class="fu">cbind</span>(<span class="at">n_total =</span> n_total, <span class="at">delta =</span> delta, res)</span>
-<span id="cb23-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>simulate_scenario <span class="ot">&lt;-</span> <span class="cf">function</span>(n_total, delta, <span class="at">n_sim =</span> <span class="dv">5</span>) {</span>
+<span id="cb22-2"><a href=""></a>  <span class="co"># ... generators, analyses, trial build, run, collect ...</span></span>
+<span id="cb22-3"><a href=""></a>  res <span class="ot">&lt;-</span> <span class="fu">collect_results</span>(trials)</span>
+<span id="cb22-4"><a href=""></a>  <span class="fu">cbind</span>(<span class="at">n_total =</span> n_total, <span class="at">delta =</span> delta, res)</span>
+<span id="cb22-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="hidden-numbers">
 <ol type="1">
@@ -1924,20 +1930,20 @@ flowchart LR
 </ol>
 </div>
 </section>
-<section id="one-scenario-1" class="slide level2 smaller">
+<section id="one-scenario-1" class="slide level2 small">
 <h2>4. One scenario <span class="emoji" data-emoji="one">1️⃣</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
-<span id="cb24-2"><a href=""></a>one_scenario <span class="ot">&lt;-</span> <span class="fu">simulate_scenario</span>(</span>
-<span id="cb24-3"><a href=""></a>  <span class="at">n_total =</span> <span class="dv">100</span>,</span>
-<span id="cb24-4"><a href=""></a>  <span class="at">delta =</span> <span class="fl">0.5</span>,</span>
-<span id="cb24-5"><a href=""></a>  <span class="at">n_sim =</span> <span class="dv">3</span></span>
-<span id="cb24-6"><a href=""></a>)</span>
-<span id="cb24-7"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(</span>
-<span id="cb24-8"><a href=""></a>  one_scenario[, <span class="fu">c</span>(<span class="st">"n_total"</span>, <span class="st">"delta"</span>, <span class="st">"replicate"</span>, <span class="st">"analysis"</span>, <span class="st">"effect"</span>, <span class="st">"p_value"</span>)],</span>
-<span id="cb24-9"><a href=""></a>  <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb24-10"><a href=""></a>), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
+<span id="cb23-2"><a href=""></a>one_scenario <span class="ot">&lt;-</span> <span class="fu">simulate_scenario</span>(</span>
+<span id="cb23-3"><a href=""></a>  <span class="at">n_total =</span> <span class="dv">100</span>,</span>
+<span id="cb23-4"><a href=""></a>  <span class="at">delta =</span> <span class="fl">0.5</span>,</span>
+<span id="cb23-5"><a href=""></a>  <span class="at">n_sim =</span> <span class="dv">3</span></span>
+<span id="cb23-6"><a href=""></a>)</span>
+<span id="cb23-7"><a href=""></a><span class="fu">print</span>(<span class="fu">transform</span>(</span>
+<span id="cb23-8"><a href=""></a>  one_scenario[, <span class="fu">c</span>(<span class="st">"n_total"</span>, <span class="st">"delta"</span>, <span class="st">"replicate"</span>, <span class="st">"analysis"</span>, <span class="st">"effect"</span>, <span class="st">"p_value"</span>)],</span>
+<span id="cb23-9"><a href=""></a>  <span class="at">p_value =</span> <span class="fu">round</span>(<span class="at">x =</span> p_value, <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb23-10"><a href=""></a>), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> n_total delta replicate analysis    effect p_value
      100   0.5         1  interim 0.3433312   0.162
@@ -1955,7 +1961,7 @@ flowchart LR
 </ol>
 </div>
 </section>
-<section id="a-grid-of-scenarios" class="slide level2 smaller">
+<section id="a-grid-of-scenarios" class="slide level2 small">
 <h2>4. A grid of scenarios 🔢</h2>
 <div class="hidden-numbers">
 <ol type="1">
@@ -1964,8 +1970,8 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n_total =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">delta =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
-<span id="cb26-2"><a href=""></a><span class="fu">print</span>(grid, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n_total =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">delta =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
+<span id="cb25-2"><a href=""></a><span class="fu">print</span>(grid, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> n_total delta
       50   0.0
@@ -1973,17 +1979,17 @@ flowchart LR
       50   0.5
      100   0.5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
-<span id="cb28-2"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">do.call</span>(</span>
-<span id="cb28-3"><a href=""></a>  <span class="at">what =</span> rbind,</span>
-<span id="cb28-4"><a href=""></a>  <span class="at">args =</span> <span class="fu">lapply</span>(</span>
-<span id="cb28-5"><a href=""></a>    <span class="at">X =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid)),</span>
-<span id="cb28-6"><a href=""></a>    <span class="at">FUN =</span> <span class="cf">function</span>(i) <span class="fu">simulate_scenario</span>(</span>
-<span id="cb28-7"><a href=""></a>      <span class="at">n_total =</span> grid<span class="sc">$</span>n_total[i],</span>
-<span id="cb28-8"><a href=""></a>      <span class="at">delta =</span> grid<span class="sc">$</span>delta[i]</span>
-<span id="cb28-9"><a href=""></a>    )</span>
-<span id="cb28-10"><a href=""></a>  )</span>
-<span id="cb28-11"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">20260916</span>)</span>
+<span id="cb27-2"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">do.call</span>(</span>
+<span id="cb27-3"><a href=""></a>  <span class="at">what =</span> rbind,</span>
+<span id="cb27-4"><a href=""></a>  <span class="at">args =</span> <span class="fu">lapply</span>(</span>
+<span id="cb27-5"><a href=""></a>    <span class="at">X =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid)),</span>
+<span id="cb27-6"><a href=""></a>    <span class="at">FUN =</span> <span class="cf">function</span>(i) <span class="fu">simulate_scenario</span>(</span>
+<span id="cb27-7"><a href=""></a>      <span class="at">n_total =</span> grid<span class="sc">$</span>n_total[i],</span>
+<span id="cb27-8"><a href=""></a>      <span class="at">delta =</span> grid<span class="sc">$</span>delta[i]</span>
+<span id="cb27-9"><a href=""></a>    )</span>
+<span id="cb27-10"><a href=""></a>  )</span>
+<span id="cb27-11"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -1996,11 +2002,11 @@ flowchart LR
 <h2>4. Summarize the final look <span class="emoji" data-emoji="bar_chart">📊</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="co"># Final look only. reject = p &lt; 0.05 (two-sided) at the final look.</span></span>
-<span id="cb29-2"><a href=""></a><span class="co"># delta = 0 rows estimate Type I error; delta = 0.5 rows estimate power.</span></span>
-<span id="cb29-3"><a href=""></a>final <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="at">x =</span> results, <span class="at">subset =</span> analysis <span class="sc">==</span> <span class="st">"final"</span>)</span>
-<span id="cb29-4"><a href=""></a>final<span class="sc">$</span>reject <span class="ot">&lt;-</span> final<span class="sc">$</span>p_value <span class="sc">&lt;</span> <span class="fl">0.05</span></span>
-<span id="cb29-5"><a href=""></a><span class="fu">aggregate</span>(reject <span class="sc">~</span> n_total <span class="sc">+</span> delta, <span class="at">data =</span> final, <span class="at">FUN =</span> mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="co"># Final look only. reject = p &lt; 0.05 (two-sided) at the final look.</span></span>
+<span id="cb28-2"><a href=""></a><span class="co"># delta = 0 rows estimate Type I error; delta = 0.5 rows estimate power.</span></span>
+<span id="cb28-3"><a href=""></a>final <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="at">x =</span> results, <span class="at">subset =</span> analysis <span class="sc">==</span> <span class="st">"final"</span>)</span>
+<span id="cb28-4"><a href=""></a>final<span class="sc">$</span>reject <span class="ot">&lt;-</span> final<span class="sc">$</span>p_value <span class="sc">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb28-5"><a href=""></a><span class="fu">aggregate</span>(reject <span class="sc">~</span> n_total <span class="sc">+</span> delta, <span class="at">data =</span> final, <span class="at">FUN =</span> mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  n_total delta reject
 1      50   0.0    0.0
@@ -2025,9 +2031,9 @@ flowchart LR
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="co"># These are only 5 replicates. They show the mechanics, not precise power.</span></span>
-<span id="cb31-2"><a href=""></a><span class="co"># When 0 of 5 reject, the 95% interval for the rejection rate is wide, not zero.</span></span>
-<span id="cb31-3"><a href=""></a><span class="fu">binom.test</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">5</span>)<span class="sc">$</span>conf.int</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># These are only 5 replicates. They show the mechanics, not precise power.</span></span>
+<span id="cb30-2"><a href=""></a><span class="co"># When 0 of 5 reject, the 95% interval for the rejection rate is wide, not zero.</span></span>
+<span id="cb30-3"><a href=""></a><span class="fu">binom.test</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">5</span>)<span class="sc">$</span>conf.int</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0000000 0.5218238
 attr(,"conf.level")
@@ -2049,7 +2055,7 @@ attr(,"conf.level")
 </section>
 <section id="change-only-the-execution" class="slide level2">
 <h2>5. Change only the execution <span class="emoji" data-emoji="zap">⚡</span></h2>
-<div class="popup smaller">
+<div class="popup small">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -2059,7 +2065,7 @@ attr(,"conf.level")
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>R/work-grid.R</code> → <code>R/work-parallel.R</code></td>
+<td><code>R/work-4-grid.R</code> → <code>R/work-5-parallel.R</code></td>
 <td><code>R/part-2/5-parallel.R</code></td>
 </tr>
 </tbody>
@@ -2072,9 +2078,9 @@ attr(,"conf.level")
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="co"># A worker is another R session on your machine. Two workers is a safe default</span></span>
-<span id="cb33-2"><a href=""></a><span class="co"># for a workshop laptop. multisession works on Windows, macOS, and Linux.</span></span>
-<span id="cb33-3"><a href=""></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="at">strategy =</span> future<span class="sc">::</span>multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># A worker is another R session on your machine. Two workers is a safe default</span></span>
+<span id="cb32-2"><a href=""></a><span class="co"># for a workshop laptop. multisession works on Windows, macOS, and Linux.</span></span>
+<span id="cb32-3"><a href=""></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="at">strategy =</span> future<span class="sc">::</span>multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -2087,18 +2093,18 @@ attr(,"conf.level")
 <h2>5. Swap one function <span class="emoji" data-emoji="repeat">🔁</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Same inputs, same output; only the execution method changes.</span></span>
-<span id="cb34-2"><a href=""></a>out <span class="ot">&lt;-</span> future.apply<span class="sc">::</span><span class="fu">future_lapply</span>(</span>
-<span id="cb34-3"><a href=""></a>  <span class="at">X =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid)),</span>
-<span id="cb34-4"><a href=""></a>  <span class="at">FUN =</span> <span class="cf">function</span>(i) {</span>
-<span id="cb34-5"><a href=""></a>    <span class="fu">simulate_scenario</span>(</span>
-<span id="cb34-6"><a href=""></a>      <span class="at">n_total =</span> grid<span class="sc">$</span>n_total[i],</span>
-<span id="cb34-7"><a href=""></a>      <span class="at">delta =</span> grid<span class="sc">$</span>delta[i]</span>
-<span id="cb34-8"><a href=""></a>    )</span>
-<span id="cb34-9"><a href=""></a>  },</span>
-<span id="cb34-10"><a href=""></a>  <span class="at">future.seed =</span> <span class="dv">20260916</span></span>
-<span id="cb34-11"><a href=""></a>)</span>
-<span id="cb34-12"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="at">what =</span> rbind, <span class="at">args =</span> out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="co"># Same inputs, same output; only the execution method changes.</span></span>
+<span id="cb33-2"><a href=""></a>out <span class="ot">&lt;-</span> future.apply<span class="sc">::</span><span class="fu">future_lapply</span>(</span>
+<span id="cb33-3"><a href=""></a>  <span class="at">X =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid)),</span>
+<span id="cb33-4"><a href=""></a>  <span class="at">FUN =</span> <span class="cf">function</span>(i) {</span>
+<span id="cb33-5"><a href=""></a>    <span class="fu">simulate_scenario</span>(</span>
+<span id="cb33-6"><a href=""></a>      <span class="at">n_total =</span> grid<span class="sc">$</span>n_total[i],</span>
+<span id="cb33-7"><a href=""></a>      <span class="at">delta =</span> grid<span class="sc">$</span>delta[i]</span>
+<span id="cb33-8"><a href=""></a>    )</span>
+<span id="cb33-9"><a href=""></a>  },</span>
+<span id="cb33-10"><a href=""></a>  <span class="at">future.seed =</span> <span class="dv">20260916</span></span>
+<span id="cb33-11"><a href=""></a>)</span>
+<span id="cb33-12"><a href=""></a>results <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="at">what =</span> rbind, <span class="at">args =</span> out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -2112,8 +2118,8 @@ attr(,"conf.level")
 <h2>5. Clean up <span class="emoji" data-emoji="broom">🧹</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="co"># Release the workers when finished. This is cleanup, not an undo.</span></span>
-<span id="cb35-2"><a href=""></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="at">strategy =</span> future<span class="sc">::</span>sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Release the workers when finished. This is cleanup, not an undo.</span></span>
+<span id="cb34-2"><a href=""></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="at">strategy =</span> future<span class="sc">::</span>sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="hidden-numbers">
@@ -2124,8 +2130,8 @@ attr(,"conf.level")
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/6-timing-comparison.R"</span>)</span>
-<span id="cb36-2"><a href=""></a>timings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">source</span>(<span class="st">"R/part-2/6-timing-comparison.R"</span>)</span>
+<span id="cb35-2"><a href=""></a>timings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section></section>
@@ -2134,7 +2140,7 @@ attr(,"conf.level")
 <h1>Wrap-up 🎉</h1>
 
 </section>
-<section id="what-you-can-now-do" class="slide level2">
+<section id="what-you-can-now-do" class="slide level2 medium">
 <h2>What you can now do <span class="emoji" data-emoji="muscle">💪</span></h2>
 <ul>
 <li class="fragment">Generate patients with a <code>population_generator</code> function</li>
@@ -2173,7 +2179,7 @@ attr(,"conf.level")
 <h1>What we are doing <span class="emoji" data-emoji="dart">🎯</span></h1>
 
 </section>
-<section id="where-we-are-1" class="slide level2 smaller">
+<section id="where-we-are-1" class="slide level2 small">
 <h2>Where we are <span class="emoji" data-emoji="round_pushpin">📍</span></h2>
 <table class="caption-top">
 <colgroup>
@@ -2202,28 +2208,28 @@ attr(,"conf.level")
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>2:30 – 2:40 PM</td>
-<td>10 minute break</td>
+<td>2:30 – 2:45 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>2</strong></td>
-<td>2:40 – 3:40 PM</td>
+<td>2:45 – 3:45 PM</td>
 <td><strong>Programming Key Elements in R</strong><br><em>Saumil · 60 min</em></td>
 <td>Objectives · scenarios · data generation<br>Complex designs · evaluation · parallelization</td>
 <td>done</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
-<td>3:40 – 3:50 PM</td>
-<td>10 minute break</td>
+<td>3:45 – 4:00 PM</td>
+<td>15 minute break</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>3</strong></td>
-<td>3:50 – 5:00 PM</td>
+<td>4:00 – 5:00 PM</td>
 <td><strong>Hands-on Exercise</strong><br><em>Mitch · flexible</em></td>
 <td>Build one design end to end<br>Compare designs across the full study</td>
 <td><strong>← you are here</strong></td>
@@ -2231,7 +2237,7 @@ attr(,"conf.level")
 </tbody>
 </table>
 </section>
-<section id="the-study-already-run-example" class="slide level2 smaller">
+<section id="the-study-already-run-example" class="slide level2 small">
 <h2>The study, already run <span class="example-tag">Example</span> <span class="emoji" data-emoji="checkered_flag">🏁</span></h2>
 <div class="fragment">
 <table class="caption-top">
@@ -2275,9 +2281,8 @@ attr(,"conf.level")
 <p>6 × 4 = <strong>24 cells</strong> × 1,000 replicates = <strong>24,000 virtual trials</strong> — already run.</p>
 </div>
 </section>
-<section id="the-code-is-yours-just-not-today" class="slide level2 smaller">
+<section id="the-code-is-yours-just-not-today" class="slide level2 small">
 <h2>The code is yours — just not today <span class="emoji" data-emoji="gift">🎁</span></h2>
-<div class="fragment">
 <div class="cell" data-reveal="true" data-fig-width="12" data-layout-align="center">
 <div class="cell-output-display">
 <div>
@@ -2295,10 +2300,11 @@ flowchart LR
 </div>
 </div>
 </div>
-</div>
 <div class="columns">
 <div class="column" style="width:55%;">
+<div class="fragment">
 <p><strong>Four numbered components</strong>, then the driver that runs them — the same five ideas from Part 1, in the same rxsim vocabulary Saumil used in Part 2. <code>run_one()</code> is the helper in <code>R/part-3/5-run-one.R</code>, exactly the shape of Part 2’s <code>simulate_scenario()</code>.</p>
+</div>
 </div><div class="column" style="width:45%;">
 <div class="fragment keybox">
 <p><strong>We are not walking through this today.</strong> It is in the repo, it runs, and it is yours to pull apart afterwards.</p>
@@ -2306,7 +2312,7 @@ flowchart LR
 </div>
 </div></div>
 </section>
-<section id="the-four-truth-curves" class="slide level2 smaller">
+<section id="the-four-truth-curves" class="slide level2 small">
 <h2>The four truth curves <span class="emoji" data-emoji="chart_with_upwards_trend">📈</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2331,7 +2337,7 @@ flowchart LR
 <h1>Your turn <span class="emoji" data-emoji="raising_hand">🙋</span></h1>
 
 </section>
-<section id="what-you-have-one-row-per-trial" class="slide level2 smaller">
+<section id="what-you-have-one-row-per-trial" class="slide level2 small">
 <h2>What you have: one row per trial <span class="emoji" data-emoji="toolbox">🧰</span></h2>
 <div class="fragment">
 <p>Open <strong><code>R/part-3/7-exercise.R</code></strong>. It loads the completed study, plus the same helpers used to score it.</p>
@@ -2455,7 +2461,7 @@ flowchart LR
 <p><em>8 of 31 columns shown — the rest are <code>obs_d*</code> / <code>mod_d*</code>, the observed and fitted effect at each studied dose.</em></p>
 </div>
 </section>
-<section id="what-you-have-columns-and-helpers" class="slide level2 smaller">
+<section id="what-you-have-columns-and-helpers" class="slide level2 small">
 <h2>What you have: columns and helpers <span class="emoji" data-emoji="toolbox">🧰</span></h2>
 <div class="columns">
 <div class="column" style="width:54%;">
@@ -2495,18 +2501,18 @@ flowchart LR
 </div>
 <div class="fragment">
 <p>From <code>4-evaluate.R</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">true_effect</span>(truth, dose)     <span class="co"># what is TRUE there</span></span>
-<span id="cb37-2"><a href=""></a><span class="fu">acceptable</span>(truth, med)       <span class="co"># was the choice good?</span></span>
-<span id="cb37-3"><a href=""></a><span class="fu">is_success</span>(truth, sig, med)  <span class="co"># signal AND acceptable</span></span>
-<span id="cb37-4"><a href=""></a><span class="fu">claimed_viable</span>(sig, med)     <span class="co"># claimed a viable dose?</span></span>
-<span id="cb37-5"><a href=""></a><span class="fu">mc_se</span>(p, n_rep)              <span class="co"># is a difference real?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">true_effect</span>(truth, dose)     <span class="co"># what is TRUE there</span></span>
+<span id="cb36-2"><a href=""></a><span class="fu">acceptable</span>(truth, med)       <span class="co"># was the choice good?</span></span>
+<span id="cb36-3"><a href=""></a><span class="fu">is_success</span>(truth, sig, med)  <span class="co"># signal AND acceptable</span></span>
+<span id="cb36-4"><a href=""></a><span class="fu">claimed_viable</span>(sig, med)     <span class="co"># claimed a viable dose?</span></span>
+<span id="cb36-5"><a href=""></a><span class="fu">mc_se</span>(p, n_rep)              <span class="co"># is a difference real?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment keybox">
 <p>That file is the <strong>single definition</strong> of success — the stored results used these same functions, so your numbers are directly comparable.</p>
 </div>
 </div></div>
 </section>
-<section id="the-question" class="slide level2 smaller">
+<section id="the-question" class="slide level2 small">
 <h2>The question <span class="emoji" data-emoji="question">❓</span></h2>
 <div class="fragment success-box">
 <p>Which design should we run, and why?</p>
@@ -2535,12 +2541,10 @@ flowchart LR
 <h1>What we found <span class="emoji" data-emoji="mag">🔍</span></h1>
 
 </section>
-<section id="does-any-design-meet-the-objectives" class="slide level2 smaller scrollable">
+<section id="does-any-design-meet-the-objectives" class="slide level2 small scrollable">
 <h2>Does any design meet the objectives? <span class="emoji" data-emoji="goal_net">🥅</span></h2>
-<div class="keybox">
-<p><strong>Reminder — the two objectives from Part 1:</strong></p>
-<p><strong>A.</strong> ≥ 70% success under <strong>each</strong> positive truth, where success = a signal detected <em>and</em> an acceptable dose selected.</p>
-<p><strong>B.</strong> ≤ 15% chance of claiming a viable dose under the <strong>negative</strong> truth, where no dose is viable.</p>
+<div class="fragment">
+<p><strong>A.</strong> ≥ 70% success under <strong>each</strong> positive truth · <strong>B.</strong> ≤ 15% chance of claiming a viable dose under the <strong>negative</strong> truth.</p>
 </div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2694,11 +2698,11 @@ flowchart LR
 </div>
 </div>
 </div>
-<div class="fragment zoom">
+<div class="fragment">
 <p><strong>6 of 12</strong> meet both — and the four that fail do not all fail the <em>same</em> objective.</p>
 </div>
 </section>
-<section id="both-objectives-at-once-on-average" class="slide level2 smaller">
+<section id="both-objectives-at-once-on-average" class="slide level2 small">
 <h2>Both objectives at once — on average 🎯</h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2715,7 +2719,7 @@ flowchart LR
 <p>Read it like an ROC curve: false positives across, success up, <strong>good corner = top-left</strong>. The shaded box is where both objectives hold.</p>
 </div>
 </section>
-<section id="zoom-the-designs-that-pass" class="slide level2 smaller">
+<section id="zoom-the-designs-that-pass" class="slide level2 small">
 <h2>Zoom: the designs that pass <span class="emoji" data-emoji="mag_right">🔎</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2728,13 +2732,13 @@ flowchart LR
 </div>
 </div>
 </div>
-<div class="fragment smaller">
+<div class="fragment small">
 <div class="cell" data-layout-align="center">
 <p><strong>Every design that passes uses MCP-Mod</strong> — Dunnett misses the claim-rate objective at all six. Among the survivors, adding doses lowers mean success a little (0.85 to 0.96) but all stay above 0.70, so <strong>3, 4 and 5 arms remain viable</strong>.</p>
 </div>
 </div>
 </section>
-<section id="the-same-designs-worst-case" class="slide level2 smaller">
+<section id="the-same-designs-worst-case" class="slide level2 small">
 <h2>The same designs — worst case <span class="emoji" data-emoji="cloud_with_rain">🌧️</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2750,11 +2754,11 @@ flowchart LR
 <div class="fragment">
 <p>This is the stricter test: a design has to clear the bar under <strong>every</strong> plausible truth, not just on average.</p>
 </div>
-<div class="fragment smaller">
+<div class="fragment small">
 <p><strong>This is the figure you put in front of a design team</strong> — every design, both objectives, judged on its worst truth. (That was exercise question 6.)</p>
 </div>
 </section>
-<section id="zoom-judged-on-the-worst-truth" class="slide level2 smaller">
+<section id="zoom-judged-on-the-worst-truth" class="slide level2 small">
 <h2>Zoom: judged on the worst truth <span class="emoji" data-emoji="mag_right">🔎</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2767,13 +2771,13 @@ flowchart LR
 </div>
 </div>
 </div>
-<div class="fragment smaller">
+<div class="fragment small">
 <div class="cell" data-layout-align="center">
 <p><strong>The same MCP-Mod designs still pass</strong> under their worst truth: 0.72 to 0.92 against 0.70, so <strong>3, 4 and 5 arms remain viable</strong>.</p>
 </div>
 </div>
 </section>
-<section id="success-under-every-positive-truth" class="slide level2 smaller">
+<section id="success-under-every-positive-truth" class="slide level2 small">
 <h2>Success under every positive truth <span class="emoji" data-emoji="hotsprings">♨️</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2790,7 +2794,7 @@ flowchart LR
 <p>Grey is exactly the 70% objective: <strong>red misses it, teal clears it</strong>. Emax1 and Emax2 are comfortable almost everywhere — <strong>Emax3 is where every design is weakest</strong>.</p>
 </div>
 </section>
-<section id="estimated-effect-at-the-true-med" class="slide level2 smaller">
+<section id="estimated-effect-at-the-true-med" class="slide level2 small">
 <h2>Estimated effect at the true MED <span class="emoji" data-emoji="violin">🎻</span></h2>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -2809,7 +2813,7 @@ flowchart LR
 </div>
 </div>
 </section>
-<section id="summary-my-thoughts" class="slide level2 smaller">
+<section id="summary-my-thoughts" class="slide level2 small">
 <h2>Summary — my thoughts <span class="emoji" data-emoji="thought_balloon">💭</span></h2>
 <ol type="1">
 <li class="fragment"><strong>There is no single right design here.</strong> Choosing one needs context this simulation does not have — cost, timelines, what the team can run. In practice this is an iteration, not a verdict.</li>
@@ -2825,7 +2829,7 @@ flowchart LR
 <h1>Taking this further <span class="emoji" data-emoji="rocket">🚀</span></h1>
 
 </section>
-<section id="what-we-didnt-touch-today" class="slide level2 smaller">
+<section id="what-we-didnt-touch-today" class="slide level2 small">
 <h2>What we didn’t touch today <span class="emoji" data-emoji="telescope">🔭</span></h2>
 <div class="fragment">
 <p>Three doors we walked past — all openable with what you already have:</p>
@@ -2848,7 +2852,7 @@ flowchart LR
 </ul></li>
 </ul>
 </section>
-<section id="scaling-the-grid-is-a-data-frame" class="slide level2 smaller">
+<section id="scaling-the-grid-is-a-data-frame" class="slide level2 small">
 <h2>Scaling: the grid is a data frame <span class="emoji" data-emoji="stopwatch">⏱️</span></h2>
 <div class="fragment">
 <p>rxsim runs one trial per core, so you parallelize <strong>across scenario rows</strong> — the grid is already the unit of work.</p>
@@ -2862,7 +2866,7 @@ flowchart LR
 <p>The reason this scales is that nothing above is simulation-specific. A grid, a function over its rows, and a cache.</p>
 </div>
 </section>
-<section id="how-many-simulation-replicates" class="slide level2 smaller">
+<section id="how-many-simulation-replicates" class="slide level2 small">
 <h2>How many simulation replicates? <span class="emoji" data-emoji="100">💯</span></h2>
 <div class="fragment">
 <p>Monte Carlo error is a design choice, not a detail. Near our 0.70 objective:</p>
@@ -2907,12 +2911,12 @@ flowchart LR
 <p>Or pick it from the <strong>decision</strong>: how big a difference between two designs would actually change what you run? Resolve that, and stop.</p>
 </div>
 </section>
-<section id="validation-simulation-code-is-software" class="slide level2 smaller">
+<section id="validation-simulation-code-is-software" class="slide level2 small">
 <h2>Validation: simulation code is software <span class="emoji" data-emoji="white_check_mark">✅</span></h2>
-<div class="fragment smaller">
+<div class="fragment small">
 <p>Each component has a testable contract; they are easier to test than the whole simulation at once.</p>
 </div>
-<div class="smaller">
+<div class="small">
 <ul>
 <li class="fragment"><strong>Data generation</strong>
 <ul>
@@ -2929,14 +2933,14 @@ flowchart LR
 </ul></li>
 </ul>
 </div>
-<div class="fragment smaller">
+<div class="fragment small">
 <p><code>testthat</code> on these components, run automatically, is the difference between a simulation you believe and one you merely hope about.</p>
 </div>
-<div class="fragment keybox smaller">
+<div class="fragment keybox small">
 <p><strong>Double programming</strong> belongs here too — on the <strong>custom rules</strong>, not the packages. The MED rule and success criterion carry the decision, and an error there is silent.</p>
 </div>
 </section>
-<section id="using-ai-to-write-simulation-code" class="slide level2 smaller">
+<section id="using-ai-to-write-simulation-code" class="slide level2 small">
 <h2>Using AI to write simulation code <span class="emoji" data-emoji="robot">🤖</span></h2>
 <div class="fragment keybox">
 <p>A personal view — opinion, not guidance. Simply what has worked for me.</p>
@@ -2959,7 +2963,7 @@ flowchart LR
 <h1>Wrap-up <span class="emoji" data-emoji="tada">🎉</span></h1>
 
 </section>
-<section id="what-we-built" class="slide level2 smaller">
+<section id="what-we-built" class="slide level2 small">
 <h2>What we built <span class="emoji" data-emoji="hammer_and_wrench">🛠️</span></h2>
 <ul>
 <li class="fragment">A <strong>scenario grid</strong> you extend by adding rows, not by editing simulation code</li>
@@ -2972,7 +2976,7 @@ flowchart LR
 <p>Every next question is a new row, not a new tool.</p>
 </div>
 </section>
-<section id="today-is-not-entirely-about-the-package" class="slide level2 smaller">
+<section id="today-is-not-entirely-about-the-package" class="slide level2 small">
 <h2>Today is not entirely about the package <span class="emoji" data-emoji="package">📦</span></h2>
 <div class="fragment">
 <p>Nothing today depended on a particular tool. What we are actually proposing is a <strong>shared way of expressing a trial</strong>:</p>
@@ -2987,7 +2991,7 @@ flowchart LR
 <p>Tools will change — <code>rxsim</code> may not be what you end up using. The <strong>framework</strong> is what we are asking you to take home.</p>
 </div>
 </section>
-<section id="what-we-get-if-enough-of-us-work-this-way" class="slide level2 smaller">
+<section id="what-we-get-if-enough-of-us-work-this-way" class="slide level2 small">
 <h2>What we get if enough of us work this way <span class="emoji" data-emoji="seedling">🌱</span></h2>
 <ul>
 <li class="fragment"><strong>Better trials</strong> — when one more design question costs <em>one more row in a data frame</em>, you ask the questions you would otherwise have talked yourself out of. Today’s example answered thirty.</li>
@@ -2998,7 +3002,7 @@ flowchart LR
 <p>The goal is not a shared package. It is a common language for design.</p>
 </div>
 </section>
-<section id="references" class="slide level2 smaller scrollable">
+<section id="references" class="slide level2 small scrollable smaller">
 <h2>References <span class="emoji" data-emoji="books">📚</span></h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-endpointspkg" class="csl-entry" role="listitem">
