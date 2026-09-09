@@ -1,5 +1,14 @@
 /* RISW 2026 Short Course — layout/utility styling (theme colors live in assets/theme.scss) */
 
+/* Slide font sizing. .small matches reveal's built-in .smaller (0.7em);
+   .medium sits between default and .small for slides that fit bigger. */
+.reveal .slides section.small { font-size: 0.7em; }
+.reveal .slides section.medium { font-size: 0.85em; }
+
+/* Tighten the big success box when it sits below a full list (e.g. the AI
+   slide) — default margins push it off the slide. */
+.reveal .success-box { font-size: 1.3em; padding: 0.4em 0.8em; margin: 0.5em 0; }
+
 .reveal .slides section {
   text-align: left;
 }

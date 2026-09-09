@@ -376,3 +376,118 @@ Determined values, applied everywhere they appear (`<PUBLIC_REPO_URL>` ×5, `<PU
 - **Not copied:** `materials/` (proposal `.docx`, PDFs, planning notes), `CLAUDE.md`,
   `TODO.md`, `outline.md`. `TODO.md` has open items that will now live in `../risw-2026` only;
   worth deciding later whether this repo or that one is the source of truth for the content.
+
+# Review & polish plan — do not execute yet
+
+Scope: the five Quarto sources (`index.qmd`, `_setup.qmd`, `_part1-overview.qmd`,
+`_part2-programming.qmd`, `_part3-example.qmd`) as one rendered deck.
+
+## 1. Redundant slides: Setup recap in Part 1
+
+- `_setup.qmd` §2 "Get the course project" (L36–68) covers clone / ZIP / `.Rproj` /
+  `renv::restore()` / smoke test.
+- `_part1-overview.qmd` L30–50 repeats exactly that (clone line, ZIP URL, `.Rproj`,
+  `renv`, one-row check) as a "start this now" slide.
+- Plan: cut the duplicated instructions from Part 1 down to one line
+  ("Already set up? Skip ahead. Otherwise start the download now — steps in Setup."),
+  linking to `#setup`. The ZIP/clone/renv detail lives in `_setup.qmd` only.
+- Also audit for other repeated blocks: the agenda table appears at
+  `_part1-overview.qmd` L118, `_part2-programming.qmd` L33, `_part3-example.qmd` L76
+  (intentional "you are here" markers — keep, but verify only the marker column differs).
+
+## 2. Coherency / flow / storytelling
+
+- Read the deck front-to-back in rendered order; for each part note: opening hook,
+  transitions between parts (`_part1-overview.qmd` L1068 "Where Saumil picks up",
+  `_part3-example.qmd` L126), and whether each part ends with a takeaway.
+- Flag any slide that assumes content not yet shown, and any divider (`#setup`,
+  `#part-2`) with no narrative bridge.
+- Deliverable: a short list of reorder/rewrite suggestions, one line each.
+
+## 3. Link hygiene
+
+- `_setup.qmd` L50, L68, L119, L134 and `_part1-overview.qmd` L43–44 show raw GitHub
+  URLs. Replace the ZIP URLs with linked text: `[project ZIP](…/archive/refs/heads/main.zip)`;
+  keep `git clone` URL as code (it is copied, not clicked); keep the Posit Cloud
+  clone-paste URL as code for the same reason.
+- Sweep for other bare URLs in all five files and apply the same rule:
+  prose → linked text, copy-paste targets → code.
+
+## 4. Exact IDE steps for getting the course files
+
+Add a panel-tabset (or one short slide) under Setup §2 with click-by-click steps:
+
+- **RStudio:** File → New Project → Version Control → Git → paste repo URL →
+  choose folder → Create Project.
+- **Positron:** Welcome/Command Palette → "Git: Clone" → paste URL → open folder
+  (verify exact Positron command names before writing).
+- **VS Code:** Command Palette → "Git: Clone" → paste URL → open folder; note the
+  R extension requirement.
+- Keep the ZIP path as the no-Git alternative.
+
+## 5. Screenshots
+
+- Grep found no "screenshot" mentions in the `.qmd` sources — verify once more at
+  execution time (also check `assets/` alt text and HTML comments); if any appear, remove.
+
+## 6. Completeness check
+
+- Verify every `{{< include >}}` target exists; every anchor linked to (`#setup`,
+  `#hosted-fallback`, `#get-the-course-project`) resolves in the rendered HTML.
+- Confirm `source("R/part-2/1-one-arm.R")`, `packageVersion("rxsim")` expectations,
+  and all referenced files under `R/` and `data/` actually exist.
+- `quarto render` clean, no warnings; references slide non-empty.
+
+## 7. Dangling code / comments / name references
+
+- `_part1-overview.qmd` L830: HTML comment "Note for Saumil (from Mitch)…" — resolve
+  or delete before publishing.
+- Sweep for `TODO|FIXME|XXX|ponytail:` and HTML comments across all sources.
+- Decide policy on first-name mentions in agenda tables (L33/L76/L118) and
+  hand-off slides (L1068, `_part3-example.qmd` L126): fine for live delivery,
+  confirm they should survive in the published deck.
+- Check `assets/` and `data/` for files no slide references.
+
+## 8. Polish list
+
+- After 1–7: one pass for slide-dense text walls, inconsistent slide titles/casing,
+  emoji usage consistency, fragment/incremental pacing on data-heavy slides, and
+  `.smaller`/`.scrollable` overuse. Output: ranked polish list, not edits.
+
+## 9. Visual verification with headless Chromium
+
+- Serve `_site/` locally (`quarto preview` or a static server), drive headless
+  Chromium (CLI `--headless --screenshot`, or Playwright if finer control is needed)
+  to capture **every slide**, and for `incremental: true` slides **every fragment
+  step** (advance with ArrowRight/Space between captures).
+- Review each capture for: overflow/clipping, broken MathML math, unrendered
+  mermaid, dead links styling, table overflow, unreadable contrast on the dark
+  title slide.
+- Save captures under the session artifacts dir (not the repo); produce a
+  per-slide issue list feeding step 8.
+
+## Order of execution
+
+1 → 3 → 4 → 5 → 7 (content edits), then 2 and 8 (read-through passes), then 6 and 9
+(render + visual verification last, on the final text).
+
+## 10. Font-size classes: `.small` / `.medium`, with measured overflow checks
+
+Current state: 71 `{.smaller}` usages across all five sources; `.smaller` is the
+revealjs built-in (~0.7×). No custom classes in `assets/css/custom.css`.
+
+- **CSS:** add two classes to `assets/css/custom.css`: `.small` (same scale as
+  revealjs `.smaller`) and `.medium` (between default and `.small`, e.g. 0.85×) —
+  exact scale decided by measurement, not guessing.
+- **Rename:** `{.smaller}` → `{.small}` everywhere (71 sites; mechanical sed-style
+  rename, review the diff).
+- **Promote:** slides that fit comfortably at a bigger size get `.medium` instead
+  of `.small`. Candidates decided per-slide from screenshots, not by eyeballing
+  source.
+- **Verify everything, per slide:** render → headless-Chromium screenshot (every
+  slide, every fragment step, per step 9) → script-measure x/y overflow of slide
+  content against the 1280×720 box (scrollWidth/scrollHeight vs. client box via
+  Playwright/Chromium eval, not visual judgment) → adjust class/scale → re-render
+  → repeat until zero overflow on every capture.
+- Done criteria: no slide uses built-in `.smaller`; every dense slide carries an
+  explicit `.small` or `.medium`; overflow report is empty.

@@ -1,3 +1,5 @@
+## Get set up
+
 This page gets you from *no R installed* to *the first course example running*.
 Four steps, about 15–20 minutes, most of it downloading. Do this **before** the
 workshop; the course itself does not wait for installation.
@@ -8,7 +10,7 @@ workshop; the course itself does not wait for installation.
 **Already have R 4.4 or newer and RStudio?** Skip to
 [Get the course project](#get-the-course-project).
 
-## 1. Install R and RStudio :arrow_double_down: {.smaller}
+## 1. Install R and RStudio :arrow_double_down: {.small}
 
 Go to the Posit download page: <https://posit.co/download/rstudio-desktop/>
 
@@ -41,34 +43,55 @@ getRversion()
 
 Any version **4.4 or newer** is fine. The course was built with R 4.5.
 
-## 2. Get the course project :inbox_tray: {.smaller}
+## 2. Get the course project :inbox_tray: {.small}
 
-Everything for the course ships as one project folder. Two ways to get it —
-pick one:
+Everything for the course ships as one project folder. Clone it from your
+editor — or download the ZIP, no Git needed:
 
-- **Git users:** `git clone https://github.com/saumil-sh/SC09-RISW26`
-- **Everyone else:** download `https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip` in your browser and
-  extract it somewhere normal — Desktop or your home folder. (Double-click the
-  ZIP on Windows/macOS; `unzip` on Linux.) **Not** a temporary folder: your
-  edits must survive the day. No Git or GitHub account needed. The ZIP
-  extracts to a folder named **`SC09-RISW26-main`** — open that folder, not
-  its parent.
+::: {.panel-tabset}
 
-Either way: open the folder and double-click **`SC09-RISW26.Rproj`**. RStudio
-opens the project, sets the working directory, and activates the package
-environment automatically.
+## RStudio
 
-If a folder from an earlier attempt already exists, open it and continue — do
-not delete it; your work is inside.
+**File → New Project → Version Control → Git.** Paste
+`https://github.com/saumil-sh/SC09-RISW26` as the **Repository URL**, choose a
+normal folder as the parent, click **Create Project**. RStudio clones and
+opens the project in one go.
 
-*Console alternative:*
+## Positron
 
-```r
-install.packages("usethis")
-usethis::use_course("https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip")
-```
+Open the Command Palette (`Ctrl/Cmd+Shift+P`) → **Git: Clone** → paste
+`https://github.com/saumil-sh/SC09-RISW26` → pick a parent folder → **Open**
+when prompted.
 
-## 3. Restore the packages :package: {.smaller}
+## VS Code
+
+Command Palette (`Ctrl/Cmd+Shift+P`) → **Git: Clone** → paste
+`https://github.com/saumil-sh/SC09-RISW26` → pick a parent folder → **Open**.
+You also need the R extension (REditorSupport) to run the scripts.
+
+:::
+
+::: {.fragment}
+
+**Terminal instead:** `git clone https://github.com/saumil-sh/SC09-RISW26`.
+**No Git at all:** download the
+[project ZIP](https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip)
+and extract it somewhere normal — Desktop or your home folder, **not** a
+temporary folder (your edits must survive the day). It extracts to
+**`SC09-RISW26-main`** — open that folder, not its parent.
+
+:::
+
+::: {.fragment}
+
+**RStudio users** who took the ZIP or terminal route: open the folder and
+double-click **`SC09-RISW26.Rproj`** — RStudio sets the working directory and
+activates the package environment. If a folder from an earlier attempt already
+exists, open it and continue — do not delete it; your work is inside.
+
+:::
+
+## 3. Restore the packages :package: {.small}
 
 The course pins exact package versions so your results match the slides. Still
 in the project's **Console**:
@@ -92,7 +115,7 @@ Notes:
   on Windows; Xcode Command Line Tools (`xcode-select --install`) on macOS;
   standard build tools on Linux. Then rerun `renv::restore()`.
 
-## 4. Confirm the example runs :white_check_mark:
+## 4. Confirm the example runs :white_check_mark: {.medium}
 
 ```r
 packageVersion("rxsim")     # expect 0.3.0
@@ -103,12 +126,12 @@ print(results)
 You should see **one row** of results — 100 patients, `mean_y` near 0.44,
 `sd_y` near 1. If so, you are ready for the workshop.
 
-## Coming back later :back:
+## Coming back later :back: {.medium}
 
 Reopen `SC09-RISW26.Rproj` and run whichever script you like. Downloading and
 `renv::restore()` are one-time setup.
 
-## Hosted fallback :cloud: {.smaller}
+## Hosted fallback :cloud: {.small}
 
 If your machine cannot install software or reach CRAN, run the course on
 [Posit Cloud](https://posit.cloud/) — RStudio in your browser, nothing to
@@ -120,6 +143,8 @@ install. The free tier is enough for the workshop day.
 3. Wait for the project to open, then run the same two lines as everyone
    else in the Console:
 
+::: {.fragment}
+
 ```r
 install.packages("renv")
 renv::restore()
@@ -129,14 +154,21 @@ source("R/part-2/1-one-arm.R")
 `renv::restore()` installs the pinned packages into the cloud project (a few
 minutes, first time only). One row of results and you are ready.
 
+:::
+
+::: {.fragment}
+
 *No Git?* In step 2, choose **New Project → Empty Project** instead. In the
-**Files** pane (bottom-right), click **Upload**, upload the course ZIP from
-`https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip`, and tick the option to expand it. Then continue
+**Files** pane (bottom-right), click **Upload**, upload the
+[project ZIP](https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip),
+and tick the option to expand it. Then continue
 with step 3.
 
 Your cloud project persists — you can come back to it after the workshop.
 
-## Troubleshooting :wrench: {.smaller}
+:::
+
+## Troubleshooting :wrench: {.small}
 
 - **Console vs. terminal.** Commands shown in `r` blocks go in the RStudio
   **Console**. You never need the system terminal on the happy path.

@@ -23,31 +23,12 @@ theme_set(
 
 # Welcome :wave: {background-color="#1d5c4a"}
 
-## Get set up :hammer_and_wrench: {.smaller}
+## Get set up :hammer_and_wrench: {.small}
 
 ::: {.fragment .keybox}
 
 **Start this now.** Downloading and installing takes a few minutes, so kick it
 off while we do introductions.
-
-:::
-
-
-::: {.fragment}
-
-Two ways to get the course project — pick one:
-
-:::
-
-
-- **Git users:** `git clone https://github.com/saumil-sh/SC09-RISW26`
-- **Everyone else:** download and extract the ZIP from `https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip`
-
-::: {.fragment}
-
-Then open `SC09-RISW26.Rproj` in RStudio, run `install.packages("renv")` then
-`renv::restore()` in the Console.
-It worked if `source("R/part-2/1-one-arm.R")` prints one row of results.
 
 :::
 
@@ -61,7 +42,7 @@ hosted fallback — is in [Setup](#setup).
 :::
 
 
-## Your instructors :busts_in_silhouette: {.smaller}
+## Your instructors :busts_in_silhouette: {.medium}
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -101,7 +82,7 @@ hosted fallback — is in [Setup](#setup).
 ## Housekeeping :house:
 
 - **Three hours, three parts**, **1:30 PM – 5:00 PM (placeholder, per RISW 2026)**,
-  with **two 10-minute breaks**
+  with **two 15-minute breaks**
 - **Parts 1 and 2 are the backbone** — the framework, and how to write it in R
 - **Part 3 is deliberately flexible.** It is hands-on and interactive, and how
   far we take it depends on the room
@@ -109,18 +90,18 @@ hosted fallback — is in [Setup](#setup).
 - Questions welcome throughout — this is a small enough room for it
 
 
-## Agenda :spiral_calendar: {.smaller}
+## Agenda :spiral_calendar: {.small}
 
 | | Time | Session | | |
 |:--:|---|---|---|---|
 | **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | **← you are here** |
-| | 2:30 – 2:40 PM | 10 minute break | | |
-| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | *after the break* |
-| | 3:40 – 3:50 PM | 10 minute break | | |
-| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
+| | 2:30 – 2:45 PM | 15 minute break | | |
+| **2** | 2:45 – 3:45 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | *after the break* |
+| | 3:45 – 4:00 PM | 15 minute break | | |
+| **3** | 4:00 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
 
 
-## What we expect from today :dart: {.smaller}
+## What we expect from today :dart: {.small}
 
 ::: {.columns}
 ::: {.column width="52%"}
@@ -252,7 +233,7 @@ there is always a next question.
 :::
 
 
-## Why now? :hourglass_flowing_sand:
+## Why now? :hourglass_flowing_sand: {.medium}
 
 ::: {.incremental}
 - **Design complexity has outrun closed-form methods**
@@ -285,7 +266,7 @@ there is always a next question.
 - Enrollment forecasting *(though enrollment can be part of it)*
 - A substitute for judgment — it prices your assumptions, it does not choose them
 
-## Why patient-level simulation? :microscope: {.smaller}
+## Why patient-level simulation? :microscope: {.small}
 
 ::: {.fragment .keybox}
 
@@ -314,7 +295,7 @@ Operating characteristics are the *answer*. Individual replicates are the *expla
 
 # Regulatory guidance :scroll: {background-color="#1d5c4a"}
 
-## Simulation as expected practice :ledger: {.smaller}
+## Simulation as expected practice :ledger: {.small}
 
 - **FDA** design simulations thoroughly described in *Adaptive Design Guidance*
   [@fda2019adaptive] and additional guidance in *Complex and Innovative Trial Designs
@@ -347,7 +328,7 @@ That is the argument for a framework rather than a one-off script.
 
 # A running example :pill: {background-color="#1d5c4a"}
 
-## Our design problem :chart_with_downwards_trend: [Example]{.example-tag} {.smaller}
+## Our design problem :chart_with_downwards_trend: [Example]{.example-tag} {.small}
 
 ::: {.fragment}
 
@@ -390,7 +371,7 @@ without having written the simulation.
 
 # Five essential components :jigsaw: {background-color="#1d5c4a"}
 
-## Anatomy of a trial simulation :anatomical_heart: {.smaller}
+## Anatomy of a trial simulation :anatomical_heart: {.small}
 
 ::: {.fragment}
 
@@ -427,7 +408,7 @@ Let's go through them.
 :::
 
 
-## 1. Objectives :goal_net: {.smaller}
+## 1. Objectives :goal_net: {.small}
 
 ::: {.fragment}
 
@@ -452,7 +433,7 @@ it is likely not yet an objective.
 :::
 
 
-## 1. Objectives [Example]{.example-tag} :dart: {.smaller}
+## 1. Objectives [Example]{.example-tag} :dart: {.small}
 
 ::: {.fragment}
 
@@ -481,7 +462,7 @@ does.
 
 :::
 
-## 2. Scenarios: the world vs. our choices :earth_africa: {.smaller}
+## 2. Scenarios: the world vs. our choices :earth_africa: {.small}
 
 ::: {.fragment}
 
@@ -539,7 +520,7 @@ performs best on the metrics we care about?*
 :::
 
 
-## 2. Design scenarios [Example]{.example-tag} :triangular_ruler: {.smaller}
+## 2. Design scenarios [Example]{.example-tag} :triangular_ruler: {.small}
 
 ::: {.fragment}
 
@@ -569,7 +550,7 @@ thing that would be varied
 :::
 
 
-## 2. Truth scenarios [Example]{.example-tag} :crystal_ball: {.smaller}
+## 2. Truth scenarios [Example]{.example-tag} :crystal_ball: {.small}
 
 ::: {.fragment}
 
@@ -753,7 +734,7 @@ correlated safety endpoint) is an addition to the code - not switching tools/mod
 :::
 
 
-## 4. Trial design :building_construction: {.smaller}
+## 4. Trial design :building_construction: {.small}
 
 ::: {.fragment}
 
@@ -782,7 +763,7 @@ least able to guess.
 :::
 
 
-## 4. Trial design [Example]{.example-tag}: significance testing :test_tube: {.smaller}
+## 4. Trial design [Example]{.example-tag}: significance testing :test_tube: {.small}
 
 ::: {.fragment}
 
@@ -822,19 +803,12 @@ Single final analysis at Week 24. Two analysis models, both at **α = 0.10** (on
 
 ::: {.fragment}
 
-**Dunnett's Test** — all active doses vs. placebo, step-down.
+**Dunnett's Test** — all active doses vs. placebo.
 
 :::
 
 
-<!-- Note for Saumil (from Mitch), resolving the open items that used to sit here:
-     - Exponential candidate: delta = 25 is correct. No change needed.
-     - Dunnett: just call it "Dunnett's test" on the slides — people will get it,
-       no need to spell out the multiplicity mechanics. For our own reference,
-       it is step-down. -->
-
-
-## 4. Trial design [Example]{.example-tag}: candidate models :ocean: {.smaller}
+## 4. Trial design [Example]{.example-tag}: candidate models :ocean: {.small}
 
 ::: {.fragment}
 
@@ -886,7 +860,7 @@ the grey verticals are the candidate doses.
 :::
 
 
-## MCP-Mod vs. Dunnett's test :boxing_glove: {.smaller}
+## MCP-Mod vs. Dunnett's test :boxing_glove: {.small}
 
 ::: {.fragment}
 
@@ -916,7 +890,7 @@ curves and can be advantageous for decision-making with more doses.
 :::
 
 
-## 4. Trial design [Example]{.example-tag}: dose selection :round_pushpin: {.smaller}
+## 4. Trial design [Example]{.example-tag}: dose selection :round_pushpin: {.small}
 
 ::: {.fragment .keybox}
 
@@ -1004,7 +978,7 @@ selection weighs factors other than efficacy.
 :::
 
 
-## The components [Example]{.example-tag} :clipboard: {.smaller}
+## The components [Example]{.example-tag} :clipboard: {.small}
 
 ::: {.fragment}
 
@@ -1029,7 +1003,7 @@ now nothing left to argue about except the code.
 
 # The R-based computational framework :computer: {background-color="#1d5c4a"}
 
-## Why R and why we are being opinionated :rocket: {.smaller}
+## Why R and why we are being opinionated :rocket: {.small}
 
 ::: {.incremental}
 - **The statistical models already live there.** `DoseFinding`, `rpact`, `brms`,

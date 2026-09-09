@@ -1,8 +1,6 @@
 ---
 title: "Trial Simulations in R"
-subtitle: |
-  A Framework for Informing Modern Clinical Development<br/>
-  <span style="font-size:0.5em">Slides © 2026 Mitch Thomann & Saumil Shah — [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>
+subtitle: "A Framework for Informing Modern Clinical Development"
 author:
   - Mitch Thomann
   - Saumil Shah
@@ -35,19 +33,17 @@ citations-hover: true
 nocite: "@*"
 ---
 
-## Setup {#setup}
+# Setup :hammer_and_wrench: {#setup background-color="#1d5c4a"}
 
 {{< include _setup.qmd >}}
 
 {{< include _part1-overview.qmd >}}
 
-## Part 2 {#part-2}
-
 {{< include _part2-programming.qmd >}}
 
 {{< include _part3-example.qmd >}}
 
-## References :books: {.smaller .scrollable}
+## References :books: {.small .scrollable}
 
 ::: {#refs}
 :::

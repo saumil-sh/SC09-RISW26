@@ -67,18 +67,18 @@ if (have_results) {
 
 # What we are doing :dart: {background-color="#1d5c4a"}
 
-## Where we are :round_pushpin: {.smaller}
+## Where we are :round_pushpin: {.small}
 
 | | Time | Session | | |
 |:--:|---|---|---|---|
 | **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | done |
-| | 2:30 – 2:40 PM | 10 minute break | | |
-| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | done |
-| | 3:40 – 3:50 PM | 10 minute break | | |
-| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | **← you are here** |
+| | 2:30 – 2:45 PM | 15 minute break | | |
+| **2** | 2:45 – 3:45 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | done |
+| | 3:45 – 4:00 PM | 15 minute break | | |
+| **3** | 4:00 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | **← you are here** |
 
 
-## The study, already run [Example]{.example-tag} :checkered_flag: {.smaller}
+## The study, already run [Example]{.example-tag} :checkered_flag: {.small}
 
 ::: {.fragment}
 
@@ -102,9 +102,7 @@ if (have_results) {
 :::
 
 
-## The code is yours — just not today :gift: {.smaller}
-
-::: {.fragment}
+## The code is yours — just not today :gift: {.small}
 
 ```{mermaid}
 %%| fig-width: 12
@@ -116,16 +114,18 @@ flowchart LR
   E --> R["<b>6-runsim.R</b><br/>runs the grid via run_one()"]
 ```
 
-:::
-
 
 ::: {.columns}
 ::: {.column width="55%"}
+
+::: {.fragment}
 
 **Four numbered components**, then the driver that runs them — the same five
 ideas from Part 1, in the same rxsim vocabulary Saumil used in Part 2.
 `run_one()` is the helper in `R/part-3/5-run-one.R`, exactly the shape of Part 2's
 `simulate_scenario()`.
+
+:::
 
 :::
 ::: {.column width="45%"}
@@ -141,7 +141,7 @@ Today we work with what it **produced**.
 :::
 
 
-## The four truth curves :chart_with_upwards_trend: {.smaller}
+## The four truth curves :chart_with_upwards_trend: {.small}
 
 ::: {.fragment}
 
@@ -208,7 +208,7 @@ MED problem each design has to solve.
 
 # Your turn :raising_hand: {background-color="#1d5c4a"}
 
-## What you have: one row per trial :toolbox: {.smaller}
+## What you have: one row per trial :toolbox: {.small}
 
 ::: {.fragment}
 
@@ -253,7 +253,7 @@ fitted effect at each studied dose.*
 :::
 
 
-## What you have: columns and helpers :toolbox: {.smaller}
+## What you have: columns and helpers :toolbox: {.small}
 
 ::: {.columns}
 ::: {.column width="54%"}
@@ -307,7 +307,7 @@ these same functions, so your numbers are directly comparable.
 
 :::
 
-## The question :question: {.smaller}
+## The question :question: {.small}
 
 ::: {.fragment .success-box}
 
@@ -345,18 +345,12 @@ Stuck? `R/part-3/8-exercise-solution.R` produces exactly what comes next.
 
 # What we found :mag: {background-color="#1d5c4a"}
 
-## Does any design meet the objectives? :goal_net: {.smaller .scrollable}
+## Does any design meet the objectives? :goal_net: {.small .scrollable}
 
-::: {.keybox}
+::: {.fragment}
 
-**Reminder — the two objectives from Part 1:**
-
-**A.** `r if (have_results) sprintf("≥ %.0f%%", 100 * success_target)` success under
-**each** positive truth, where success = a signal detected *and* an acceptable dose
-selected.
-
-**B.** `r if (have_results) sprintf("≤ %.0f%%", 100 * claim_target)` chance of claiming a
-viable dose under the **negative** truth, where no dose is viable.
+**A.** ≥ 70% success under **each** positive truth · **B.** ≤ 15% chance of
+claiming a viable dose under the **negative** truth.
 
 :::
 
@@ -386,14 +380,14 @@ if (have_results) {
 :::
 
 
-::: {.fragment .zoom}
+::: {.fragment}
 
 `r if (have_results) sprintf("**%d of %d** meet both — and the four that fail do not all fail the *same* objective.", sum(verdict$meets), nrow(verdict))`
 
 :::
 
 
-## Both objectives at once — on average 🎯 {.smaller}
+## Both objectives at once — on average 🎯 {.small}
 
 ::: {.fragment}
 
@@ -415,7 +409,7 @@ top-left**. The shaded box is where both objectives hold.
 :::
 
 
-## Zoom: the designs that pass :mag_right: {.smaller}
+## Zoom: the designs that pass :mag_right: {.small}
 
 ::: {.fragment}
 
@@ -429,7 +423,7 @@ if (have_results) fig_oc_zoom else ggplot() + theme_void()
 :::
 
 
-::: {.fragment .smaller}
+::: {.fragment .small}
 
 ```{r}
 #| label: oc-zoom-note
@@ -447,7 +441,7 @@ if (have_results) {
 :::
 
 
-## The same designs — worst case :cloud_with_rain: {.smaller}
+## The same designs — worst case :cloud_with_rain: {.small}
 
 ::: {.fragment}
 
@@ -469,7 +463,7 @@ plausible truth, not just on average.
 :::
 
 
-::: {.fragment .smaller}
+::: {.fragment .small}
 
 **This is the figure you put in front of a design team** — every design, both
 objectives, judged on its worst truth. (That was exercise question 6.)
@@ -477,7 +471,7 @@ objectives, judged on its worst truth. (That was exercise question 6.)
 :::
 
 
-## Zoom: judged on the worst truth :mag_right: {.smaller}
+## Zoom: judged on the worst truth :mag_right: {.small}
 
 ::: {.fragment}
 
@@ -491,7 +485,7 @@ if (have_results) fig_oc_min_zoom else ggplot() + theme_void()
 :::
 
 
-::: {.fragment .smaller}
+::: {.fragment .small}
 
 ```{r}
 #| label: oc-zoom-min-note
@@ -509,7 +503,7 @@ if (have_results) {
 :::
 
 
-## Success under every positive truth :hotsprings: {.smaller}
+## Success under every positive truth :hotsprings: {.small}
 
 ::: {.fragment}
 
@@ -532,7 +526,7 @@ everywhere — **Emax3 is where every design is weakest**.
 :::
 
 
-## Estimated effect at the true MED :violin: {.smaller}
+## Estimated effect at the true MED :violin: {.small}
 
 ::: {.fragment}
 
@@ -570,7 +564,7 @@ if (have_results) {
 :::
 
 
-## Summary — my thoughts :thought_balloon: {.smaller}
+## Summary — my thoughts :thought_balloon: {.small}
 
 1. **There is no single right design here.** Choosing one needs context this
    simulation does not have — cost, timelines, what the team can run. In
@@ -592,7 +586,7 @@ The iteration *is* the evidence that the design was chosen, not just arrived at.
 
 # Taking this further :rocket: {background-color="#1d5c4a"}
 
-## What we didn't touch today :telescope: {.smaller}
+## What we didn't touch today :telescope: {.small}
 
 ::: {.fragment}
 
@@ -615,7 +609,7 @@ Three doors we walked past — all openable with what you already have:
 :::
 
 
-## Scaling: the grid is a data frame :stopwatch: {.smaller}
+## Scaling: the grid is a data frame :stopwatch: {.small}
 
 ::: {.fragment}
 
@@ -646,7 +640,7 @@ function over its rows, and a cache.
 :::
 
 
-## How many simulation replicates? :100: {.smaller}
+## How many simulation replicates? :100: {.small}
 
 ::: {.fragment}
 
@@ -698,16 +692,16 @@ would actually change what you run? Resolve that, and stop.
 :::
 
 
-## Validation: simulation code is software :white_check_mark: {.smaller}
+## Validation: simulation code is software :white_check_mark: {.small}
 
-::: {.fragment .smaller}
+::: {.fragment .small}
 
 Each component has a testable contract; they are easier to test than the whole
 simulation at once.
 
 :::
 
-::: {.smaller}
+::: {.small}
 - **Data generation**
   - large-n check that each dose hits its intended mean and SD
 - **The MED rule**
@@ -717,14 +711,14 @@ simulation at once.
   - size and labels are what you think they are *(6 × 4 = 24)*
 :::
 
-::: {.fragment .smaller}
+::: {.fragment .small}
 
 `testthat` on these components, run automatically, is the difference between a
 simulation you believe and one you merely hope about.
 
 :::
 
-::: {.fragment .keybox .smaller}
+::: {.fragment .keybox .small}
 
 **Double programming** belongs here too — on the **custom rules**, not the
 packages. The MED rule and success criterion carry the decision, and an error
@@ -733,7 +727,7 @@ there is silent.
 :::
 
 
-## Using AI to write simulation code :robot: {.smaller}
+## Using AI to write simulation code :robot: {.small}
 
 ::: {.fragment .keybox}
 
@@ -770,7 +764,7 @@ Everything you have seen today was written this way
 
 # Wrap-up :tada: {background-color="#1d5c4a"}
 
-## What we built :hammer_and_wrench: {.smaller}
+## What we built :hammer_and_wrench: {.small}
 
 - A **scenario grid** you extend by adding rows, not by editing simulation code
 - A **data generation model** that is one function, replaceable without
@@ -788,7 +782,7 @@ Every next question is a new row, not a new tool.
 :::
 
 
-## Today is not entirely about the package :package: {.smaller}
+## Today is not entirely about the package :package: {.small}
 
 ::: {.fragment}
 
@@ -811,7 +805,7 @@ is what we are asking you to take home.
 :::
 
 
-## What we get if enough of us work this way :seedling: {.smaller}
+## What we get if enough of us work this way :seedling: {.small}
 
 ::: {.incremental}
 - **Better trials** — when one more design question costs *one more row in a data

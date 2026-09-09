@@ -24,15 +24,15 @@ for (f in list.files("R/part-2", pattern = "\\.R$", full.names = TRUE))
 1. By the end, one script will have grown from *"generate a few patients"* to *"run four scenarios in parallel."*
 :::
 
-## Where we are :round_pushpin: {.smaller}
+## Where we are :round_pushpin: {.small}
 
 | | Time | Session | | |
 |:--:|---|---|---|---|
 | **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | done |
-| | 2:30 – 2:40 PM | 10 minute break | | |
-| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | **← you are here** |
-| | 3:40 – 3:50 PM | 10 minute break | | |
-| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
+| | 2:30 – 2:45 PM | 15 minute break | | |
+| **2** | 2:45 – 3:45 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | **← you are here** |
+| | 3:45 – 4:00 PM | 15 minute break | | |
+| **3** | 4:00 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
 
 
 ## The map :world_map:
@@ -103,7 +103,7 @@ What do we conclude?
 1. You supply the models and analyses. rxsim handles the trial bookkeeping.
 :::
 
-## Explore a new question without starting over {#rxsim-build .smaller}
+## Explore a new question without starting over {#rxsim-build .small}
 
 ::: {.fragment}
 **Start with one arm** — analyse at the end.
@@ -155,7 +155,7 @@ What do we conclude?
 
 Keep the parts you trust, and change what the next question needs.
 
-::: {.smaller}
+::: {.small}
 [Explore rxsim](https://boehringer-ingelheim.github.io/rxsim/) · [Browse the gallery](https://boehringer-ingelheim.github.io/rxsim-gallery/)
 :::
 
@@ -165,14 +165,14 @@ Keep the parts you trust, and change what the next question needs.
 
 ::: {.hidden-numbers}
 1. One treatment arm, one look at the end. No comparison, no test yet: just generate 100 patients, then describe them.
-1. We build `R/work-one-arm.R` together, one block per slide.
+1. We build `R/work-1-one-arm.R` together, one block per slide.
 :::
 
-::: {.popup .smaller}
+::: {.popup .small}
 
 | 💾 Save as | 🔑 Answer key |
 |---|---|
-| `R/work-one-arm.R` | `R/part-2/1-one-arm.R` |
+| `R/work-1-one-arm.R` | `R/part-2/1-one-arm.R` |
 
 :::
 
@@ -295,11 +295,11 @@ Keep the parts you trust, and change what the next question needs.
 
 ## 2. Copy, then change one thing :page_facing_up:
 
-::: {.popup .smaller}
+::: {.popup .small}
 
 | 💾 Save as | 🔑 Answer key |
 |---|---|
-| `R/work-one-arm.R` → `R/work-two-arm.R` | `R/part-2/2-two-arm.R` |
+| `R/work-1-one-arm.R` → `R/work-2-two-arm.R` | `R/part-2/2-two-arm.R` |
 
 :::
 
@@ -314,7 +314,7 @@ Keep the parts you trust, and change what the next question needs.
 #| include: false
 ```
 
-## 2. Two arms, two generators :two: {.smaller}
+## 2. Two arms, two generators :two: {.small}
 
 ::: {.hidden-numbers}
 1. Name the two arms and split the total N evenly: 50 per arm.
@@ -385,13 +385,13 @@ Keep the parts you trust, and change what the next question needs.
 
 # 3. Adding another look 🕐 {background-color="#1d5c4a"}
 
-## 3. Copy, then add one look :eyes: {.smaller}
+## 3. Copy, then add one look :eyes: {.small}
 
-::: {.popup .smaller}
+::: {.popup .small}
 
 | 💾 Save as | 🔑 Answer key |
 |---|---|
-| `R/work-two-arm.R` → `R/work-two-look.R` | `R/part-2/3-two-look.R` |
+| `R/work-2-two-arm.R` → `R/work-3-two-look.R` | `R/part-2/3-two-look.R` |
 
 :::
 
@@ -423,7 +423,7 @@ Keep the parts you trust, and change what the next question needs.
 
 :::
 
-## 3. Two rows per trial :dancers: {.smaller}
+## 3. Two rows per trial :dancers: {.small}
 
 ::: {.hidden-numbers}
 1. With `n_sim = 5`, you get 10 rows: 5 trials × 2 looks. The `replicate` column pairs the interim and final row from the same trial.
@@ -443,7 +443,7 @@ Keep the parts you trust, and change what the next question needs.
 
 :::
 
-## 3. Read the interim carefully :mag: {.smaller}
+## 3. Read the interim carefully :mag: {.small}
 
 ::: {.hidden-numbers}
 1. The final look includes the interim patients with their original outcomes. rxsim snapshots one accumulating trial; it does not regenerate data at each look.
@@ -454,13 +454,13 @@ Keep the parts you trust, and change what the next question needs.
 
 # 4. Many scenarios 🧮 {background-color="#1d5c4a"}
 
-## 4. Turn the script into a function :package: {.smaller}
+## 4. Turn the script into a function :package: {.small}
 
-::: {.popup .smaller}
+::: {.popup .small}
 
 | 💾 Save as | 🔑 Answer key |
 |---|---|
-| `R/work-two-look.R` → `R/work-grid.R` | `R/part-2/4-grid.R` |
+| `R/work-3-two-look.R` → `R/work-4-grid.R` | `R/part-2/4-grid.R` |
 
 :::
 
@@ -489,7 +489,7 @@ simulate_scenario <- function(n_total, delta, n_sim = 5) {
 #| include: false
 ```
 
-## 4. One scenario :one: {.smaller}
+## 4. One scenario :one: {.small}
 
 ::: {.fragment}
 
@@ -504,7 +504,7 @@ simulate_scenario <- function(n_total, delta, n_sim = 5) {
 1. One call is one scenario, returned as a small table tagged with `n_total` and `delta`.
 :::
 
-## 4. A grid of scenarios 🔢 {.smaller}
+## 4. A grid of scenarios 🔢 {.small}
 
 ::: {.hidden-numbers}
 1. Vary sample size and effect. One design × truth scenario per row.
@@ -562,11 +562,11 @@ simulate_scenario <- function(n_total, delta, n_sim = 5) {
 
 ## 5. Change only the execution :zap:
 
-::: {.popup .smaller}
+::: {.popup .small}
 
 | 💾 Save as | 🔑 Answer key |
 |---|---|
-| `R/work-grid.R` → `R/work-parallel.R` | `R/part-2/5-parallel.R` |
+| `R/work-4-grid.R` → `R/work-5-parallel.R` | `R/part-2/5-parallel.R` |
 
 :::
 
@@ -634,7 +634,7 @@ timings
 
 # Wrap-up 🎉 {background-color="#1d5c4a"}
 
-## What you can now do :muscle:
+## What you can now do :muscle: {.medium}
 
 - Generate patients with a `population_generator` function
 - Describe them with `analyze(df, current_time)`; **you** design the output row
