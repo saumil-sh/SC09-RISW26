@@ -1,0 +1,663 @@
+```{r}
+#| label: setup-p2
+#| include: false
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(rxsim)
+# CI runner core count is unknown; force sequential so future_lapply() in
+# s5-parallel never sizes or starts a multisession cluster during render.
+future::plan(future::sequential)
+# The slides below echo the course scripts directly, so what is on screen is
+# character-for-character what attendees run. Labels are unique across files.
+for (f in list.files("R/part-2", pattern = "\\.R$", full.names = TRUE))
+  knitr::read_chunk(f)
+```
+
+
+
+# Welcome 👋 {background-color="#1d5c4a"}
+
+## This hour :hammer_and_wrench:
+
+::: {.hidden-numbers}
+1. Part 1 argued *why* we simulate. This hour is *how*: we build one small trial in R and change it **one piece at a time**.
+1. You do not need to be an R expert. Every idiom we use, we explain once, in plain terms, the first time it appears.
+1. By the end, one script will have grown from *"generate a few patients"* to *"run four scenarios in parallel."*
+:::
+
+## Where we are :round_pushpin: {.smaller}
+
+| | Time | Session | | |
+|:--:|---|---|---|---|
+| **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | done |
+| | 2:30 – 2:40 PM | 10 minute break | | |
+| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | **← you are here** |
+| | 3:40 – 3:50 PM | 10 minute break | | |
+| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
+
+
+## The map :world_map:
+
+::: {.fragment}
+
+```{mermaid}
+%%{init: {"themeVariables": {"fontSize": "18px"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  S["scenario<br/>(what we vary)"] --> G["generators<br/>(make patients)"]
+  G --> T["trial<br/>(when to look,<br/>what to compute)"]
+  T --> C["collect_results()<br/>(one table)"]
+  C --> E["summaries<br/>(power, error)"]
+```
+
+:::
+
+::: {.hidden-numbers}
+1. Everything today is this picture, one block per step.
+:::
+
+## Before we touch code :toolbox:
+
+::: {.hidden-numbers}
+1. The simulation runs inside the **course project**, with package versions pinned so your results match these slides.
+1. Quick check-in: did anyone have trouble following the [Setup](#setup) section before class?
+1. If `source("R/part-2/1-one-arm.R")` printed one row of results earlier, you are set.
+:::
+
+## Think in trials. Write in R. {#rxsim-intro}
+
+**rxsim** · A language for describing clinical trials in R
+
+::::: {.columns}
+:::: {.column .fragment width="25%"}
+::: {.bio-card}
+**Populations**
+
+Who receives what treatment?
+:::
+::::
+:::: {.column .fragment width="25%"}
+::: {.bio-card}
+**Looks**
+
+When do we analyse?
+:::
+::::
+:::: {.column .fragment width="25%"}
+::: {.bio-card}
+**Analysis**
+
+Which analysis method?
+:::
+::::
+:::: {.column .fragment width="25%"}
+::: {.bio-card}
+**Decisions**
+
+What do we conclude?
+:::
+::::
+:::::
+
+
+::: {.hidden-numbers}
+1. Express your design as readable pieces you can reuse and change.
+1. You supply the models and analyses. rxsim handles the trial bookkeeping.
+:::
+
+## Explore a new question without starting over {#rxsim-build .smaller}
+
+::: {.fragment}
+**Start with one arm** — analyse at the end.
+
+```{=html}
+<svg class="rx-timeline" viewBox="0 0 900 50" role="img" aria-label="One arm, analysed at the end">
+  <line x1="200" y1="32" x2="820" y2="32" class="rx-line"/>
+  <circle cx="820" cy="32" r="6" class="rx-dot"/>
+  <text x="20" y="37" class="rx-arm">Treatment</text>
+  <text x="820" y="17" text-anchor="middle" class="rx-mark">Final</text>
+</svg>
+```
+:::
+
+::: {.fragment}
+**Add a control arm** — compare the treatments.
+
+```{=html}
+<svg class="rx-timeline" viewBox="0 0 900 72" role="img" aria-label="Two arms, both analysed at the end">
+  <line x1="200" y1="30" x2="820" y2="30" class="rx-line"/>
+  <circle cx="820" cy="30" r="6" class="rx-dot"/>
+  <line x1="200" y1="62" x2="820" y2="62" class="rx-line rx-new"/>
+  <circle cx="820" cy="62" r="6" class="rx-dot rx-new"/>
+  <text x="20" y="35" class="rx-arm">Treatment</text>
+  <text x="20" y="67" class="rx-arm rx-new">Control</text>
+  <text x="820" y="16" text-anchor="middle" class="rx-mark">Final</text>
+</svg>
+```
+:::
+
+::: {.fragment}
+**Add an interim look** — use the same analysis earlier.
+
+```{=html}
+<svg class="rx-timeline" viewBox="0 0 900 72" role="img" aria-label="Two arms, analysed at an interim look and again at the end">
+  <line x1="200" y1="30" x2="820" y2="30" class="rx-line"/>
+  <circle cx="480" cy="30" r="6" class="rx-dot rx-new"/>
+  <circle cx="820" cy="30" r="6" class="rx-dot"/>
+  <line x1="200" y1="62" x2="820" y2="62" class="rx-line"/>
+  <circle cx="480" cy="62" r="6" class="rx-dot rx-new"/>
+  <circle cx="820" cy="62" r="6" class="rx-dot"/>
+  <text x="20" y="35" class="rx-arm">Treatment</text>
+  <text x="20" y="67" class="rx-arm">Control</text>
+  <text x="480" y="16" text-anchor="middle" class="rx-mark rx-new">Interim</text>
+  <text x="820" y="16" text-anchor="middle" class="rx-mark">Final</text>
+</svg>
+```
+:::
+
+Keep the parts you trust, and change what the next question needs.
+
+::: {.smaller}
+[Explore rxsim](https://boehringer-ingelheim.github.io/rxsim/) · [Browse the gallery](https://boehringer-ingelheim.github.io/rxsim-gallery/)
+:::
+
+# 1. One arm, one look 🌱 {background-color="#1d5c4a"}
+
+## 1. The smallest possible trial :hatching_chick:
+
+::: {.hidden-numbers}
+1. One treatment arm, one look at the end. No comparison, no test yet: just generate 100 patients, then describe them.
+1. We build `R/work-one-arm.R` together, one block per slide.
+:::
+
+::: {.popup .smaller}
+
+| 💾 Save as | 🔑 Answer key |
+|---|---|
+| `R/work-one-arm.R` | `R/part-2/1-one-arm.R` |
+
+:::
+
+## 1. The parameters :control_knobs:
+
+::: {.hidden-numbers}
+1. Four numbers describe the whole trial.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: params
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. `n_total` matters first: keep it distinct from the generator's `n`.
+1. `n_sim` just counts whole-trial reruns; we will use it later.
+:::
+
+## 1. A generator of patients :factory:
+
+::: {.hidden-numbers}
+1. A population generator has the shape `function(n)` and returns one row per patient.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: generator
+#| echo: true
+```
+
+:::
+
+## 1. Look at five patients :eyes:
+
+::: {.hidden-numbers}
+1. Before building any trial, just generate five and look.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: preview
+#| echo: true
+```
+
+:::
+
+## 1. An analysis :straight_ruler:
+
+::: {.hidden-numbers}
+1. At each look, rxsim hands your analysis the trial so far and expects **one row** back.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: analysis
+#| echo: true
+```
+
+:::
+
+## 1. Say *when* to look :alarm_clock:
+
+::: {.hidden-numbers}
+1. One look, when 100% of patients have enrolled.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: looks
+#| echo: true
+```
+
+:::
+
+## 1. Build the trial :bricks:
+
+::: {.hidden-numbers}
+1. Wire together enrollment, generators, and the analysis list.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: trial
+#| echo: true
+```
+
+:::
+
+## 1. Run and read :arrow_forward:
+
+::: {.fragment}
+
+```{r}
+#| label: run
+#| echo: true
+```
+
+:::
+
+## 1. What just happened :bulb:
+
+::: {.hidden-numbers}
+1. Read the row across: `replicate`, `timepoint`, `analysis`, then **your** columns from `analyze()`.
+1. `run_trials()` stores results **inside** the trial objects, so you do not assign its output. That is the one object-oriented idea in this hour.
+1. `mean_y` is close to the `mu = 0.5` we generated from, but not exact. That gap is sampling noise, and it is the whole reason we simulate.
+1. **Pause · predict, change, run.** Set `mu <- 0` and rerun. What do you expect `mean_y` to be?
+:::
+
+# 2. Add a control arm ➕ {background-color="#1d5c4a"}
+
+## 2. Copy, then change one thing :page_facing_up:
+
+::: {.popup .smaller}
+
+| 💾 Save as | 🔑 Answer key |
+|---|---|
+| `R/work-one-arm.R` → `R/work-two-arm.R` | `R/part-2/2-two-arm.R` |
+
+:::
+
+::: {.hidden-numbers}
+1. Add a second arm.
+1. Add a second generator.
+1. Add an analysis that compares them. Now there is something to *test*.
+:::
+
+```{r}
+#| label: s2-params
+#| include: false
+```
+
+## 2. Two arms, two generators :two: {.smaller}
+
+::: {.hidden-numbers}
+1. Name the two arms and split the total N evenly: 50 per arm.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s2-arms
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. A generator for each arm: same variance, different means.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s2-generators
+#| echo: true
+```
+
+:::
+
+## 2. An analysis that compares ⚖️
+
+::: {.hidden-numbers}
+1. Split the snapshot by its `arm` column and run a two-sided Welch t-test.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s2-analysis
+#| echo: true
+```
+
+:::
+
+## 2. Run it :arrow_forward:
+
+```{r}
+#| label: s2-looks
+#| include: false
+```
+
+```{r}
+#| label: s2-trial
+#| include: false
+```
+
+::: {.fragment}
+
+```{r}
+#| label: s2-run
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. One row: 50 vs 50, an observed `effect` near the true 0.5, and a small p-value. At `alpha = 0.05`, this single trial rejects.
+1. **Pause · predict, change, run.** Set `mu_trt <- 0` and rerun. What happens to `effect` and `p_value`?
+:::
+
+# 3. Adding another look 🕐 {background-color="#1d5c4a"}
+
+## 3. Copy, then add one look :eyes: {.smaller}
+
+::: {.popup .smaller}
+
+| 💾 Save as | 🔑 Answer key |
+|---|---|
+| `R/work-two-arm.R` → `R/work-two-look.R` | `R/part-2/3-two-look.R` |
+
+:::
+
+::: {.hidden-numbers}
+1. Same patients, generators, t-test, and N. One edit: the analysis list.
+:::
+
+```{r}
+#| label: s3-params
+#| include: false
+```
+
+```{r}
+#| label: s3-generators
+#| include: false
+```
+
+```{r}
+#| label: s3-analysis
+#| include: false
+```
+
+::: {.fragment}
+
+```{r}
+#| label: s3-looks
+#| echo: true
+```
+
+:::
+
+## 3. Two rows per trial :dancers: {.smaller}
+
+::: {.hidden-numbers}
+1. With `n_sim = 5`, you get 10 rows: 5 trials × 2 looks. The `replicate` column pairs the interim and final row from the same trial.
+:::
+
+```{r}
+#| label: s3-replicate-setup
+#| include: false
+```
+
+::: {.fragment}
+
+```{r}
+#| label: s3-replicate
+#| echo: true
+```
+
+:::
+
+## 3. Read the interim carefully :mag: {.smaller}
+
+::: {.hidden-numbers}
+1. The final look includes the interim patients with their original outcomes. rxsim snapshots one accumulating trial; it does not regenerate data at each look.
+1. "Half enrolled" means half of the **total**, not half of each arm, so the interim above ran 24 vs 26. Enrollment is stochastic—a coin flip per patient, not a fixed 1:1 draw—so the split at any partial enrollment fraction varies by chance.
+1. The interim is informational only. Every trial runs to completion, and only the final t-test decides.
+1. **Pause · predict, change, run.** Before rerunning, predict: will any replicate flip its conclusion between interim and final?
+:::
+
+# 4. Many scenarios 🧮 {background-color="#1d5c4a"}
+
+## 4. Turn the script into a function :package: {.smaller}
+
+::: {.popup .smaller}
+
+| 💾 Save as | 🔑 Answer key |
+|---|---|
+| `R/work-two-look.R` → `R/work-grid.R` | `R/part-2/4-grid.R` |
+
+:::
+
+::: {.hidden-numbers}
+1. Wrap the trial code in one function and tag each result with its scenario.
+:::
+
+::: {.fragment}
+
+```r
+simulate_scenario <- function(n_total, delta, n_sim = 5) {
+  # ... generators, analyses, trial build, run, collect ...
+  res <- collect_results(trials)
+  cbind(n_total = n_total, delta = delta, res)
+}
+```
+
+:::
+
+::: {.hidden-numbers}
+1. `delta` is treatment mean minus control mean. Keep the seed and the calls outside; a function that seeds itself returns the same trial every time.
+:::
+
+```{r}
+#| label: s4-function
+#| include: false
+```
+
+## 4. One scenario :one: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: s4-one-call
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. One call is one scenario, returned as a small table tagged with `n_total` and `delta`.
+:::
+
+## 4. A grid of scenarios 🔢 {.smaller}
+
+::: {.hidden-numbers}
+1. Vary sample size and effect. One design × truth scenario per row.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s4-grid
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. `lapply()` runs one row at a time, and `do.call(rbind, ...)` stacks the results into one table.
+:::
+
+## 4. Summarize the final look :bar_chart:
+
+::: {.fragment}
+
+```{r}
+#| label: s4-summarize
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. `reject` means `p_value < 0.05` at the **final** look. `delta = 0` rows estimate Type I error; `delta = 0.5` rows estimate power.
+:::
+
+## 4. Do not trust 5 replicates :warning:
+
+::: {.hidden-numbers}
+1. Five replicates per scenario show the mechanics, not precise power. When 0 of 5 reject, the true rate is not 0.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s4-mc-error
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. A 95% interval runs from 0 to about 0.52. Report the replicate count next to any rate you show.
+1. **Pause · predict, change, run.** What happens to the `delta = 0` row as you raise `n_sim` from 5 to 200?
+:::
+
+# 5. Run in parallel ⚡ {background-color="#1d5c4a"}
+
+## 5. Change only the execution :zap:
+
+::: {.popup .smaller}
+
+| 💾 Save as | 🔑 Answer key |
+|---|---|
+| `R/work-grid.R` → `R/work-parallel.R` | `R/part-2/5-parallel.R` |
+
+:::
+
+::: {.hidden-numbers}
+1. `simulate_scenario()` and `grid` stay the same. Only the line that runs the grid changes.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s5-workers
+#| echo: true
+#| eval: false
+```
+
+:::
+
+::: {.hidden-numbers}
+1. A **worker** is another R session on your machine. Two is what a workshop laptop can spare. `multisession` works on Windows, macOS, and Linux.
+:::
+
+## 5. Swap one function :repeat:
+
+::: {.fragment}
+
+```{r}
+#| label: s5-parallel
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. `future_lapply()` is the parallel replacement for `lapply()`: same inputs, same output.
+1. `future.seed` gives each scenario its own reproducible random stream, so workers do not simulate the same patients.
+:::
+
+## 5. Clean up :broom:
+
+::: {.fragment}
+
+```{r}
+#| label: s5-close
+#| echo: true
+```
+
+:::
+
+::: {.hidden-numbers}
+1. Releasing workers is cleanup, not an undo.
+1. At `n_sim = 200` on this machine, the timing script measured 7.36 s sequential versus 7.11 s parallel. Small grids barely win because worker startup is a fixed cost.
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: s5-timing
+#| echo: true
+#| eval: false
+source("R/part-2/6-timing-comparison.R")
+timings
+```
+
+:::
+
+# Wrap-up 🎉 {background-color="#1d5c4a"}
+
+## What you can now do :muscle:
+
+- Generate patients with a `population_generator` function
+- Describe them with `analyze(df, current_time)`; **you** design the output row
+- Schedule looks with `enroll_trigger()`
+- Compare arms with a t-test and a well-defined effect
+- Wrap it in a function and iterate a scenario grid
+- Run that grid across cores with one changed line
+
+::: {.hidden-numbers}
+1. One thread ran through all of it: **keep the individual trial replicates**, not just the averages. The spread from trial to trial is the deliverable.
+:::
+
+## Where the rest went :door:
+
+::: {.hidden-numbers}
+1. The proposal also mentions multiple endpoints, copulas, and longitudinal data.
+1. None of them needs a different framework. The generators you wrote today extend to all three, and rxsim is compatible with longitudinal data-generation models.
+:::
+
+## Resources :books:
+
+- rxsim documentation: <https://boehringer-ingelheim.github.io/rxsim>
+- rxsim gallery (worked examples, parallel/grid patterns):
+  <https://boehringer-ingelheim.github.io/rxsim-gallery/>
+- Today's scripts: `R/part-2/*.R` in the course project
+- Setup & troubleshooting: [Setup](#setup)

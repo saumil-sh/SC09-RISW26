@@ -1,0 +1,189 @@
+/* RISW 2026 Short Course — layout/utility styling (theme colors live in assets/theme.scss) */
+
+.reveal .slides section {
+  text-align: left;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  text-align: left;
+  text-transform: none;
+}
+
+.reveal .slide-number {
+  font-size: 0.5em;
+}
+
+/* Popup box — callout with a background, distinct from `.aside` (which is
+   reserved for a spoken closing remark). Used for reference tables (e.g.
+   "Save as / Answer key" file-rename pointers) that need to stand out from
+   the surrounding prose without implying a spoken aside. */
+.popup {
+  border-left: 6px solid #1c5aa6;
+  background: #e8f0fb;
+  padding: 0.5em 0.9em;
+  margin: 0.6em 0;
+  border-radius: 3px;
+}
+
+/* Instructor bio card — rounded panel, distinct from the callout-style .keybox. */
+.bio-card {
+  background: #e6f2ee;
+  border: 1px solid #bfe0d5;
+  border-radius: 10px;
+  padding: 0.7em 1em 0.4em;
+  height: 100%;
+}
+.bio-card strong:first-child {
+  color: #1d5c4a;
+  font-size: 1.05em;
+}
+
+/* Definitive-answer box — solid teal fill, for the one conclusion a slide is
+   building toward (e.g. a "Success = ..." definition), distinct from .keybox's
+   lighter callout treatment used for supporting definitions on the same slide. */
+.success-box {
+  background: #1d5c4a;
+  color: #fff;
+  text-align: center;
+  font-size: 1.7em;
+  font-weight: 700;
+  padding: 0.6em 1em;
+  margin: 0.8em 0;
+  border-radius: 6px;
+}
+
+/* Emphasis box for definitions / key takeaways. Border-only — no tinted
+   background stacked on the slide background. */
+.keybox {
+  border-left: 6px solid #1d5c4a;
+  background: transparent;
+  padding: 0.5em 0.9em;
+  margin: 0.6em 0;
+  border-radius: 3px;
+  font-size: 0.82em;
+}
+
+/* Larger callout text for the one line a slide is building toward — replaces
+   one-off inline style="font-size:…" fragments. */
+.reveal div.fragment.zoom {
+  font-size: 1.2em;
+  margin-top: 0.8em;
+}
+
+/* Mermaid diagrams: never clip labels, never shrink text below readability.
+   (Font size itself is set inside each diagram via themeVariables.)
+   Cap the rendered width so a wide natural-size diagram (useMaxWidth: false)
+   still fits the 1280px slide instead of overflowing it. */
+.reveal .mermaid-js,
+.reveal pre.mermaid,
+.reveal .mermaid-js svg {
+  overflow: visible;
+}
+.reveal .mermaid-js,
+.reveal pre.mermaid {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reveal .mermaid-js .edgeLabel,
+.reveal pre.mermaid .edgeLabel,
+.reveal .mermaid-js .edgeLabel foreignObject,
+.reveal pre.mermaid .edgeLabel foreignObject {
+  overflow: visible !important;
+}
+
+.reveal .mermaid-js .edgeLabel div,
+.reveal pre.mermaid .edgeLabel div {
+  background: #f6faf8 !important;
+  padding: 0.1em 0.3em;
+  box-sizing: border-box;
+}
+
+/* Running-example marker */
+.example-tag {
+  display: inline-block;
+  float: right;
+  background: #1d5c4a;
+  color: #fff;
+  font-size: 0.68em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.12em 0.55em;
+  border-radius: 4px;
+  vertical-align: 0.12em;
+  margin-left: 0.5em;
+}
+
+.reveal table {
+  font-size: 0.75em;
+}
+
+.reveal .citation {
+  font-size: 0.55em;
+  color: #666;
+}
+
+/* Quotes get the light teal fill so they read as a separate voice. */
+.reveal blockquote {
+  border-left: 6px solid #1d5c4a;
+  background: #e6f2ee;
+  padding: 0.5em 0.9em;
+  border-radius: 3px;
+  font-style: italic;
+  box-shadow: none;
+}
+
+/* Aside — overrides reveal's default small/muted footnote look so it reads as a
+   deliberate closing remark rather than an afterthought. */
+.reveal .slide aside,
+.reveal .slide div.aside {
+  font-size: 1.3em;
+  font-weight: 600;
+  font-style: italic;
+  color: #1d5c4a;
+  border-top: 3px solid #2a7a63;
+  padding-top: 0.35em;
+  bottom: 30px;
+}
+
+.reveal .hidden-numbers > ol,
+.reveal ol.hidden-numbers {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* rxsim timeline diagrams: trial arms as horizontal lines, analyses as dots. */
+#rxsim-build p {
+  margin: 0.3em 0;
+}
+.rx-timeline {
+  width: 100%;
+  height: auto;
+  margin: 0.125em 0;
+}
+.rx-timeline .rx-line {
+  stroke: #6b7770;
+  stroke-width: 3;
+}
+.rx-timeline .rx-dot {
+  fill: #6b7770;
+}
+.rx-timeline .rx-arm,
+.rx-timeline .rx-mark {
+  font-size: 22px;
+  fill: #1e2a27;
+}
+.rx-timeline .rx-new {
+  stroke: #1d5c4a;
+  fill: #1d5c4a;
+}
+.rx-timeline text.rx-new {
+  font-weight: 700;
+}
+
+/* Combined references slide: 14 entries must fit at 1280x720 without scrolling. */
+.reveal .slides #refs {
+  font-size: 0.5em;
+}

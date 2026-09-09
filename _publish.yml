@@ -1,0 +1,3 @@
+- source: project
+  gh-pages:
+    site-url: https://saumil-sh.github.io/SC09-RISW26/

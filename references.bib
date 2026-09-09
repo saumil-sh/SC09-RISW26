@@ -1,0 +1,155 @@
+% RISW 2026 Short Course — references
+% Cited inline in part1-overview.qmd with @key; the References slide renders
+% these automatically via the ::: {#refs} div.
+
+% ---------------------------------------------------------------- motivation
+
+@article{meyer2026design,
+  author  = {Meyer, Elias Laurin and Friede, Tim and Grieve, Andrew P. and
+             Jennison, Christopher and Krams, Michael and Lorenzi, Elizabeth and
+             Manji, Husseini K. and Mielke, Tobias and Overbey, Jessica R. and
+             Viele, Kert and Walton, Marc K. and K{\"o}nig, Franz},
+  title   = {Design, simulate, refine: simulation-guided clinical trials for
+             accelerated drug development},
+  journal = {Nature Reviews Drug Discovery},
+  year    = {2026},
+  doi     = {10.1038/s41573-026-01481-9}
+}
+
+@incollection{thall2015smart,
+  author    = {Thall, Peter F.},
+  title     = {{SMART} design, conduct, and analysis in oncology},
+  booktitle = {Adaptive Treatment Strategies in Practice: Planning Trials and
+               Analyzing Data for Personalized Medicine},
+  editor    = {Kosorok, Michael R. and Moodie, Erica E. M.},
+  publisher = {Society for Industrial and Applied Mathematics},
+  address   = {Philadelphia, PA},
+  year      = {2015},
+  pages     = {41--54},
+  doi       = {10.1137/1.9781611974188.ch4}
+}
+
+% ---------------------------------------------------------- regulatory guidance
+
+@misc{fda2019adaptive,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Adaptive Designs for Clinical Trials of Drugs and Biologics},
+  howpublished = {Guidance for Industry},
+  year         = {2019},
+  month        = {November},
+  url          = {https://www.fda.gov/regulatory-information/search-fda-guidance-documents/adaptive-design-clinical-trials-drugs-and-biologics-guidance-industry}
+}
+
+@misc{fda2020cid,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Interacting with the {FDA} on Complex Innovative Trial Designs
+                  for Drugs and Biological Products},
+  howpublished = {Guidance for Industry},
+  year         = {2020},
+  month        = {December},
+  url          = {https://www.fda.gov/regulatory-information/search-fda-guidance-documents/interacting-fda-complex-innovative-trial-designs-drugs-and-biological-products}
+}
+
+@misc{fda2026bayesian,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Use of {B}ayesian Methodology in Clinical Trials of Drug and
+                  Biological Products},
+  howpublished = {Draft Guidance for Industry},
+  year         = {2026},
+  month        = {January},
+  url          = {https://www.fda.gov/regulatory-information/search-fda-guidance-documents/use-bayesian-methodology-clinical-trials-drug-and-biological-products}
+}
+
+@misc{ich2025e20,
+  author       = {{International Council for Harmonisation}},
+  title        = {{ICH} {E20}: Adaptive Designs for Clinical Trials},
+  howpublished = {Draft guideline, Step 2b},
+  year         = {2025},
+  month        = {June},
+  note         = {Endorsed 25 June 2025; public consultation},
+  url          = {https://database.ich.org/sites/default/files/ICH_E20_Step2_Presentation_7July2025.pdf}
+}
+
+@misc{ec2022complex,
+  author       = {{European Commission and EMA and HMA (ACT EU)}},
+  title        = {Complex Clinical Trials --- Questions and Answers},
+  year         = {2022},
+  month        = {May},
+  note         = {Adopted 23 May 2022; published 2 June 2022},
+  url          = {https://health.ec.europa.eu/system/files/2022-06/medicinal_qa_complex_clinical-trials_en.pdf}
+}
+
+@misc{ema2018extrapolation,
+  author       = {{European Medicines Agency}},
+  title        = {Reflection Paper on the Use of Extrapolation in the Development
+                  of Medicines for Paediatrics},
+  year         = {2018},
+  note         = {EMA/189724/2018. TODO: confirm document number and adoption date},
+  url          = {https://www.ema.europa.eu/en/use-extrapolation-development-medicines-paediatrics-scientific-guideline}
+}
+
+% --------------------------------------------------------- analysis methodology
+
+@article{dunnett1955,
+  author  = {Dunnett, Charles W.},
+  title   = {A Multiple Comparison Procedure for Comparing Several Treatments
+             with a Control},
+  journal = {Journal of the American Statistical Association},
+  volume  = {50},
+  number  = {272},
+  pages   = {1096--1121},
+  year    = {1955},
+  doi     = {10.1080/01621459.1955.10501294}
+}
+
+@article{bretz2005,
+  author  = {Bretz, Frank and Pinheiro, Jos{\'e} C. and Branson, Michael},
+  title   = {Combining Multiple Comparisons and Modeling Techniques in
+             Dose-Response Studies},
+  journal = {Biometrics},
+  volume  = {61},
+  number  = {3},
+  pages   = {738--748},
+  year    = {2005},
+  doi     = {10.1111/j.1541-0420.2005.00344.x}
+}
+
+@article{pinheiro2014,
+  author  = {Pinheiro, Jos{\'e} and Bornkamp, Bj{\"o}rn and Glimm, Ekkehard and
+             Bretz, Frank},
+  title   = {Model-Based Dose Finding under Model Uncertainty Using General
+             Parametric Models},
+  journal = {Statistics in Medicine},
+  volume  = {33},
+  number  = {10},
+  pages   = {1646--1661},
+  year    = {2014},
+  doi     = {10.1002/sim.6052}
+}
+
+@misc{ema2014mcpmod,
+  author       = {{European Medicines Agency}},
+  title        = {Qualification Opinion of {MCP-Mod} as an Efficient Statistical
+                  Methodology for Model-Based Design and Analysis of Phase {II}
+                  Dose Finding Studies under Model Uncertainty},
+  year         = {2014},
+  note         = {EMA/CHMP/SAWP/757052/2013. Adopted by CHMP 23 January 2014},
+  url          = {https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/qualification-opinion-mcp-mod-efficient-statistical-methodology-model-based-design-and-analysis-phase-ii-dose-finding-studies-under-model-uncertainty_en.pdf}
+}
+
+% ------------------------------------------------------------------- R packages
+
+@manual{dosefinding,
+  title        = {{DoseFinding}: Planning and Analyzing Dose Finding Experiments},
+  author       = {Bornkamp, Bj{\"o}rn and Pinheiro, Jos{\'e} and Bretz, Frank},
+  note         = {R package},
+  url          = {https://CRAN.R-project.org/package=DoseFinding}
+}
+
+@manual{endpointspkg,
+  title        = {{endpoints}: Flexibly Simulate Clinical Trial Datasets with
+                  Correlated Endpoints},
+  author       = {{Boehringer Ingelheim}},
+  note         = {R package},
+  url          = {https://github.com/Boehringer-Ingelheim/endpoints}
+}

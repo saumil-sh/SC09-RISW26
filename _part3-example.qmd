@@ -1,0 +1,832 @@
+```{r}
+#| label: setup-p3
+#| include: false
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dev = "svglite", dev.args = list(bg = "transparent"))
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+theme_set(
+  theme_minimal(base_size = 15) +
+    theme(panel.grid.minor = element_blank(),
+          legend.position = "right",
+          plot.background = element_rect(fill = "transparent", colour = NA),
+          panel.background = element_rect(fill = "transparent", colour = NA))
+)
+
+teal <- "#1d5c4a"; teal_mid <- "#2a7a63"; teal_lt <- "#8fc4b3"; warn <- "#c0392b"
+ink  <- "#1e2a27"; ink_mu <- "#6b7770"
+
+# Truth colours are inherited from part 1 (same truth, same colour all course).
+# Hue family encodes ED50, lightness encodes h -- composite encoding, so the
+# series are not distinguished by hue alone.
+pal_truth  <- c(Negative = "#c0392b", Emax1 = "#8ec4e0", Emax2 = "#2c6e9e",
+                Emax3 = "#1b7837")
+# Two methods: one hue, separated by a large lightness step.
+pal_method <- c(Dunnett = teal_lt, `MCP-Mod` = teal)
+
+# Scenario definitions are sourced from the same file the simulation uses, so
+# every number quoted in this deck is derived, not transcribed -- it cannot
+# drift when the scenarios are re-tuned. (This only builds data frames; it runs
+# no simulation.)
+source("R/part-3/1-scenarios.R")
+
+N_STUDY <- unique(design_scenarios$sample_size)
+TOP_EFF <- top_effect
+NEG_EFF <- neg_effect
+FULL_DOSES <- arm_sets$doses[[which.max(arm_sets$n_active)]]
+
+# True effect at every dose, and the true MED, for each truth scenario.
+truth_meds <- sapply(seq_len(nrow(truth_scenarios)), function(i) {
+  t <- truth_scenarios[i, ]
+  true_med_for(FULL_DOSES, t$eMax, t$ed50, t$h)
+})
+
+# The analysis on these slides IS the exercise solution -- we source it, so what
+# is on screen and what an attendee can open are guaranteed to be the same
+# thing. It reads the pre-run results file and simulates nothing.
+have_results <- file.exists("data/p3-results.rds")
+if (have_results) {
+  # Guard against a results file left over from an earlier scenario set: if the
+  # truths it was run under no longer match the current definitions, treat it as
+  # absent rather than silently plotting numbers from a study we no longer run.
+  .stored <- readRDS("data/p3-results.rds")
+  have_results <- setequal(unique(.stored$replicates$truth), truth_scenarios$truth)
+  rm(.stored)
+}
+if (have_results) {
+  invisible(capture.output(suppressMessages({
+    source("R/part-3/7-exercise.R")
+    source("R/part-3/8-exercise-solution.R")
+  })))
+}
+```
+
+# What we are doing :dart: {background-color="#1d5c4a"}
+
+## Where we are :round_pushpin: {.smaller}
+
+| | Time | Session | | |
+|:--:|---|---|---|---|
+| **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | done |
+| | 2:30 – 2:40 PM | 10 minute break | | |
+| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | done |
+| | 3:40 – 3:50 PM | 10 minute break | | |
+| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | **← you are here** |
+
+
+## The study, already run [Example]{.example-tag} :checkered_flag: {.smaller}
+
+::: {.fragment}
+
+| | |
+|---|---|
+| **Endpoint** | % change from baseline in body weight at Week 24, $\sigma = 10$ |
+| **Doses** | 0 (placebo), 5, 10, 25, 50, 100 mg QW |
+| **Sample size** | `r if (exists("N_STUDY")) N_STUDY else 240` total, the same for every design |
+| **Designs** | 3 / 4 / 5 active arms × equal or weighted allocation = **6** |
+| **Truths** | 1 negative + 3 positive Emax curves = **4**, with true MEDs of 25 / 50 / 100 mg |
+| **Analyses** | MCP-Mod **and** Dunnett, both on every replicate, $\alpha = 0.10$ |
+| **Success** | statistical significance **and** acceptable dose selection |
+
+:::
+
+
+::: {.fragment .zoom}
+
+6 × 4 = **24 cells** × 1,000 replicates = **24,000 virtual trials** — already run.
+
+:::
+
+
+## The code is yours — just not today :gift: {.smaller}
+
+::: {.fragment}
+
+```{mermaid}
+%%| fig-width: 12
+%%{init: {"themeVariables": {"fontSize": "18px"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  S["<b>1-scenarios.R</b><br/>design x truth grid"] --> D["<b>2-datagen.R</b><br/>population generators"]
+  D --> T["<b>3-design.R</b><br/>triggers + analyses + MED"]
+  T --> E["<b>4-evaluate.R</b><br/>objectives + OCs"]
+  E --> R["<b>6-runsim.R</b><br/>runs the grid via run_one()"]
+```
+
+:::
+
+
+::: {.columns}
+::: {.column width="55%"}
+
+**Four numbered components**, then the driver that runs them — the same five
+ideas from Part 1, in the same rxsim vocabulary Saumil used in Part 2.
+`run_one()` is the helper in `R/part-3/5-run-one.R`, exactly the shape of Part 2's
+`simulate_scenario()`.
+
+:::
+::: {.column width="45%"}
+
+::: {.fragment .keybox}
+**We are not walking through this today.** It is in the repo, it runs, and it
+is yours to pull apart afterwards.
+
+Today we work with what it **produced**.
+:::
+
+:::
+:::
+
+
+## The four truth curves :chart_with_upwards_trend: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: truth-curves
+#| echo: false
+#| fig-width: 11
+#| fig-height: 4.2
+
+dose_grid <- seq(0, 100, length.out = 401)
+
+curve_at <- function(d) {
+  do.call(rbind, lapply(seq_len(nrow(truth_scenarios)), function(i) {
+    t <- truth_scenarios[i, ]
+    data.frame(truth = t$truth, kind = t$kind, dose = d,
+               mean = DoseFinding::sigEmax(d, e0 = 0, eMax = t$eMax,
+                                           ed50 = t$ed50, h = t$h))
+  }))
+}
+curves <- curve_at(dose_grid)
+marks  <- curve_at(FULL_DOSES)
+
+target_label <- data.frame(kind = "Negative", dose = 0, mean = Delta + 1.3,
+                           truth = "Negative",
+                           lab = sprintf("Clinically viable effect = %d%%", Delta))
+
+ggplot(curves, aes(dose, mean, colour = truth, linetype = kind)) +
+  geom_hline(yintercept = Delta, linetype = "dotted", linewidth = 0.8,
+             colour = "grey25") +
+  geom_line(linewidth = 1.2) +
+  geom_point(data = marks, size = 2.2, show.legend = FALSE) +
+  geom_text(data = target_label, aes(label = lab), hjust = 0, size = 4.2,
+            colour = "grey25", show.legend = FALSE) +
+  scale_colour_manual(values = pal_truth, name = NULL,
+                      breaks = truth_scenarios$truth) +
+  scale_linetype_manual(values = c(Negative = "dashed", Positive = "solid"),
+                        guide = "none") +
+  scale_x_continuous(breaks = FULL_DOSES) +
+  scale_y_continuous(limits = c(0, 20), breaks = seq(0, 20, 5)) +
+  labs(x = "Dose (mg QW)", y = "Placebo-adjusted\n% weight loss at Week 24") +
+  facet_wrap(~ kind, ncol = 2)
+```
+
+:::
+
+
+::: {.fragment}
+
+The **true MED** — the lowest studied dose truly worth ≥ 15% — is
+`r paste(sort(truth_meds), collapse = " / ")` mg for Emax1 / Emax2 / Emax3, and
+none for the negative truth. That is the target each trial is trying to recover.
+
+:::
+
+
+::: {.fragment}
+
+Every positive truth reaches **`r if (exists("TOP_EFF")) TOP_EFF else 18`%** at
+100 mg. They differ only in **where they cross the dotted line** — that is the
+MED problem each design has to solve.
+
+:::
+
+
+# Your turn :raising_hand: {background-color="#1d5c4a"}
+
+## What you have: one row per trial :toolbox: {.smaller}
+
+::: {.fragment}
+
+Open **`R/part-3/7-exercise.R`**. It loads the completed study, plus the same
+helpers used to score it.
+
+:::
+
+
+::: {.fragment}
+
+`r if (have_results) sprintf("**%s rows x %d columns** -- %d designs x %d truths x %s replicates. One design, all four truths, first two replicates:", format(nrow(reps), big.mark = ","), ncol(reps), dplyr::n_distinct(reps$design), dplyr::n_distinct(reps$truth), format(results$n_rep, big.mark = ","))`
+
+:::
+
+
+::: {.fragment}
+
+```{r}
+#| label: reps-preview
+#| echo: false
+if (have_results) {
+  reps |>
+    dplyr::filter(design == design[1], replicate <= 2) |>
+    dplyr::select(design, truth, replicate,
+                  dunn_sig, dunn_med, mcp_sig, mcp_med, obs_d100) |>
+    dplyr::mutate(obs_d100 = round(obs_d100, 1)) |>
+    knitr::kable(align = "llrrrrrr")
+} else {
+  knitr::kable(data.frame(note = "Run R/part-3/6-runsim.R to populate."))
+}
+```
+
+:::
+
+
+::: {.fragment}
+
+*8 of 31 columns shown — the rest are `obs_d*` / `mod_d*`, the observed and
+fitted effect at each studied dose.*
+
+:::
+
+
+## What you have: columns and helpers :toolbox: {.smaller}
+
+::: {.columns}
+::: {.column width="54%"}
+
+`reps` — **one row per simulated trial**
+
+
+
+::: {.fragment}
+
+| Column | |
+|---|---|
+| `design`, `truth` | which cell |
+| `dunn_sig`, `mcp_sig` | signal detected? |
+| `dunn_med`, `mcp_med` | dose selected (`NA` = none) |
+| `dunn_min_p`, `mcp_min_p` | the p-values |
+
+:::
+
+:::
+::: {.column width="46%"}
+
+`results$oc` — the same thing pre-summarised.
+
+::: {.fragment .keybox}
+Do it from `reps` first, then use `results$oc` to check.
+:::
+
+::: {.fragment}
+
+From `4-evaluate.R`:
+
+```r
+true_effect(truth, dose)     # what is TRUE there
+acceptable(truth, med)       # was the choice good?
+is_success(truth, sig, med)  # signal AND acceptable
+claimed_viable(sig, med)     # claimed a viable dose?
+mc_se(p, n_rep)              # is a difference real?
+```
+
+:::
+
+
+::: {.fragment .keybox}
+
+That file is the **single definition** of success — the stored results used
+these same functions, so your numbers are directly comparable.
+
+:::
+:::
+
+:::
+
+## The question :question: {.smaller}
+
+::: {.fragment .success-box}
+
+Which design should we run, and why?
+
+:::
+
+
+::: {.columns}
+::: {.column width="50%"}
+1. Does **any** design meet both objectives?
+2. Every design has a **binding truth** — which, and is it the same for all six?
+3. Does studying **more doses** help? Predict before you compute.
+4. **MCP-Mod vs Dunnett** — same trials, so it is a paired comparison
+
+:::
+::: {.column width="50%"}
+5. Go to the **replicates**: what do the failures have in common?
+6. Make **one figure** you would put in front of a design team
+
+::: {.fragment .keybox}
+
+Do the ones you find interesting, not all six.
+
+
+
+
+Stuck? `R/part-3/8-exercise-solution.R` produces exactly what comes next.
+
+:::
+:::
+
+:::
+
+
+# What we found :mag: {background-color="#1d5c4a"}
+
+## Does any design meet the objectives? :goal_net: {.smaller .scrollable}
+
+::: {.keybox}
+
+**Reminder — the two objectives from Part 1:**
+
+**A.** `r if (have_results) sprintf("≥ %.0f%%", 100 * success_target)` success under
+**each** positive truth, where success = a signal detected *and* an acceptable dose
+selected.
+
+**B.** `r if (have_results) sprintf("≤ %.0f%%", 100 * claim_target)` chance of claiming a
+viable dose under the **negative** truth, where no dose is viable.
+
+:::
+
+::: {.fragment}
+
+```{r}
+#| label: verdict
+#| echo: false
+if (have_results) {
+  verdict |>
+    dplyr::transmute(Design = design, Method = method,
+                     `Worst success` = round(min_success, 3),
+                     `Binding truth` = binding_truth,
+                     `Neg. claim` = round(claim_rate, 3),
+                     A = ifelse(meets_A, "yes", "**no**"),
+                     B = ifelse(meets_B, "yes", "**no**"),
+                     Both = ifelse(meets, "**PASS**", "fail")) |>
+    knitr::kable(col.names = c("Design", "Method", "Worst success",
+                               "Binding truth", "Neg. claim",
+                               sprintf("A (≥%.2f)", success_target),
+                               sprintf("B (≤%.2f)", claim_target), "Both"))
+} else {
+  knitr::kable(data.frame(note = "Run R/part-3/6-runsim.R to populate."))
+}
+```
+
+:::
+
+
+::: {.fragment .zoom}
+
+`r if (have_results) sprintf("**%d of %d** meet both — and the four that fail do not all fail the *same* objective.", sum(verdict$meets), nrow(verdict))`
+
+:::
+
+
+## Both objectives at once — on average 🎯 {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: oc-mean
+#| echo: false
+#| fig-height: 4.0
+if (have_results) fig_oc else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment}
+
+Read it like an ROC curve: false positives across, success up, **good corner =
+top-left**. The shaded box is where both objectives hold.
+
+:::
+
+
+## Zoom: the designs that pass :mag_right: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: oc-zoom
+#| echo: false
+#| fig-height: 4.0
+if (have_results) fig_oc_zoom else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment .smaller}
+
+```{r}
+#| label: oc-zoom-note
+#| echo: false
+#| results: asis
+if (have_results) {
+  v  <- verdict |> dplyr::filter(meets)
+  ms <- range(v$mean_success)
+  cat(sprintf(
+"**Every design that passes uses MCP-Mod** — Dunnett misses the claim-rate objective at all six. Among the survivors, adding doses lowers mean success a little (%.2f to %.2f) but all stay above %.2f, so **3, 4 and 5 arms remain viable**.",
+    ms[1], ms[2], success_target))
+}
+```
+
+:::
+
+
+## The same designs — worst case :cloud_with_rain: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: oc-min
+#| echo: false
+#| fig-height: 3.7
+if (have_results) fig_oc_min else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment}
+
+This is the stricter test: a design has to clear the bar under **every**
+plausible truth, not just on average.
+
+:::
+
+
+::: {.fragment .smaller}
+
+**This is the figure you put in front of a design team** — every design, both
+objectives, judged on its worst truth. (That was exercise question 6.)
+
+:::
+
+
+## Zoom: judged on the worst truth :mag_right: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: oc-zoom-min
+#| echo: false
+#| fig-height: 4.0
+if (have_results) fig_oc_min_zoom else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment .smaller}
+
+```{r}
+#| label: oc-zoom-min-note
+#| echo: false
+#| results: asis
+if (have_results) {
+  v  <- verdict |> dplyr::filter(meets)
+  ms <- range(v$min_success)
+  cat(sprintf(
+"**The same MCP-Mod designs still pass** under their worst truth: %.2f to %.2f against %.2f, so **3, 4 and 5 arms remain viable**.",
+    ms[1], ms[2], success_target))
+}
+```
+
+:::
+
+
+## Success under every positive truth :hotsprings: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: heatmap
+#| echo: false
+#| fig-height: 4.3
+if (have_results) fig_heatmap else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment}
+
+Grey is exactly the `r if (have_results) sprintf("%.0f%%", 100*success_target)` objective:
+**red misses it, teal clears it**. Emax1 and Emax2 are comfortable almost
+everywhere — **Emax3 is where every design is weakest**.
+
+:::
+
+
+## Estimated effect at the true MED :violin: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: violin
+#| echo: false
+#| fig-height: 4.2
+if (have_results) fig_violin else ggplot() + theme_void()
+```
+
+:::
+
+
+::: {.fragment}
+
+```{r}
+#| label: violin-note
+#| echo: false
+#| results: asis
+if (have_results) {
+  sds <- est |>
+    dplyr::group_by(panel, n_active) |>
+    dplyr::summarise(sd = sd(estimate), .groups = "drop") |>
+    tidyr::pivot_wider(names_from = n_active, values_from = sd,
+                       names_prefix = "a")
+  cat(sprintf(
+"Each violin is the MCP-Mod estimate at that truth's true MED, across trials that succeeded. **Adding doses does not cost you precision here** — going from 3 to 5 active arms means fewer patients per dose, yet the spread is flat or *tighter* (SD %s → %s under %s, %s → %s under %s). MCP-Mod fits a curve across all doses, so the extra dose-response information offsets the smaller per-arm sample.",
+    sprintf("%.2f", sds$a3[1]), sprintf("%.2f", sds$a5[1]),
+    sub("  —.*", "", sds$panel[1]),
+    sprintf("%.2f", sds$a3[2]), sprintf("%.2f", sds$a5[2]),
+    sub("  —.*", "", sds$panel[2])))
+}
+```
+
+:::
+
+
+## Summary — my thoughts :thought_balloon: {.smaller}
+
+1. **There is no single right design here.** Choosing one needs context this
+   simulation does not have — cost, timelines, what the team can run. In
+   practice this is an iteration, not a verdict.
+2. **What the numbers did say.** More doses with fewer patients each did
+   **not** meaningfully hurt the decision — the first objection to a wider
+   design — and **MCP-Mod beat Dunnett on both objectives at once**.
+3. **Two operating characteristics down, many to go.** Bias and MSE of the
+   fitted curve, the distribution of selected doses, duration, stricter rules —
+   each is another column in the same table, not a new tool.
+
+
+::: {.fragment .zoom}
+
+The iteration *is* the evidence that the design was chosen, not just arrived at.
+
+:::
+
+
+# Taking this further :rocket: {background-color="#1d5c4a"}
+
+## What we didn't touch today :telescope: {.smaller}
+
+::: {.fragment}
+
+Three doors we walked past — all openable with what you already have:
+
+:::
+
+
+::: {.incremental}
+- **Random truth scenarios**
+  - draw truths from a distribution — say, a posterior — instead of fixing four points
+  - the grid just gets one draw per replicate
+- **Adaptivity**
+  - Part 2's interim was informational
+  - the same trigger + decision-rule machinery can stop early or drop an arm
+- **Richer data generation**
+  - multiple endpoints, copulas, and longitudinal models plug into the same generator
+  - rxsim already works with longitudinal generators
+
+:::
+
+
+## Scaling: the grid is a data frame :stopwatch: {.smaller}
+
+::: {.fragment}
+
+rxsim runs one trial per core, so you parallelize **across scenario rows** —
+the grid is already the unit of work.
+
+:::
+
+
+- **This study**: `r if (have_results) nrow(scenarios) else 24` cells ×
+  `r if (have_results) format(results$n_rep, big.mark = ",") else "1,000"`
+  replicates ≈ **`r if (have_results) format(nrow(reps), big.mark = ",") else "24,000"` virtual trials** —
+  100 minutes across 6 `furrr` workers on a laptop
+- **Production**: [`targets`](https://books.ropensci.org/targets/) makes each
+  cell a target — it caches results and re-runs **only what changed**, which
+  matters when the tenth question is "what if we add a dose?"
+- `targets` + `crew` extends the same pipeline onto an HPC without rewriting
+  the simulation — **extremely well equipped for exactly this kind of
+  computation**. Worth watching:
+  [R in Pharma talk on `targets` + `crew`](https://www.youtube.com/watch?v=cyF2dzloVLo&list=PLMtxz1fUYA5C0csy8-wTfFmRYQEB30vr3)
+
+
+::: {.fragment .keybox}
+
+The reason this scales is that nothing above is simulation-specific. A grid, a
+function over its rows, and a cache.
+
+:::
+
+
+## How many simulation replicates? :100: {.smaller}
+
+::: {.fragment}
+
+Monte Carlo error is a design choice, not a detail. Near our
+`r if (have_results) sprintf("%.2f", success_target) else "0.70"` objective:
+
+:::
+
+
+::: {.fragment}
+
+```{r}
+#| label: mc-table
+#| echo: false
+if (have_results) {
+  n <- c(1000, 10000, 100000)
+  data.frame(
+    `Replicates per cell` = ifelse(n == results$n_rep,
+                                   paste0(format(n, big.mark = ","), "  (today)"),
+                                   format(n, big.mark = ",")),
+    `Monte Carlo SE` = sprintf("±%.4f", mc_se(success_target, n)),
+    check.names = FALSE) |>
+    knitr::kable(align = "lr")
+}
+```
+
+:::
+
+
+::: {.fragment .keybox}
+
+**How I choose it in practice**
+
+
+
+- **~1,000** while *exploring* designs — enough to see the shape of the answer
+- **≥ 10,000** once you are comparing a short list, and for the final design
+- **100,000** for a single design is cheap, and worth it when the number is
+  going into a submission
+
+:::
+
+
+::: {.fragment}
+
+Or pick it from the **decision**: how big a difference between two designs
+would actually change what you run? Resolve that, and stop.
+
+:::
+
+
+## Validation: simulation code is software :white_check_mark: {.smaller}
+
+::: {.fragment .smaller}
+
+Each component has a testable contract; they are easier to test than the whole
+simulation at once.
+
+:::
+
+::: {.smaller}
+- **Data generation**
+  - large-n check that each dose hits its intended mean and SD
+- **The MED rule**
+  - hand-built effect vector with a known answer
+  - `NA` when nothing clears Δ
+- **The scenario grid**
+  - size and labels are what you think they are *(6 × 4 = 24)*
+:::
+
+::: {.fragment .smaller}
+
+`testthat` on these components, run automatically, is the difference between a
+simulation you believe and one you merely hope about.
+
+:::
+
+::: {.fragment .keybox .smaller}
+
+**Double programming** belongs here too — on the **custom rules**, not the
+packages. The MED rule and success criterion carry the decision, and an error
+there is silent.
+
+:::
+
+
+## Using AI to write simulation code :robot: {.smaller}
+
+::: {.fragment .keybox}
+
+A personal view — opinion, not guidance. Simply what has worked for me.
+
+:::
+
+
+::: {.fragment}
+
+It is a **loop**, not a prompt:
+
+:::
+
+
+::: {.incremental}
+1. **Ground it in code you already trust** — point it at the packages and
+   simulations you already use, never a blank page
+2. **Write detailed instructions** — conventions, terminology, what "good" looks
+   like here; most bad output traces back to a vague ask
+3. **Review everything, and be opinionated** — the first draft is a starting
+   point; impose your own naming, structure, functions
+4. **Feed the reviewed code back** — today's reviewed output becomes tomorrow's
+   reference, and the conventions compound
+:::
+
+
+::: {.fragment .success-box}
+
+Everything you have seen today was written this way
+
+:::
+
+
+# Wrap-up :tada: {background-color="#1d5c4a"}
+
+## What we built :hammer_and_wrench: {.smaller}
+
+- A **scenario grid** you extend by adding rows, not by editing simulation code
+- A **data generation model** that is one function, replaceable without
+  touching anything else
+- A **trial design** where two analysis methods compete on identical trials
+- A **success criterion** that encodes a clinical judgment, not just a p-value
+- **Operating characteristics** that answer the question the team actually
+  asked
+
+
+::: {.fragment .success-box}
+
+Every next question is a new row, not a new tool.
+
+:::
+
+
+## Today is not entirely about the package :package: {.smaller}
+
+::: {.fragment}
+
+Nothing today depended on a particular tool. What we are actually proposing is
+a **shared way of expressing a trial**:
+
+:::
+
+
+- a scenario grid that is a **data frame**
+- a simulation that is a **function mapped over its rows**
+- **replicates kept**, not just the averages
+- the five components **written and documented**
+
+::: {.fragment .keybox}
+
+Tools will change — `rxsim` may not be what you end up using. The **framework**
+is what we are asking you to take home.
+
+:::
+
+
+## What we get if enough of us work this way :seedling: {.smaller}
+
+::: {.incremental}
+- **Better trials** — when one more design question costs *one more row in a data
+  frame*, you ask the questions you would otherwise have talked yourself out of.
+  Today's example answered thirty.
+- **Designs that can actually be reviewed** — every design considered, every truth
+  assumed, every objective, in code and under version control, so a reviewer can
+  put a finger on the assumption they disagree with.
+- **Transparency that is real** — submitting executable code, including what you
+  **rejected** and why, beats describing what your code did.
+:::
+
+
+::: {.fragment .success-box}
+
+The goal is not a shared package. It is a common language for design.
+
+:::

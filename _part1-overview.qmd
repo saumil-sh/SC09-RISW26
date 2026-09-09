@@ -1,0 +1,1074 @@
+```{r}
+#| label: setup-p1
+#| include: false
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dev = "svglite", dev.args = list(bg = "transparent"))
+
+library(DoseFinding)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+set.seed(20260813)
+
+theme_set(
+  theme_minimal(base_size = 15) +
+    theme(panel.grid.minor = element_blank(),
+          legend.position = "right",
+          plot.background = element_rect(fill = "transparent", colour = NA),
+          panel.background = element_rect(fill = "transparent", colour = NA))
+)
+```
+
+# Welcome :wave: {background-color="#1d5c4a"}
+
+## Get set up :hammer_and_wrench: {.smaller}
+
+::: {.fragment .keybox}
+
+**Start this now.** Downloading and installing takes a few minutes, so kick it
+off while we do introductions.
+
+:::
+
+
+::: {.fragment}
+
+Two ways to get the course project — pick one:
+
+:::
+
+
+- **Git users:** `git clone https://github.com/saumil-sh/SC09-RISW26`
+- **Everyone else:** download and extract the ZIP from `https://github.com/saumil-sh/SC09-RISW26/archive/refs/heads/main.zip`
+
+::: {.fragment}
+
+Then open `SC09-RISW26.Rproj` in RStudio, run `install.packages("renv")` then
+`renv::restore()` in the Console.
+It worked if `source("R/part-2/1-one-arm.R")` prints one row of results.
+
+:::
+
+
+::: {.fragment}
+
+Parts 2 and 3 are hands-on. You will get far more out of them with R open and
+the project already downloaded. The full walkthrough — including a no-install
+hosted fallback — is in [Setup](#setup).
+
+:::
+
+
+## Your instructors :busts_in_silhouette: {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+::: {.bio-card}
+
+**Mitch Thomann, PhD** — Parts 1 & 3
+
+
+
+- PhD in Biostatistics, University of Iowa (2015); thesis on novel dose-finding designs
+- 10+ years designing trials with R-based simulation across two sponsors
+- Currently Head of Modeling and Simulation at Viridian Therapeutics
+- Focus areas: Bayesian trial design, dose-finding, Probability of Success
+
+
+:::
+:::
+
+::: {.column width="50%"}
+::: {.bio-card}
+
+**Saumil Shah, PhD** — Part 2
+
+
+
+- PhD in Mathematical Biology, Max Planck Institute, Germany (2024)
+- Thesis: expediting translational research using quantitative methods
+- Currently in Simulation Hub at Boehringer Ingelheim Pharma
+- Focus: high-throughput operational and statistical simulation of clinical trials
+
+
+:::
+:::
+
+:::
+
+## Housekeeping :house:
+
+- **Three hours, three parts**, **1:30 PM – 5:00 PM (placeholder, per RISW 2026)**,
+  with **two 10-minute breaks**
+- **Parts 1 and 2 are the backbone** — the framework, and how to write it in R
+- **Part 3 is deliberately flexible.** It is hands-on and interactive, and how
+  far we take it depends on the room
+- Part 2 and Part 3 both go better with R open
+- Questions welcome throughout — this is a small enough room for it
+
+
+## Agenda :spiral_calendar: {.smaller}
+
+| | Time | Session | | |
+|:--:|---|---|---|---|
+| **1** | 1:30 – 2:30 PM | **Overview of Trial Simulations**<br/>*Mitch · 60 min* | Motivation · modern capabilities · regulatory guidance<br/>The five essential components, on one running example | **← you are here** |
+| | 2:30 – 2:40 PM | 10 minute break | | |
+| **2** | 2:40 – 3:40 PM | **Programming Key Elements in R**<br/>*Saumil · 60 min* | Objectives · scenarios · data generation<br/>Complex designs · evaluation · parallelization | *after the break* |
+| | 3:40 – 3:50 PM | 10 minute break | | |
+| **3** | 3:50 – 5:00 PM | **Hands-on Exercise**<br/>*Mitch · flexible* | Build one design end to end<br/>Compare designs across the full study | *after the break* |
+
+
+## What we expect from today :dart: {.smaller}
+
+::: {.columns}
+::: {.column width="52%"}
+
+**We do expect**
+
+- A shared, concrete understanding of what a trial simulation **is** and what
+  it is **for**
+- Fluency with the five components every simulation has — and the vocabulary
+  to discuss them
+- Enough R-level detail to go home and build one
+- Engagement: this framework improves when it meets other people's problems
+
+:::
+::: {.column width="48%"}
+
+**We don't expect**
+
+- That you leave an expert
+- That you adopt any one package wholesale
+
+:::
+:::
+
+## A note on what follows :speech_balloon:
+
+::: {.fragment}
+
+Everything in this course — the framework, the terminology, the specific
+recommendations — is built from years of hands-on trial simulation work across
+multiple organizations.
+
+:::
+
+
+::: {.fragment .keybox}
+
+These are **our professional opinions**, not official recommendations or positions of
+our employers or any regulatory authority. Where regulatory guidance is directly
+relevant, we cite and quote it; everything beyond that is judgment we've formed through
+practice — and are glad to defend, but which you should weigh as one experienced
+perspective, not policy.
+
+:::
+
+
+# Motivation :fire: {background-color="#1d5c4a"}
+
+## Real life is a single shot on goal :soccer:
+
+- In a clinical trial we effectively get **one** shot at a chosen design.
+- The design is locked before a single patient enrolls, and the consequences of
+  getting it wrong are measured in years and patients.
+- Simulation is the practice gym: we can play the trial thousands of times under
+  plausible realities before we commit.
+
+
+::: {.fragment}
+
+> "In my opinion, it is more desirable to kill computer-generated patients, rather
+> than real ones, in order to calibrate design parameters."
+>
+> — Peter Thall [@thall2015smart]
+
+:::
+
+
+## The familiar workflow :arrows_counterclockwise:
+
+::: {.fragment}
+
+```{mermaid}
+%%| fig-width: 11
+%%{init: {"themeVariables": {"fontSize": "18px", "edgeLabelBackground": "#f6faf8"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  A(Trial design options) -- Closed-form tool --> B(Operating characteristics) --> C(Decide)
+```
+
+:::
+
+
+::: {.fragment}
+
+```{mermaid}
+%%| fig-width: 11
+%%{init: {"themeVariables": {"fontSize": "18px", "edgeLabelBackground": "#f6faf8"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  D(New design option) -- Tool does not fit --> E(Approximate) --> F(Find another tool) --> G(Approximate a bit more)
+```
+
+:::
+
+::: {.fragment .zoom}
+
+Every design question that falls outside the tool becomes a negotiation about what
+we are *willing to approximate*.
+
+:::
+
+
+## There is a better way :bulb:
+
+::: {.fragment}
+
+Start in R.
+
+:::
+
+
+::: {.fragment}
+
+```{mermaid}
+%%| fig-width: 11
+%%{init: {"themeVariables": {"fontSize": "18px", "edgeLabelBackground": "#f6faf8"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  A(Design + truth scenarios) -- Write R code --> B(Operating characteristics) -- Evaluate --> C(Interpret)
+  C -- Ask the next question --> A
+```
+
+:::
+
+
+::: {.fragment .keybox}
+
+The goal is not "an R script that answers this question." It is R code that is
+**simple, adaptable and flexible** enough to answer the *next* question — because
+there is always a next question.
+
+:::
+
+
+## Why now? :hourglass_flowing_sand:
+
+::: {.incremental}
+- **Design complexity has outrun closed-form methods**
+  - adaptive elements, Bayesian borrowing, multiple and composite endpoints,
+    estimand-aligned intercurrent event handling
+- **Patient-level generation has become the norm**
+  - replaces summary-statistic simulation — closer to how trials actually unfold
+- **Compute is no longer the binding constraint**
+  - the constraint now is how quickly you can express a new design in code
+- **Regulators increasingly expect it** — more on this shortly
+
+:::
+
+
+## Trial simulation *is* :white_check_mark:
+
+- Repeated virtual trials
+  - typically 1,000s–100,000s of them
+- Built from virtual patient outcomes — enrollment, dropout, endpoints, safety —
+  drawn from *statistical models*
+- A way to evaluate **operating characteristics**
+  - probabilities of success, error rates, estimation quality, timelines, resource use
+- A way to make assumptions **explicit, inspectable and challengeable**
+
+
+## Trial simulation is *not* :no_entry:
+
+- A power calculation *(power is one operating characteristic among many)*
+- A "virtual patient" biological or QSP simulation
+- Enrollment forecasting *(though enrollment can be part of it)*
+- A substitute for judgment — it prices your assumptions, it does not choose them
+
+## Why patient-level simulation? :microscope: {.smaller}
+
+::: {.fragment .keybox}
+
+Simulation lets you inspect **individual patient-level replicates**, not just averaged operating characteristics.
+
+:::
+
+
+::: {.fragment}
+
+An 80% probability of success tells you the design usually works. It says little about:
+
+:::
+
+
+- what the **20%** failures have in common
+- which patients or analyses drive a borderline decision
+- what one plausible realized trial looks like
+
+::: {.fragment}
+
+Operating characteristics are the *answer*. Individual replicates are the *explanation* — and that is what earns buy-in.
+
+:::
+
+
+# Regulatory guidance :scroll: {background-color="#1d5c4a"}
+
+## Simulation as expected practice :ledger: {.smaller}
+
+- **FDA** design simulations thoroughly described in *Adaptive Design Guidance*
+  [@fda2019adaptive] and additional guidance in *Complex and Innovative Trial Designs
+  Guidance* [@fda2020cid] and *Bayesian Methodology Guidance* [@fda2026bayesian]
+- **EMA** design simulations mentioned in *Complex Clinical Trials Q&A*
+  [@ec2022complex] and *Extrapolation for Pediatrics Reflection* [@ema2018extrapolation]
+- **ICH** design simulation thoroughly described in *E20: Adaptive Designs For Clinical
+  Trials* [@ich2025e20], including a dedicated section on conducting and reporting
+  simulation studies
+
+
+## What regulators are asking for :mag:
+
+- **Pre-specification** — scenarios, decision rules and analysis models fixed before
+  the data exist
+- **Justification of the scenario set** — why *these* truths, and are unfavourable
+  ones represented?
+- **Reproducibility** — seeds, versions, code that someone else can run
+- **Transparency about approximation** — Monte Carlo error, number of replicates, and
+  what was *not* simulated
+
+
+::: {.fragment .keybox}
+
+Every one of these is a **software engineering** property as much as a statistical one.
+That is the argument for a framework rather than a one-off script.
+
+:::
+
+
+# A running example :pill: {background-color="#1d5c4a"}
+
+## Our design problem :chart_with_downwards_trend: [Example]{.example-tag} {.smaller}
+
+::: {.fragment}
+
+**Planning a fixed Phase 2 randomized dose-finding study in weight loss.**
+
+:::
+
+
+::: {.fragment}
+
+| | |
+|---|---|
+| **Population** | Adults with obesity |
+| **Endpoint** | Percent change from baseline in body weight at Week 24 |
+| **Candidate doses** | 0 (placebo), 5, 10, 25, 50, 100 mg QW; MTD = 100 mg |
+| **Max sample size** | <300  |
+| **Allocation** | Uncertain; team's instinct is 1:1 across doses, but placebo and/or top dose could be weighted higher |
+| **Dose response** | Shape uncertain; all preclinical and PK/PD data support monotonicity |
+| **Analysis** | MCP-Mod or Dunnett's Test |
+| **Clinically viable target** | 15% placebo-adjusted weight loss (percent change from baseline) |
+
+:::
+
+
+
+::: {.fragment .keybox}
+
+Every uncertainty above is a **choice we have to make anyway** — simulation just makes
+the cost of each choice visible.
+
+
+
+
+From here, slides marked [Example]{.example-tag} build up the specification of this
+study, component by component. By the end you will have a complete simulation plan —
+without having written the simulation.
+
+:::
+
+
+# Five essential components :jigsaw: {background-color="#1d5c4a"}
+
+## Anatomy of a trial simulation :anatomical_heart: {.smaller}
+
+::: {.fragment}
+
+```{mermaid}
+%%| fig-width: 12
+%%{init: {"themeVariables": {"fontSize": "18px", "edgeLabelBackground": "#f6faf8"}, "flowchart": {"htmlLabels": true, "useMaxWidth": false}}}%%
+flowchart LR
+  subgraph L[" "]
+    direction TB
+    O(<b>1. Objectives</b><br/>quantifiable targets) --> S(<b>2. Scenarios</b><br/>design x truth grid)
+  end
+  subgraph M[" "]
+    direction LR
+    D(<b>3. Data generation</b><br/>patient-level models) --> T(<b>4. Trial design</b><br/>milestones, analyses, adaptations)
+  end
+  E(<b>5. Evaluation criteria</b><br/>operating characteristics)
+  S --> D
+  T --> E
+  E -.->|refine scenarios| S
+  E -.->|reframe objectives| O
+  style L fill:none,stroke:none
+  style M fill:none,stroke:none
+```
+
+:::
+
+
+::: {.fragment}
+
+Every simulation has all five. Most disagreements are really about **one** of them — naming it keeps the discussion tractable.
+
+Let's go through them.
+
+:::
+
+
+## 1. Objectives :goal_net: {.smaller}
+
+::: {.fragment}
+
+Turning a clinical question into something a computer can count.
+
+:::
+
+
+- Start from the **decision** the trial has to support, not from the analysis
+- State the target as a **probability of an event you can observe in a replicate**
+- Attach a **threshold** — a number the design has to clear to be acceptable
+- Objectives under *favourable* truths and objectives under *unfavourable* truths are
+  often necessary; a power target without a false-positive budget is only half an
+  objective
+
+
+::: {.fragment .keybox}
+
+If you cannot write the objective as `mean(indicator_over_replicates) >= threshold`,
+it is likely not yet an objective.
+
+:::
+
+
+## 1. Objectives [Example]{.example-tag} :dart: {.smaller}
+
+::: {.fragment}
+
+For our weight-loss dose-finding study:
+
+:::
+
+
+- **≥ 70%** probability of meeting the success criterion under **each positive** truth scenario
+- **≤ 15%** probability of meeting the success criterion under the **negative** truth scenario
+
+
+::: {.fragment .keybox}
+
+**Success** = a **significant** dose-response signal (α = 0.10, one-sided) **and** a
+selected dose whose **true** effect is at least a clinically viable effect of 15%.
+
+:::
+
+
+::: {.fragment}
+
+Under the negative truth *no* dose reaches 15%, so the second line is a
+**false-positive decision** — the probability of claiming a viable dose exists when none
+does. 
+
+:::
+
+## 2. Scenarios: the world vs. our choices :earth_africa: {.smaller}
+
+::: {.fragment}
+
+**Scenario** = an input parameter combination we iterate across. Two types:
+
+:::
+
+::::: {.columns}
+:::: {.column width="48%"}
+
+::: {.fragment .keybox}
+**Design scenarios** — *our choices*
+
+Sample size, number of arms, allocation ratio, populations, decision rules, analysis
+model, timing of analyses, adaptive rules.
+
+*We control these. The output is for comparison*
+:::
+
+::::
+:::: {.column width="48%"}
+
+::: {.fragment .keybox}
+**Truth scenarios** — *the world*
+
+Assumed or plausible realities governing treatment effect and outcomes: effect sizes,
+dose-response shape, variability, dropout, event rates.
+
+*We do not control these. The output is for robustness.*
+:::
+
+::::
+:::::
+
+::: {.fragment .zoom}
+
+The **cross-product** of design × truth scenarios defines the simulation grid.
+
+:::
+
+
+## 2. Scenarios: why the distinction matters ⚖️
+
+- The two types answer **different questions**, and conflating them produces the classic
+  mistake of optimizing a design against a single assumed truth
+- **Marginalize over truths** → how robust is this design?
+- **Compare across designs** → which design should we run?
+
+
+::: {.fragment}
+
+**Simulation asks:** *across the truths we consider plausible, which of our choices
+performs best on the metrics we care about?*
+
+:::
+
+
+## 2. Design scenarios [Example]{.example-tag} :triangular_ruler: {.smaller}
+
+::: {.fragment}
+
+| Design parameter | Values explored |
+|---|---|
+| **Number of active arms** | 3 arms (25, 50, 100 mg) · 4 arms (10, 25, 50, 100 mg) · 5 arms (5, 10, 25, 50, 100 mg) |
+| **Total sample size** | Fixed at 240 to start — deliberately simplifying |
+| **Allocation ratio** | Equal (1:…:1) · Weighted placebo and top dose (2:1:…:1:2) |
+| **Analysis model** | MCP-Mod **and** Dunnett — both computed on every replicate, so they compare methods rather than multiply the grid |
+
+:::
+
+
+::: {.fragment}
+
+3 arm counts × 2 allocations = **6 design scenarios** — each one a trial we
+could actually run.
+
+:::
+
+
+::: {.fragment}
+
+Note that sample size is *fixed* here only for teaching. In practice it is often the first
+thing that would be varied
+
+:::
+
+
+## 2. Truth scenarios [Example]{.example-tag} :crystal_ball: {.smaller}
+
+::: {.fragment}
+
+Assume placebo mean response = 0 and dose response follows a (sigmoid) Emax model:
+
+:::
+
+
+::: {.fragment}
+
+$$f(d) = E_{\max}\,\frac{d^{\,h}}{ED_{50}^{\,h} + d^{\,h}}$$
+
+:::
+
+
+::: {.fragment}
+
+| Scenario | $ED_{50}$ | $h$ | Shape | $E_{\max}$ *(derived)* | $f(100)$ |
+|---|---|---|---|---|---|
+| **Negative** | 7.5 mg | 1 | hyperbolic | 13.98 | 13% — *never clinically viable* |
+| **Emax1** | 4 mg | 1 | hyperbolic | 18.72 | 18% — *true MED 25 mg* |
+| **Emax2** | 20 mg | 3 | sigmoid | 18.14 | 18% — *true MED 50 mg* |
+| **Emax3** | 50 mg | 3 | sigmoid | 20.25 | 18% — *true MED 100 mg* |
+
+:::
+
+
+::: {.fragment .keybox}
+
+$E_{\max}$ is the **asymptote**, not the effect at a studied dose. If we fixed it at 18%,
+every curve would land *below* 18% at 100 mg by a different amount. So we instead fix
+$f(100)=18\%$ and back-solve $E_{\max} = \Delta\left[1 + (ED_{50}/d^*)^{h}\right]$.
+Now the positive truths differ only in **shape**, not in what the top dose is worth.
+
+:::
+
+
+## 2. Truth scenarios, visualized [Example]{.example-tag} :chart_with_upwards_trend:
+
+::: {.fragment}
+
+```{r}
+#| label: truth-scenarios-plot
+#| fig-width: 11
+#| fig-height: 4.8
+
+candidate_doses <- c(0, 5, 10, 25, 50, 100)
+dose_grid       <- seq(0, 100, length.out = 401)
+target_effect   <- 15    # clinically viable placebo-adjusted effect
+top_dose        <- 100   # highest studied dose (MTD)
+top_effect      <- 18    # positive truths: effect delivered AT the top dose
+neg_effect      <- 13    # negative truth: effect delivered AT the top dose
+
+# Emax is the model's asymptote, not the effect at any dose we study. Back-solve it
+# so that f(top_dose) == the intended top-dose effect exactly:
+#   f(d) = Emax * d^h / (ED50^h + d^h)  =>  Emax = effect * (1 + (ED50 / d)^h)
+emax_for <- function(effect, ed50, h, d = top_dose) effect * (1 + (ed50 / d)^h)
+
+truth_scenarios <- tibble::tribble(
+  ~scenario,  ~kind,      ~ed50, ~h,
+  "Negative", "Negative",   7.5,  1,
+  "Emax1",    "Positive",     4,  1,
+  "Emax2",    "Positive",    20,  3,
+  "Emax3",    "Positive",    50,  3
+) |>
+  mutate(eMax = emax_for(if_else(kind == "Positive", top_effect, neg_effect),
+                         ed50, h))
+
+curves <- truth_scenarios |>
+  rowwise() |>
+  reframe(scenario = scenario, kind = kind, dose = dose_grid,
+          mean = sigEmax(dose_grid, e0 = 0, eMax = eMax, ed50 = ed50, h = h))
+
+marks <- truth_scenarios |>
+  rowwise() |>
+  reframe(scenario = scenario, kind = kind, dose = candidate_doses,
+          mean = sigEmax(candidate_doses, e0 = 0, eMax = eMax, ed50 = ed50, h = h))
+
+pal <- c(Negative = "#c0392b", Emax1 = "#8ec4e0", Emax2 = "#2c6e9e",
+         Emax3 = "#1b7837")
+
+target_label <- tibble::tibble(kind = "Negative", dose = 0, mean = target_effect + 1.4,
+                               scenario = "Negative",
+                               lab = "Clinically viable effect = 15%")
+
+ggplot(curves, aes(dose, mean, colour = scenario, linetype = kind)) +
+  geom_hline(yintercept = target_effect, linetype = "dotted", linewidth = 0.8,
+             colour = "grey25") +
+  geom_line(linewidth = 1.2) +
+  geom_point(data = marks, size = 2.2, show.legend = FALSE) +
+  geom_text(data = target_label, aes(label = lab), hjust = 0, size = 4.2,
+            colour = "grey25", show.legend = FALSE) +
+  scale_colour_manual(values = pal, name = NULL,
+                      breaks = c("Negative", "Emax1", "Emax2", "Emax3")) +
+  scale_linetype_manual(values = c(Negative = "dashed", Positive = "solid"),
+                        guide = "none") +
+  scale_x_continuous(breaks = candidate_doses) +
+  scale_y_continuous(limits = c(0, 21), breaks = seq(0, 20, 5)) +
+  labs(x = "Dose (mg QW)",
+       y = "Placebo-adjusted\n% weight loss at Week 24") +
+  facet_wrap(~ kind, ncol = 2)
+```
+
+:::
+
+
+## 2. The Scenario "grid" [Example]{.example-tag} 🔢
+
+::: {.fragment}
+
+| | |
+|---|---|
+| Design scenarios | 3 arm counts × 2 allocation schemes = **6** |
+| Analysis models | MCP-Mod + Dunnett — run on **every** replicate, not extra grid rows |
+| Truth scenarios | 1 negative + 3 positive = **4** |
+| **Simulation grid** | 6 × 4 = **24 cells** |
+| Replicates per cell | 1,000 |
+| **Total virtual trials** | **24,000** |
+
+:::
+
+
+::: {.fragment .keybox}
+
+This is a *deliberately simplified* example, and it is already 24 cells. Adding
+four sample sizes makes it 96 — this blows up quickly. In code, represent it as a
+dataframe with one row per scenario and use tools like `tidyr::expand_grid()` to
+add and filter scenarios easily.
+
+:::
+
+
+## 3. Data generation models :game_die:
+
+::: {.fragment}
+
+Statistical models are then used to simulate patient data, including:
+
+:::
+
+
+- **Single / multiple endpoints** of varying type: continuous, binary, count, time-to-event
+- **Longitudinal outcomes** — correlated errors or random effects
+- **Trial mechanics** — stochastic enrollment, dropout, missing visits, administrative
+  censoring
+
+
+::: {.aside}
+
+A simulation study is a modeling exercise in disguise
+
+:::
+
+
+## 3. Data generation model [Example]{.example-tag} :game_die:
+
+::: {.fragment}
+
+For our study, deliberately the simplest thing that could work:
+
+:::
+
+
+::: {.fragment}
+
+$$Y_{ij} \sim \mathrm{N}\left(f(d_j),\ \sigma^2\right), \qquad \sigma = 10$$
+
+:::
+
+
+- Percent change from baseline in weight is generated **directly at the patient level**
+- $f(d_j)$ is the sigmoid EMAX mean from the active truth scenario
+- Fixed variance across arms; no dropout, no covariates
+
+::: {.fragment .keybox}
+
+Note how little this model contains — and note that it is still a *complete, runnable
+specification*. Every elaboration you would want (dropout, a Week 12 interim readout, a
+correlated safety endpoint) is an addition to the code - not switching tools/modules
+
+:::
+
+
+## 4. Trial design :building_construction: {.smaller}
+
+::: {.fragment}
+
+Everything that happens between "patients exist" and "we have a decision."
+
+:::
+
+
+::: {.fragment}
+
+| | |
+|---|---|
+| **Milestones / analyses** | When do we look, and what data are available at each look? |
+| **Analysis models** | What we actually fit — need not (and deliberately should not, when testing robustness) match the data generation model |
+| **Adaptive elements** | Interim analyses, futility and efficacy stopping, arm dropping or addition, response-adaptive randomization, sample size re-estimation |
+| **Decision rules** | The deterministic function that turns an analysis into a Go, a No-Go, or a selected dose |
+
+:::
+
+
+::: {.fragment .keybox}
+
+The decision rule is the part teams most often leave vague, and the part simulation is
+least able to guess.
+
+:::
+
+
+## 4. Trial design [Example]{.example-tag}: significance testing :test_tube: {.smaller}
+
+::: {.fragment}
+
+Single final analysis at Week 24. Two analysis models, both at **α = 0.10** (one-sided):
+
+:::
+
+
+::: {.fragment}
+
+**MCP-Mod** — candidate model set:
+
+:::
+
+
+::: {.fragment}
+
+| Candidate | Form | Parameters |
+|---|---|---|
+| C1 | hyperbolic Emax | $ED_{50}$ = 5 |
+| C2 | hyperbolic Emax | $ED_{50}$ = 25 |
+| C3 | sigmoid Emax | $ED_{50}$ = 5, $h$ = 2 |
+| C4 | sigmoid Emax | $ED_{50}$ = 25, $h$ = 2 |
+| Linear | linear | — |
+| Exponential | exponential | $\delta$ = 25 |
+
+:::
+
+
+::: {.fragment}
+
+*Candidate labels (C1–C4) are deliberately distinct from the truth-scenario names
+(Emax1–Emax3): these are the shapes we **fit**, not the shapes the world takes.*
+
+:::
+
+
+::: {.fragment}
+
+**Dunnett's Test** — all active doses vs. placebo, step-down.
+
+:::
+
+
+<!-- Note for Saumil (from Mitch), resolving the open items that used to sit here:
+     - Exponential candidate: delta = 25 is correct. No change needed.
+     - Dunnett: just call it "Dunnett's test" on the slides — people will get it,
+       no need to spell out the multiplicity mechanics. For our own reference,
+       it is step-down. -->
+
+
+## 4. Trial design [Example]{.example-tag}: candidate models :ocean: {.smaller}
+
+::: {.fragment}
+
+```{r}
+#| label: mcpmod-candidates
+#| fig-width: 11
+#| fig-height: 4.2
+
+candidate_models <- Mods(
+  emax        = c(5, 25),                    # C1, C2  (hyperbolic)
+  sigEmax     = rbind(c(5, 2), c(25, 2)),    # C3, C4  (sigmoid, h = 2)
+  linear      = NULL,
+  exponential = 25,
+  doses       = candidate_doses,
+  placEff     = 0,
+  maxEff      = top_effect
+)
+
+cand_labels <- c(emax1 = "C1  Emax (ED50 = 5)",  emax2 = "C2  Emax (ED50 = 25)",
+                 sigEmax1 = "C3  sigEmax (ED50 = 5, h = 2)",
+                 sigEmax2 = "C4  sigEmax (ED50 = 25, h = 2)",
+                 linear = "Linear", exponential = "Exponential (delta = 25)")
+
+cand_curves <- getResp(candidate_models, doses = dose_grid) |>
+  as.data.frame() |>
+  mutate(dose = dose_grid) |>
+  pivot_longer(-dose, names_to = "model", values_to = "mean") |>
+  mutate(model = factor(cand_labels[model], levels = unname(cand_labels)))
+
+ggplot(cand_curves, aes(dose, mean)) +
+  geom_hline(yintercept = target_effect, linetype = "dotted", colour = "grey40") +
+  geom_line(linewidth = 1.1, colour = "#2c6e9e") +
+  geom_vline(xintercept = candidate_doses, colour = "grey85", linewidth = 0.3) +
+  scale_x_continuous(breaks = c(0, 25, 50, 100)) +
+  scale_y_continuous(breaks = seq(0, 20, 10)) +
+  labs(x = "Dose (mg QW)", y = "Standardized\nmean response") +
+  facet_wrap(~ model, ncol = 3)
+```
+
+:::
+
+
+::: {.fragment}
+
+Candidates are **shapes**, not truths. They span the plausible dose-response space so
+some candidate is close to whatever the world does. The dotted line is the 15% target;
+the grey verticals are the candidate doses.
+
+:::
+
+
+## MCP-Mod vs. Dunnett's test :boxing_glove: {.smaller}
+
+::: {.fragment}
+
+Two potential answers to "is there a dose-response signal?"
+
+:::
+
+
+::: {.fragment}
+
+| | **Dunnett** [@dunnett1955] | **MCP-Mod** [@bretz2005; @pinheiro2014] |
+|---|---|---|
+| Question asked | Is *any* dose better than placebo? | Is there a dose-response *signal*, and what *shape*? |
+| Uses dose ordering | No — arms are exchangeable labels | Yes — borrows strength across the dose range |
+| Multiplicity over | Treatment arms | Candidate models |
+| Estimation | Based on observed data | Based on fitted dose-response model |
+| Cost of misspecification | None — model-free | Power loss if no candidate is close |
+
+:::
+
+
+::: {.fragment .keybox}
+
+MCP-Mod is well established in this setting - dose-response modelling improves estimation of dose-response
+curves and can be advantageous for decision-making with more doses.
+
+:::
+
+
+## 4. Trial design [Example]{.example-tag}: dose selection :round_pushpin: {.smaller}
+
+::: {.fragment .keybox}
+
+**MED** (minimally efficacious dose) = the lowest dose estimated to have a
+placebo-adjusted effect **> 15%**.
+
+
+
+
+*MCP-Mod:* estimate MED from the fitted curve. *Dunnett:* estimate it from observed arm means.
+
+:::
+
+
+::: {.fragment}
+
+**"Acceptable dose selection"** = selecting an MED that is either
+
+:::
+
+
+1. **correct** for the scenario in question — the ideal — **or**
+2. **incorrect, but still has at least a 15% treatment effect in truth**
+
+::: {.fragment}
+
+Why the second clause? Phase 2 should not be scored as a failure just because it misses the
+*exact* MED. If it lands on a different dose that still delivers clinically meaningful efficacy,
+that is still a **good outcome**.
+
+:::
+
+
+::: {.fragment .success-box}
+
+**Success** = statistical significance **and** acceptable dose selection.
+
+:::
+
+
+## 5. Evaluation criteria :bar_chart:
+
+::: {.fragment}
+
+Turning replicates into numbers a team can act on.
+
+:::
+
+
+- Metrics come **directly from the objectives** — if a metric does not map to an
+  objective, ask whether it needs to be computed at all
+- Add **diagnostic** metrics beyond the decision metrics — they explain *why* a design
+  performs the way it does
+- Keep replicate-level output (or a chosen subset) — you will want it the first
+  time an aggregate surprises you
+
+
+## 5. Evaluation criteria [Example]{.example-tag} :bar_chart:
+
+::: {.fragment}
+
+**From the objectives:**
+
+:::
+
+
+- **Success rate** under each positive truth scenario — target ≥ 70%
+- **False-positive rate** under the negative truth scenario — target ≤ 15%
+
+::: {.fragment}
+
+**Metrics we could add, once the objectives are met:**
+
+:::
+
+
+- **MSE or bias of the estimated dose-response** across the candidate dose range
+
+::: {.fragment}
+
+Neither is in the objectives, but they explain *why* two designs differ — and
+dose-response estimation matters beyond the go/no-go decision, since real dose
+selection weighs factors other than efficacy.
+
+:::
+
+
+## The components [Example]{.example-tag} :clipboard: {.smaller}
+
+::: {.fragment}
+
+| Component | Our study |
+|---|---|
+| **Objectives** | ≥ 70% success under positive truths; ≤ 15% false positive under the negative truth |
+| **Scenarios** | 6 design × 4 truth = 24-cell grid; both analysis models on every replicate |
+| **Data generation** | Patient-level data generation model using sigmoid EMAX model |
+| **Trial design** | Single final analysis; MCP-Mod or Dunnett at α = 0.10; MED rule; success = significance + acceptable dose selection |
+| **Evaluation** | Success rate, false-positive rate, replicate-level inspection |
+
+:::
+
+
+::: {.fragment}
+
+That is a mostly complete simulation plan for an initial simulation run. We have not written the simulation — but there is
+now nothing left to argue about except the code.
+
+:::
+
+
+# The R-based computational framework :computer: {background-color="#1d5c4a"}
+
+## Why R and why we are being opinionated :rocket: {.smaller}
+
+::: {.incremental}
+- **The statistical models already live there.** `DoseFinding`, `rpact`, `brms`,
+  `mmrm`, survival tooling, copula tooling — the analysis models you want to simulate
+  are R packages, and calling them beats reimplementing them.
+- **Statisticians are already using R.** The people you are consulting with are using
+  and likely can provide R code to get started with.
+- **R is very flexible through functional programming.** It is easy to update matching
+  the quick iterative process of designing a trial.  If intentionally developed, it is
+  simple to adapt.
+- **Adding and subtracting scenarios is easy.** A simulation grid is a data frame;
+  a simulation is a function mapped over its rows. That one idea does most of the work.
+- **R is becoming more standard in pharma** 
+
+:::
+
+
+::: {.fragment}
+
+The moment the team asks something reasonable — *"what about an extra endpoint at a
+Week 12 interim?"* — a packaged tool either accommodates it or it does not. R always
+does.
+
+:::
+
+
+::: {.fragment .keybox}
+
+This course teaches a specific R-based approach. It is not a survey of options.
+
+:::
+
+
+# Over to Part 2 :handshake: {background-color="#1d5c4a"}
+
+## Where Saumil picks up :arrow_right:
+
+::: {.fragment}
+
+Part 1 gave you the five components and a fully specified study. Part 2 writes them.
+
+:::

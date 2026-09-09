@@ -1,0 +1,53 @@
+---
+title: "Trial Simulations in R"
+subtitle: |
+  A Framework for Informing Modern Clinical Development<br/>
+  <span style="font-size:0.5em">Slides © 2026 Mitch Thomann & Saumil Shah — [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>
+author:
+  - Mitch Thomann
+  - Saumil Shah
+date: "September 16, 2026"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    center: false
+    fig-align: center
+    slide-number: true
+    title-slide-attributes:
+      data-background-color: "#1d5c4a"
+    progress: true
+    css: assets/css/custom.css
+    mermaid:
+      theme: neutral
+    slide-level: 2
+    incremental: true
+    theme: [simple, assets/theme.scss]
+    toc: false
+    from: markdown+emoji
+    # MathML is rendered natively by the browser: no JS library, no network.
+    # The MathJax/KaTeX defaults both pull from a CDN, so math silently fails to
+    # render on a machine with no internet (e.g. a conference room).
+    html-math-method: mathml
+bibliography: references.bib
+link-citations: true
+citations-hover: true
+nocite: "@*"
+---
+
+## Setup {#setup}
+
+{{< include _setup.qmd >}}
+
+{{< include _part1-overview.qmd >}}
+
+## Part 2 {#part-2}
+
+{{< include _part2-programming.qmd >}}
+
+{{< include _part3-example.qmd >}}
+
+## References :books: {.smaller .scrollable}
+
+::: {#refs}
+:::
