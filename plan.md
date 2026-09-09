@@ -5,8 +5,8 @@
 `SC09-RISW26` is an empty repo (no commits, no remote, just `.Rproj` and a 4-line
 `.gitignore`). The course content lives in `../risw-2026` as four independent Quarto
 documents. We want this repo to become the publishable deliverable: **one revealjs deck**
-(`index.qmd`) that `{{< include >}}`s the parts, published to GitHub Pages by a GitHub
-Action, with a single combined references slide at the end.
+(`index.qmd`) that `{{< include >}}`s the parts, published to GitHub Pages, with a single
+combined references slide at the end.
 
 ## Approach
 
@@ -17,16 +17,21 @@ A Quarto **project** (`project: type: default`) with a single rendered output, `
 - The four content files are copied over, **stripped of their YAML headers**, and renamed
   with a leading underscore (`_setup.qmd`, `_part1-overview.qmd`, `_part2-programming.qmd`,
   `_part3-example.qmd`) so Quarto does not try to render them standalone.
-- Code is **executed in CI** (the Quarto docs' *Knitr with renv* example): `setup-r` +
-  `setup-renv` restore from `renv.lock`, then the `publish` action renders and deploys.
-  No `freeze`, no `_freeze/` to commit, no stale-artifact failure mode. Build time
-  (package restore + full render, minutes) is the accepted cost.
-- `.github/workflows/publish.yml` — one `build-deploy` job.
-- `_publish.yml` is written by hand (4 lines); no local `quarto publish gh-pages`
-  bootstrap run is needed.
+- Code is executed on whichever machine runs `quarto render` / `quarto publish` — no
+  `freeze`, no `_freeze/` to commit, no stale-artifact failure mode.
+- **Publish path (final, post-implementation): local `quarto publish gh-pages` only.** A
+  CI-executed `.github/workflows/publish.yml` was tried first and built successfully, but
+  its first live run failed at the `gh-pages` push (needs "Read and write" workflow
+  permissions, off by default, not fixable by the acting token/CLI — 403). Rather than
+  chase that permissions fix, the user ran `quarto publish gh-pages` locally, which
+  succeeded immediately. **The GitHub Actions workflow was deleted** — running both would
+  race to push the same `gh-pages` branch from two places, which is a conflict, not
+  redundancy. There is no CI and no auto-deploy on push: publishing is a manual, local
+  `quarto publish gh-pages` run whenever the deck should go live.
+- `_publish.yml` is written by hand (4 lines); `quarto publish gh-pages` reads/updates it.
 - Publish target: `gh-pages` on `git@github.com:saumil-sh/SC09-RISW26.git`. The published
-  deck lives at `https://saumil-sh.github.io/SC09-RISW26/`. The repo **already exists**
-  and is public (checked: HTTP 200) — no creation step.
+  deck lives at `https://saumil-sh.github.io/SC09-RISW26/` (confirmed live, HTTP 200). The
+  repo **already exists** and is public (checked: HTTP 200) — no creation step.
 
 `index.qmd` (not `slides.qmd`) so the published site has a real `index.html` at its root.
 
@@ -40,7 +45,6 @@ session and one knitr document**. Every collision hazard of a physical merge sti
 
 ```
 SC09-RISW26/
-├── .github/workflows/publish.yml
 ├── .gitignore                 # gitignore.io: linux,windows,macos,r,visualstudiocode (+ quarto, *_files/, *_cache/)
 ├── .renvignore
 ├── .Rprofile
@@ -162,8 +166,9 @@ root, in fresh R sessions:
 - Part 3: `Rscript R/part-3/7-exercise.R` and `Rscript R/part-3/8-exercise-solution.R`
   run against the shipped `data/p3-results.rds` and print the study summary.
 - Parallel worker paths: `N_REP=5 PARALLEL=1 OUT_DIR=$(mktemp -d) Rscript R/part-3/6-runsim.R`.
-  **Local verification only — never in CI** (worker sizing there is unknown; CI renders
-  with a forced sequential plan, see Task 5). This is the **only** check that exercises
+  **Local verification only — never as part of `quarto render`/`quarto publish`** (worker
+  sizing on any machine that runs this is not something the deck should depend on; the
+  render forces a sequential plan, see Task 5). This is the **only** check that exercises
   the `file.path(proj, "R", ...)` sourcing inside `5-run-one.R` under real `multisession`
   workers — a sequential smoke test passes with stale paths there. 30 cells × 5 reps
   finishes in about a minute and writes to a temp dir. Do **not** run `6-runsim.R` with
@@ -198,13 +203,15 @@ This is the core risk. Verified hazards:
   `eval: false`; Part 2's only executed parallel chunk is `s5-parallel`, which already
   runs on the default sequential plan. Nothing opens workers mid-render and there is no
   stuck-cluster hazard. Leave every `eval` flag alone.
-- **No multisession on CI, by construction.** The runner's CPU count is unknown, so the
-  render must never size or start a cluster. Two guarantees: `s5-workers` (the only chunk
-  calling `future::plan(multisession)`) stays `eval: false`, **and** the `setup-p2` chunk
-  gains one explicit line, `future::plan(future::sequential)`, so `future_lapply` in
-  `s5-parallel` runs sequentially even if a plan is ever set earlier in the session. CI
-  only ever runs `quarto render` — no R script is invoked directly — so `6-runsim.R`'s
-  multisession path (and its `min(6L, detectCores())` worker count) cannot fire there.
+- **No multisession on render, by construction.** Whoever runs `quarto render` /
+  `quarto publish` (currently: local machine only, see Task 9/10), the render must never
+  size or start a cluster. Two guarantees: `s5-workers` (the only chunk calling
+  `future::plan(multisession)`) stays `eval: false`, **and** the `setup-p2` chunk gains
+  one explicit line, `future::plan(future::sequential)`, so `future_lapply` in
+  `s5-parallel` runs sequentially even if a plan is ever set earlier in the session. The
+  render only ever runs `quarto render` — no R script is invoked directly — so
+  `6-runsim.R`'s multisession path (and its `min(6L, detectCores())` worker count) cannot
+  fire there.
 - **Object collisions are handled by ordering, not renaming.** Chunk code lives in the
   `R/` files via `read_chunk`, so the real collision set includes `results` (Part 2's
   `s5-parallel` vs Part 3's `7-exercise.R`) alongside Part 1 vs Part 3's `curves`,
@@ -277,27 +284,27 @@ project:
 **and `.md`** in the root — including `plan.md` — and publishes them. The underscore-
 prefixed fragments are skipped either way.
 
-### 9. `gh-workflow` — `.github/workflows/publish.yml`
-The docs' **Knitr with renv** example: one `build-deploy` job, five steps —
-`actions/checkout@v7`, `quarto-dev/quarto-actions/setup@v2`, `r-lib/actions/setup-r@v2`
-with `r-version: 'renv'` (R version comes from the lockfile), `r-lib/actions/setup-renv@v2`
-with `cache-version: 1`, then `quarto-dev/quarto-actions/publish@v2` with
-`target: gh-pages`. Job-level `permissions: contents: write`,
-`GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`, triggered on `push` to `main` and
-`workflow_dispatch`. All four action tags verified to exist on their repos (checkout v7,
-quarto-actions v2, setup-r v2, setup-renv v2).
+### 9. `gh-workflow` — REMOVED; superseded by local `quarto publish gh-pages`
+**Decision reversal (post-implementation):** a CI-executed `.github/workflows/publish.yml`
+(checkout → quarto setup → setup-r → setup-renv → `quarto-actions/publish@v2`) was built
+and pushed, but its first run failed at the publish step — pushing to `gh-pages` needs
+"Read and write" default workflow permissions, off by default, and neither the acting
+token nor the CLI could flip that setting (403, insufficient scope). Rather than chase
+the permissions fix, **the user ran `quarto publish gh-pages` locally, which succeeded and
+is now live.** Per explicit instruction, **local publish is the primary and only publish
+path going forward**; the GitHub Actions workflow was deleted
+(`.github/workflows/publish.yml` and the now-empty `.github/` directory) because a CI
+workflow racing to push the same `gh-pages` branch as local publishes is a conflict, not
+redundancy — whichever runs last silently wins and the other's push looks like it
+"failed" for no visible reason. No workflow permissions fix, no Pages-source click
+process is required by this path: `quarto publish gh-pages` creates/updates the
+`gh-pages` branch directly from the local machine and GitHub Pages autodetects it.
 
-This trades build time for simplicity: every push restores packages and re-executes the
-deck. It deletes the entire freeze discipline — no `_freeze/` to commit, no stale-output
-mode — and CI becomes a real render check instead of a republish of local artifacts.
-`setup-renv` restores the full lockfile including `rxsim`, same as `../rxsim-gallery`'s
-proven job.
-
-### 10. `publish-setup` — Repo config and first publish
+### 10. `publish-setup` — Repo config and first publish (via local `quarto publish gh-pages`)
 The repo `saumil-sh/SC09-RISW26` already exists and is public (verified: HTTP 200 on
 both the API and web URL) — no creation step.
-- Hand-write `_publish.yml` (exactly what `quarto publish gh-pages` would generate), so
-  no local publish bootstrap run is needed:
+- `_publish.yml` is hand-written once and left as-is; `quarto publish gh-pages` reads/updates
+  it:
   ```yaml
   - source: project
     gh-pages:
@@ -305,12 +312,12 @@ both the API and web URL) — no creation step.
   ```
 - `git remote add origin git@github.com:saumil-sh/SC09-RISW26.git`, commit everything,
   push `main`.
-- Two one-time manual settings in the GitHub UI (**blocking** — the Action fails without
-  the first, the site 404s without the second): Settings → Actions → General → Workflow
-  permissions → **Read and write permissions**; Settings → Pages → Build and deployment →
-  source **`gh-pages` branch, `/ (root)`** (the branch exists after the Action's first
-  run; configure Pages then).
-- Confirm the Action run is green and `https://saumil-sh.github.io/SC09-RISW26/` serves
+- Publish with `quarto publish gh-pages` run **locally** (requires local git push access
+  to the repo — no GitHub Actions, no workflow-permissions setting, no manual Pages
+  source config: the command creates/pushes the `gh-pages` branch itself and GitHub Pages
+  autodetects it). Re-run this command locally after every content change that should go
+  live; there is no auto-deploy on push to `main`.
+- Confirmed live: `https://saumil-sh.github.io/SC09-RISW26/` returns HTTP 200 and serves
   the deck.
 
 ### 11. `resolve-placeholders` — Fill in the public URLs
@@ -332,24 +339,30 @@ Determined values, applied everywhere they appear (`<PUBLIC_REPO_URL>` ×5, `<PU
   distribution: …*`) — the placeholders it tracks are resolved here.
 
 ### 12. `verify` — Verify
-- A green CI run **is** the primary verification: CI does a fresh-checkout full render
-  with code execution, which subsumes "renders cleanly from a fresh R session". Local
-  renders are for iterating, not gating.
+- **No CI exists to gate this — verification is local, done once, by the person publishing.**
+  A full local `quarto render index.qmd` from a clean `renv::restore()` is the closest
+  equivalent to "renders cleanly from a fresh session" available without CI.
 - Behavioral diff against the standalone parts (per Task 5): render the three parts in
   `../risw-2026`, compare figures and printed numbers against the merged deck. Part 2's
   `read_chunk` blocks must be populated (not empty), Part 1's figures identical, math
   renders, References slide lists all 14 entries readably, no dead intra-deck links.
-- `renv::status()` clean against the copied `renv.lock` — CI depends on this, since
-  `setup-renv` restores from the lockfile on every run.
+- `renv::status()` clean against the copied `renv.lock`.
+- Confirm the live URL: `https://saumil-sh.github.io/SC09-RISW26/` serves the current
+  deck after each `quarto publish gh-pages`.
 
 ---
 
 ## Notes and considerations
 
-- **The build-time tradeoff.** Every push pays an R-package restore (minutes, cached by
-  `setup-renv`) plus a full render with code execution. Accepted deliberately: it buys a
-  real CI render check and removes the freeze discipline. If restore time ever hurts,
-  bump `cache-version` — do not reintroduce freeze.
+- **Publishing is manual and local, not CI-gated.** `quarto publish gh-pages` must be
+  re-run by hand after every content change that should go live; nothing deploys
+  automatically on push to `main`. This was a deliberate reversal after the CI publish
+  workflow's first run failed on a permissions setting the acting session couldn't fix —
+  local publish worked immediately, so it is now the only publish path, and the
+  now-conflicting `.github/workflows/publish.yml` was deleted.
+- **The build-time tradeoff** (rendering with real code execution, no freeze) is still
+  accepted: whoever runs `quarto publish gh-pages` pays a full render with code execution
+  each time. This buys a real render check and removes the freeze discipline entirely.
 - **Content placeholders — resolved in Task 11** with determined values from the known
   remote.
 - **`.Rprofile` repo pin.** Handled in Task 2. Precision note: PPM was already public —
