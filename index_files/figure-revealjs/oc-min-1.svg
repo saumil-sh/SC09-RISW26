@@ -99,28 +99,28 @@
 <text x='405.43' y='244.68' text-anchor='middle' style='font-size: 10.40px;fill: #1E2A27; font-family: "Liberation Sans";' textLength='14.45px' lengthAdjust='spacingAndGlyphs'>1.0</text>
 <text x='303.05' y='257.64' text-anchor='middle' style='font-size: 11.00px; font-family: "Liberation Sans";' textLength='284.23px' lengthAdjust='spacingAndGlyphs'>P(claim a viable dose | negative truth)   → objective ≤ 0.15</text>
 <text transform='translate(164.63,119.09) rotate(-90)' text-anchor='middle' style='font-size: 11.00px; font-family: "Liberation Sans";' textLength='304.92px' lengthAdjust='spacingAndGlyphs'>WORST P(success) across positive truths   → objective ≥ 0.70</text>
-<circle cx='443.73' cy='45.24' r='5.47' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
-<circle cx='443.73' cy='45.24' r='5.47' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
-<circle cx='443.73' cy='62.52' r='5.47' style='stroke-width: 1.98;' />
-<circle cx='443.73' cy='62.52' r='5.47' style='stroke-width: 1.98;' />
-<polygon points='443.73,71.29 451.10,84.05 436.36,84.05 ' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
-<polygon points='443.73,71.29 451.10,84.05 436.36,84.05 ' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
-<polygon points='443.73,88.57 451.10,101.33 436.36,101.33 ' style='stroke-width: 1.98;' />
-<polygon points='443.73,88.57 451.10,101.33 436.36,101.33 ' style='stroke-width: 1.98;' />
-<text x='458.85' y='48.81' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='71.08px' lengthAdjust='spacingAndGlyphs'>Dunnett · equal</text>
-<text x='458.85' y='66.09' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='87.25px' lengthAdjust='spacingAndGlyphs'>Dunnett · weighted</text>
-<text x='458.85' y='83.37' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='81.44px' lengthAdjust='spacingAndGlyphs'>MCP-Mod · equal</text>
-<text x='458.85' y='100.65' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='97.61px' lengthAdjust='spacingAndGlyphs'>MCP-Mod · weighted</text>
-<text x='435.09' y='141.92' style='font-size: 13.00px; font-family: "Liberation Sans";' textLength='67.91px' lengthAdjust='spacingAndGlyphs'>Active arms</text>
-<circle cx='443.73' cy='158.39' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #8FC4B3;' />
-<circle cx='443.73' cy='158.39' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #8FC4B3;' />
-<circle cx='443.73' cy='175.67' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #2A7A63;' />
-<circle cx='443.73' cy='175.67' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #2A7A63;' />
-<circle cx='443.73' cy='192.95' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #1D5C4A;' />
-<circle cx='443.73' cy='192.95' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #1D5C4A;' />
-<text x='458.85' y='161.96' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>3</text>
-<text x='458.85' y='179.24' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>4</text>
-<text x='458.85' y='196.52' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>5</text>
+<text x='435.09' y='46.90' style='font-size: 13.00px; font-family: "Liberation Sans";' textLength='67.91px' lengthAdjust='spacingAndGlyphs'>Active arms</text>
+<circle cx='443.73' cy='63.36' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #8FC4B3;' />
+<circle cx='443.73' cy='63.36' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #8FC4B3;' />
+<circle cx='443.73' cy='80.64' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #2A7A63;' />
+<circle cx='443.73' cy='80.64' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #2A7A63;' />
+<circle cx='443.73' cy='97.92' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #1D5C4A;' />
+<circle cx='443.73' cy='97.92' r='5.26' style='stroke-width: 1.98; stroke: none; fill: #1D5C4A;' />
+<text x='458.85' y='66.94' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>3</text>
+<text x='458.85' y='84.22' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>4</text>
+<text x='458.85' y='101.50' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='5.78px' lengthAdjust='spacingAndGlyphs'>5</text>
+<circle cx='443.73' cy='141.11' r='5.47' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
+<circle cx='443.73' cy='141.11' r='5.47' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
+<circle cx='443.73' cy='158.39' r='5.47' style='stroke-width: 1.98;' />
+<circle cx='443.73' cy='158.39' r='5.47' style='stroke-width: 1.98;' />
+<polygon points='443.73,167.15 451.10,179.92 436.36,179.92 ' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
+<polygon points='443.73,167.15 451.10,179.92 436.36,179.92 ' style='stroke-width: 1.98; stroke: none; fill: #000000;' />
+<polygon points='443.73,184.43 451.10,197.20 436.36,197.20 ' style='stroke-width: 1.98;' />
+<polygon points='443.73,184.43 451.10,197.20 436.36,197.20 ' style='stroke-width: 1.98;' />
+<text x='458.85' y='144.68' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='71.08px' lengthAdjust='spacingAndGlyphs'>Dunnett · equal</text>
+<text x='458.85' y='161.96' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='87.25px' lengthAdjust='spacingAndGlyphs'>Dunnett · weighted</text>
+<text x='458.85' y='179.24' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='81.44px' lengthAdjust='spacingAndGlyphs'>MCP-Mod · equal</text>
+<text x='458.85' y='196.52' style='font-size: 10.40px; font-family: "Liberation Sans";' textLength='97.61px' lengthAdjust='spacingAndGlyphs'>MCP-Mod · weighted</text>
 </g>
 </g>
 </svg>
